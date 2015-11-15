@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.enseirb.gl.burdigalaapp" >
 
+    <uses-sdk android:minSdkVersion="19"
+        android:targetSdkVersion="19"
+        android:maxSdkVersion="19" />
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
