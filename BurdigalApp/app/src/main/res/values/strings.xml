@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">BurdigalApp</string>
     <string name="title_activity_maps">Map</string>
+    <string name="selection_question">Quelle recherche voulez-vous effectuer ?</string>
+    <string name="display_position">Voir les positions</string>
+    <string name="display_points">Voir la liste des points</string>
+    <string name= "map">Carte</string>
+    <string name="detail">Detail du Point</string>
+    <string name="list_point">Liste des points</string>
+    <string name="return_to_map">Retour à la carte</string>
 </resources>

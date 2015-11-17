@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="eigth_screen">80</integer>
+    <integer name="half_screen">50</integer>
+    <integer name="two_screen">20</integer>
+    <integer name="one_screen">10</integer>
+</resources>
