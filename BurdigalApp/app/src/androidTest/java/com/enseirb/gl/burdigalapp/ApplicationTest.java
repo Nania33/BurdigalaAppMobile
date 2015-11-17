@@ -1,4 +1,4 @@
-package com.example.nania.burdigalapp;
+package com.enseirb.gl.burdigalapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

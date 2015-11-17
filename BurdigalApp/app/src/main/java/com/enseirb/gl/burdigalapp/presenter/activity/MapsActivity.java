@@ -1,8 +1,9 @@
-package com.example.nania.burdigalapp;
+package com.enseirb.gl.burdigalapp.presenter.activity;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.enseirb.gl.burdigalapp.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
