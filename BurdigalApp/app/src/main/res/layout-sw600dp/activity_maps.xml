@@ -4,14 +4,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
-        xmlns:map="http://schemas.android.com/apk/res-auto"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/fragment_container"
-        tools:context=".MapsActivity"/>
-    <!-- android:name="com.google.android.gms.maps.SupportMapFragment" !-->
+        android:layout_weight="1">
+
+        <FrameLayout
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment_container_left"
+            tools:context=".MapsActivity"/>
+        <!-- android:name="com.google.android.gms.maps.SupportMapFragment" !-->
+
+
+        <FrameLayout
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/fragment_container_right"
+            tools:context=".MapsActivity"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
