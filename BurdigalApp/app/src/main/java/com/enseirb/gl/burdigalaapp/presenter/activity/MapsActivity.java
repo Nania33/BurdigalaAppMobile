@@ -1,11 +1,9 @@
 package com.enseirb.gl.burdigalaapp.presenter.activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,9 +23,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private Button btnShowList;
-    private Button btnShowPoint;
 
-    private Context mCtx;
+    private PointDetailFragment detailFragment;
+    private PointListFragment listFragment;
+    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,43 +34,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         btnShowList = (Button) findViewById(R.id.btn_show_list);
-        btnShowPoint = (Button) findViewById(R.id.btn_show_point_details);
 
-        if (findViewById(R.id.fragment_container_left) != null && findViewById(R.id.fragment_container_right) != null) {
+        detailFragment = PointDetailFragment.newInstance("param1");
+        listFragment = PointListFragment.newInstance("param1", "param2");
+        mapFragment = SupportMapFragment.newInstance();
+
+        if (findViewById(R.id.fragment_container_map) != null && findViewById(R.id.fragment_container) != null) {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-            PointListFragment itemFragment = PointListFragment.newInstance("param1", "param2");
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container_left, mapFragment);
-            ft.add(R.id.fragment_container_right, itemFragment);
+            ft.add(R.id.fragment_container_map, mapFragment);
+            ft.add(R.id.fragment_container, listFragment);
             mapFragment.getMapAsync(this);
             ft.commit();
         } else {
 
-            btnShowPoint.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PointDetailFragment blankFragment = PointDetailFragment.newInstance("param1", "param2");
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container, blankFragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-            });
-
             btnShowList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PointListFragment itemFragment = PointListFragment.newInstance("param1", "param2");
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container, itemFragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+                    putFragmentInContainer(MapsActivity.this.listFragment, R.id.fragment_container);
+                    btnShowList.setVisibility(View.GONE);
                 }
             });
 
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = SupportMapFragment.newInstance();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_container, mapFragment);
             mapFragment.getMapAsync(this);
@@ -79,6 +64,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void putFragmentInContainer(Fragment fragment, int fragment_container) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(fragment_container, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 
 
     /**
@@ -100,14 +91,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
-    @Override
-    public void onFragmentInteraction(String id) {
 
+    @Override
+    public void onListItemClick(String id) {
+        putFragmentInContainer(PointDetailFragment.newInstance(id), R.id.fragment_container);
+    }
+
+    @Override
+    public void onButtonReturnToMapClick() {
+        onBackPressed();
+        btnShowList.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onButtonReturnClick() {
+        onBackPressed();
     }
 
    /* @Override

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.enseirb.gl.burdigalaapp.presenter.fragment.dummy.DummyContent;
  * interface.
  */
 public class PointListFragment extends android.support.v4.app.Fragment implements AbsListView.OnItemClickListener {
+    private Button btnReturnToMap;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,6 +92,15 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
+        btnReturnToMap = (Button) view.findViewById(R.id.btn_return_to_map);
+        if (btnReturnToMap != null)
+            btnReturnToMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onButtonReturnToMapClick();
+                }
+            });
+
         return view;
     }
 
@@ -115,7 +126,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onListItemClick(DummyContent.ITEMS.get(position).id);
         }
     }
 
@@ -144,7 +155,8 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        public void onListItemClick(String id);
+        public void onButtonReturnToMapClick();
     }
 
 }
