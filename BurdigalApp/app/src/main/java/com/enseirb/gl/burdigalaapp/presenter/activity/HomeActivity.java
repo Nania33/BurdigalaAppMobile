@@ -1,15 +1,15 @@
-package org.enseirb.gl.burdigalaapp.presenters;
+package com.enseirb.gl.burdigalaapp.presenter.activity;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
-/**
- * Created by Nania on 15/11/2015.
- */
-public class HomeActivity extends Activity {
+import com.enseirb.gl.burdigalaapp.R;
+
+public class HomeActivity extends AppCompatActivity {
+
     @Override
-    public void onCreate(Bundle bundle){
-        super.onCreate(bundle);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
     }
 }
