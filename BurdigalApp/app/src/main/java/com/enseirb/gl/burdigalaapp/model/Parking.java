@@ -1,4 +1,4 @@
-package com.enseirb.gl.burdigalapp.model;
+package com.enseirb.gl.burdigalaapp.model;
 
 /**
  * Created by Nania on 17/11/2015.

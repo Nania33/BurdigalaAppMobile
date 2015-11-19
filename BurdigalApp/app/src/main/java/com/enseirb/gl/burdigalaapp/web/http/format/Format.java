@@ -13,7 +13,7 @@ public enum Format {
             case KML:
                 return "kml";
             default:
-                return "json";
+                return "format non supporté";
         }
     }
 }

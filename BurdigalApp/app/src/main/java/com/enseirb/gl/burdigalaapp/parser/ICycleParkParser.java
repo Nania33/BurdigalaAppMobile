@@ -1,4 +1,4 @@
-package com.enseirb.gl.burdigalapp.parser;
+package com.enseirb.gl.burdigalaapp.parser;
 
 /**
  * Created by Nania on 17/11/2015.

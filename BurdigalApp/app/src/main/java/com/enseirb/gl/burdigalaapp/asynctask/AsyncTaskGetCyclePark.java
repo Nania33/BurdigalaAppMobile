@@ -1,9 +1,9 @@
-package com.enseirb.gl.burdigalapp.asynctask;
+package com.enseirb.gl.burdigalaapp.asynctask;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.enseirb.gl.burdigalapp.dto.CycleParkDTO;
+import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
 
 public class AsyncTaskGetCyclePark extends AsyncTask<String, Void, Void> {
     private static final String TAG = "ASYNC_GET_WEATHER";
