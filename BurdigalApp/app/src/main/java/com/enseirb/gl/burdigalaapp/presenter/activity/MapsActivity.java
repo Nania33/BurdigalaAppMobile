@@ -1,6 +1,9 @@
 package com.enseirb.gl.burdigalaapp.presenter.activity;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -10,12 +13,16 @@ import android.widget.Button;
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
+import com.enseirb.gl.burdigalaapp.presenter.item.DataItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         PointListFragment.OnFragmentInteractionListener,
@@ -33,7 +40,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        btnShowList = (Button) findViewById(R.id.btn_show_list);
 
         detailFragment = PointDetailFragment.newInstance("param1");
         listFragment = PointListFragment.newInstance("param1", "param2");
@@ -41,27 +47,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (findViewById(R.id.fragment_container_map) != null && findViewById(R.id.fragment_container) != null) {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container_map, mapFragment);
-            ft.add(R.id.fragment_container, listFragment);
-            mapFragment.getMapAsync(this);
-            ft.commit();
+            initializeTablet();
         } else {
-
-            btnShowList.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    putFragmentInContainer(MapsActivity.this.listFragment, R.id.fragment_container);
-                    btnShowList.setVisibility(View.GONE);
-                }
-            });
-
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container, mapFragment);
-            mapFragment.getMapAsync(this);
-            ft.commit();
+            initializePhone();
         }
+    }
+
+    private void initializePhone() {
+        btnShowList = (Button) findViewById(R.id.btn_show_list);
+
+        btnShowList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                putFragmentInContainer(MapsActivity.this.listFragment, R.id.fragment_container);
+                btnShowList.setVisibility(View.GONE);
+            }
+        });
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container, mapFragment);
+        mapFragment.getMapAsync(this);
+        ft.commit();
+    }
+
+    private void initializeTablet() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container_map, mapFragment);
+        ft.add(R.id.fragment_container, listFragment);
+        mapFragment.getMapAsync(this);
+        ft.commit();
     }
 
     private void putFragmentInContainer(Fragment fragment, int fragment_container) {
@@ -111,6 +126,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onButtonReturnClick() {
         onBackPressed();
+    }
+
+
+    public static Intent getIntent(Context ctx, List<DataItem> itemsToDisplay){
+        Intent i = new Intent(ctx, MapsActivity.class);
+        i.putCharSequenceArrayListExtra("items", getCharSequences(itemsToDisplay));
+        return i;
+    }
+
+    @NonNull
+    private static ArrayList<CharSequence> getCharSequences(List<DataItem> itemsToDisplay) {
+        ArrayList<CharSequence> list = new ArrayList<>();
+        for (DataItem item : itemsToDisplay)
+            list.add(item.toCharSequence());
+        return list;
     }
 
    /* @Override

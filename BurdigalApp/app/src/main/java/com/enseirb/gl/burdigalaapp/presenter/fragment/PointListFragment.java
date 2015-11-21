@@ -38,15 +38,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * The fragment's ListView/GridView.
-     */
     private AbsListView mListView;
-
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
     private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
