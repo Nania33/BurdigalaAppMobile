@@ -52,7 +52,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     private void initializeListOfChoices(){
         mItemsToDiplay = new ArrayList<>();
         mItemsToDiplay.add(new DataItem("Parcs et jardins", "parcs et jardins dans bordeaux"));
