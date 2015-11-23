@@ -6,30 +6,65 @@ package com.enseirb.gl.burdigalaapp.asynctask;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
+import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
+import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
+import com.enseirb.gl.burdigalaapp.web.http.response.WebResponse;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class AsyncTaskGetGarden extends AsyncTask<String, Void, List<GardenDTO>> {
+public class AsyncTaskGetGarden extends AsyncTask<String, Void, Void> {
     private static final String TAG = "ASYNC_GET_GARDEN";
+
+    private IGardenDAOListener listener;
+
+    public AsyncTaskGetGarden(final IGardenDAOListener listener){
+        this.listener = listener;
+    }
 
     protected void onPreExecute() {
 
     }
 
     @Override
-    protected List<GardenDTO> doInBackground(String... params) {
-        return getGardenTask();
+    protected Void doInBackground(String... params) {
+        Log.d(TAG, "[doInBackground()] - start");
+        List<GardenDTO> gardenDTO = new ArrayList<>();
+
+        try {
+            gardenDTO.addAll(getGardenTask());
+            if (gardenDTO.isEmpty())
+                Log.d(TAG, "Résultat vide");
+            else {
+                for (GardenDTO dto : gardenDTO)
+                    Log.d(TAG, dto.toString());
+            }
+            listener.onSuccess(gardenDTO);
+        } catch (Exception e){
+            listener.onError(e.getMessage());
+        }
+        Log.d(TAG, "[doInBackground()] - end");
+        return null;
     }
 
     protected void onPostExecute(Void v) {
 
     }
 
+    private GardenDTO startGetGardenTask(){
+        Log.d(TAG, "[startGetWeatherTask] start");
+        HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.PARCJARDIN);
+        WebResponse response = request.executeRequest();
+        //GardenDTO dto = new KMLGardenParser().parse(webResponse.getData());
+        return null;
+    }
+
     private List<GardenDTO> getGardenTask() {
+        // TODO Faire une HTTPWebRequest + parsing
         Log.d(TAG, "[startGetWeatherTask] start");
         List<GardenDTO> gardenDTOList = new ArrayList<>(Arrays.asList(
                 new GardenDTO("Point1", new LatLng(-51, 159)),
@@ -38,4 +73,5 @@ public class AsyncTaskGetGarden extends AsyncTask<String, Void, List<GardenDTO>>
         ));
         return gardenDTOList;
     }
+
 }

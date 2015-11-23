@@ -21,4 +21,9 @@ public class GardenDTO {
     public LatLng getCoords() {
         return coords;
     }
+
+    @Override
+    public String toString() {
+        return name + " " + coords.toString();
+    }
 }

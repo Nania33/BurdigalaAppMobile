@@ -14,4 +14,9 @@ public class Garden {
         this.name = name;
         this.coords = coords;
     }
+
+    @Override
+    public String toString(){
+        return name+" "+coords.toString();
+    }
 }
