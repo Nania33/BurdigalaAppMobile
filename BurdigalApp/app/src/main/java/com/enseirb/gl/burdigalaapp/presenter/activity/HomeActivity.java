@@ -12,7 +12,9 @@ import android.widget.CheckBox;
 import android.widget.ListAdapter;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.presenter.adapter.SelectMultipleItemsAdapter;
+import com.enseirb.gl.burdigalaapp.presenter.choices.ChoiceEnum;
 import com.enseirb.gl.burdigalaapp.presenter.item.DataItem;
 
 import java.util.ArrayList;
@@ -54,10 +56,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initializeListOfChoices(){
         mItemsToDiplay = new ArrayList<>();
-        mItemsToDiplay.add(new DataItem("Parcs et jardins", "parcs et jardins dans bordeaux"));
-        mItemsToDiplay.add(new DataItem("Toilettes", "Toilettes publiques"));
-        mItemsToDiplay.add(new DataItem("Parking deux roues", "Parking pour vélo et mobilette"));
-        mItemsToDiplay.add(new DataItem("Parking", "Parking pour voitures"));
+        for (ChoiceEnum choice : ChoiceEnum.values()) {
+            try {
+                mItemsToDiplay.add(new DataItem(choice));
+            } catch (UnknownDataException ex) {
+                System.out.println("Erreur de type : " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
 
         mListOfChoices = new ArrayList<>();
         for (DataItem item : mItemsToDiplay)
@@ -81,27 +87,10 @@ public class HomeActivity extends AppCompatActivity {
 
         if (checkBox.isChecked()) {
             item.select();
-            switch (position){
-                case 0:
-                    itemView.setBackgroundResource(R.color.blue);
-                    break;
-                case 1:
-
-                    itemView.setBackgroundResource(R.color.green);
-                    break;
-                case 2:
-                    itemView.setBackgroundResource(R.color.orange);
-                    break;
-                case 3:
-                    itemView.setBackgroundResource(R.color.red);
-                    break;
-                default:
-                    throw new IndexOutOfBoundsException();
-            }
+            itemView.setBackgroundResource(item.getBackgroundColor());
         } else {
             item.unselect();
             itemView.setBackgroundResource(android.R.color.background_light);
         }
     }
-
 }
