@@ -1,5 +1,13 @@
 package com.enseirb.gl.burdigalaapp.presenter.item;
 
+import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
+import com.enseirb.gl.burdigalaapp.presenter.choices.Choice;
+import com.enseirb.gl.burdigalaapp.presenter.choices.ChoiceEnum;
+import com.enseirb.gl.burdigalaapp.presenter.choices.CycleParkChoice;
+import com.enseirb.gl.burdigalaapp.presenter.choices.GardenChoice;
+import com.enseirb.gl.burdigalaapp.presenter.choices.ParkingChoice;
+import com.enseirb.gl.burdigalaapp.presenter.choices.ToiletChoice;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,25 +16,50 @@ import java.util.Map;
  */
 public class DataItem {
     public static final String KEY_NAME = "name";
-    public static final String KEY_DESCRIPTION = "descritpion";
+    public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IS_SELECTED = "is_selected";
 
     private String name;
-    private String descritpion;
+    private String description;
     private boolean isSelected;
+    private int color;
 
-    public DataItem(String name, String descritpion) {
-        this.name = name;
-        this.descritpion = descritpion;
+    public DataItem(ChoiceEnum choice) throws UnknownDataException {
+        Choice choiceItem;
+
+        switch(choice){
+            case TOILET:
+                choiceItem = new ToiletChoice();
+                break;
+            case CYCLEPARK:
+                choiceItem = new CycleParkChoice();
+                break;
+            case GARDEN:
+                choiceItem = new GardenChoice();
+                break;
+            case PARKING:
+                choiceItem = new ParkingChoice();
+                break;
+            default:
+                throw new UnknownDataException("Le type " + choice + " n'existe pas");
+        }
+
+        this.name = choiceItem.getName();
+        this.description = choiceItem.getDescription();
         this.isSelected = false;
+        this.color = choiceItem.getBackgroundColor();
     }
 
     public String getName() {
         return name;
     }
 
-    public String getDescritpion() {
-        return descritpion;
+    public String getDescription() {
+        return description;
+    }
+
+    public int getBackgroundColor() {
+        return color;
     }
 
     public CharSequence toCharSequence(){
@@ -36,7 +69,7 @@ public class DataItem {
     public Map<String, String> getMap(){
         Map<String, String> itemMap = new HashMap<>();
         itemMap.put(KEY_NAME, name);
-        itemMap.put(KEY_DESCRIPTION, descritpion);
+        itemMap.put(KEY_DESCRIPTION, description);
         itemMap.put(KEY_IS_SELECTED, String.valueOf(isSelected));
         return itemMap;
     }

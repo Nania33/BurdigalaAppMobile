@@ -2,6 +2,7 @@ package com.enseirb.gl.burdigalaapp.presenter.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,14 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.business.GardenBusiness;
+import com.enseirb.gl.burdigalaapp.business.IGardenBusiness;
+import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
+import com.enseirb.gl.burdigalaapp.model.Garden;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.dummy.DummyContent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -25,7 +33,11 @@ import com.enseirb.gl.burdigalaapp.presenter.fragment.dummy.DummyContent;
  * interface.
  */
 public class PointListFragment extends android.support.v4.app.Fragment implements AbsListView.OnItemClickListener {
+    private static final String TAG = "PointListFragment";
+
     private Button btnReturnToMap;
+    private IGardenBusiness gardenBusiness;
+    private List<Garden> gardenList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +51,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     private OnFragmentInteractionListener mListener;
 
     private AbsListView mListView;
-    private ListAdapter mAdapter;
+    private ArrayAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     public static PointListFragment newInstance(String param1, String param2) {
@@ -67,9 +79,12 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        initializeBusiness();
+        gardenList = new ArrayList<>();
+        retrieveGardenPlaces();
+
+        mAdapter = new ArrayAdapter<Garden>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, gardenList);
     }
 
     @Override
@@ -149,6 +164,29 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         // TODO: Update argument type and name
         public void onListItemClick(String id);
         public void onButtonReturnToMapClick();
+    }
+
+    private void initializeBusiness(){
+        gardenBusiness = new GardenBusiness();
+    }
+
+    private void retrieveGardenPlaces(){
+        Log.d(TAG, "[retrieveGardenPlaces()] - start");
+        gardenBusiness.retrieveGardenPlaces(new IGardenBusinessListener() {
+            @Override
+            public void onSuccess(List<Garden> garden) {
+                for (Garden grd : garden)
+                    Log.d(TAG, grd.toString());
+                gardenList.addAll(garden);
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String message) {
+                //TODO afficher boite de dialogue avec message
+            }
+        });
+        Log.d(TAG, "[retrieveGardenPlaces()] - end");
     }
 
 }
