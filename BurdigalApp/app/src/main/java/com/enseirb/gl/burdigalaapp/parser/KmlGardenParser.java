@@ -17,8 +17,8 @@ import java.util.Map;
  * Created by alraffin on 24/11/15.
  */
 public class KmlGardenParser {
-
     private static final String TAG = "KmlGardenParser";
+
 
     public static ArrayList<GardenDTO> parse(String allFile) {
         Log.d(TAG, "[GardenParser] - parse start");
@@ -53,6 +53,7 @@ public class KmlGardenParser {
                 String gestionType = parcDescription.get("Type de gestion").toString();
                 String label = parcDescription.get("Labellisation").toString();
                 gardens.add(new GardenDTO(name, type, use, gestionType, label, new PointS(x, y)));
+                // TODO factoriser dans une fonction parseNode + GardenDTOContainer.add plutot que gardenList.add
             }
         }
         Log.d(TAG, "[GardenParser] - parse end");

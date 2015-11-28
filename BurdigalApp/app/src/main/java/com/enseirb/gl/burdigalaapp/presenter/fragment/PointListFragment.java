@@ -18,7 +18,6 @@ import com.enseirb.gl.burdigalaapp.business.GardenBusiness;
 import com.enseirb.gl.burdigalaapp.business.IGardenBusiness;
 import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
 import com.enseirb.gl.burdigalaapp.model.Garden;
-import com.enseirb.gl.burdigalaapp.presenter.fragment.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
