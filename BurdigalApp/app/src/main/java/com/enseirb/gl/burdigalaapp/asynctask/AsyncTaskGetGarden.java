@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
+import com.enseirb.gl.burdigalaapp.parser.KmlGardenParser;
 import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
 import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
 import com.enseirb.gl.burdigalaapp.web.http.response.WebResponse;
@@ -36,12 +37,11 @@ public class AsyncTaskGetGarden extends AsyncTask<String, Void, Void> {
         List<GardenDTO> gardenDTO = new ArrayList<>();
 
         try {
-            gardenDTO.addAll(getGardenTask());
+            gardenDTO.addAll(startGetGardenTask());
             if (gardenDTO.isEmpty())
                 Log.d(TAG, "Résultat vide");
             else {
-                for (GardenDTO dto : gardenDTO)
-                    Log.d(TAG, dto.toString());
+                Log.d(TAG, "Has data");
             }
             listener.onSuccess(gardenDTO);
         } catch (Exception e){
@@ -55,23 +55,25 @@ public class AsyncTaskGetGarden extends AsyncTask<String, Void, Void> {
 
     }
 
-    private GardenDTO startGetGardenTask(){
+    private List<GardenDTO> startGetGardenTask(){
         Log.d(TAG, "[startGetWeatherTask] start");
         HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.PARCJARDIN);
         WebResponse response = request.executeRequest();
-        //GardenDTO dto = new KMLGardenParser().parse(webResponse.getData());
-        return null;
+        List<GardenDTO> dtoList = KmlGardenParser.parse(response.getData());
+        Log.d(TAG, "[startGetWeatherTask] end");
+        return dtoList;
     }
 
     private List<GardenDTO> getGardenTask() {
-        // TODO Faire une HTTPWebRequest + parsing
+        /*// TODO Faire une HTTPWebRequest + parsing
         Log.d(TAG, "[startGetWeatherTask] start");
         List<GardenDTO> gardenDTOList = new ArrayList<>(Arrays.asList(
                 new GardenDTO("Point1", new LatLng(-51, 159)),
                 new GardenDTO("Point2", new LatLng(-60, 180)),
                 new GardenDTO("Point3", new LatLng(-40, 140))
         ));
-        return gardenDTOList;
+        return gardenDTOList;*/
+        return  null;
     }
 
 }

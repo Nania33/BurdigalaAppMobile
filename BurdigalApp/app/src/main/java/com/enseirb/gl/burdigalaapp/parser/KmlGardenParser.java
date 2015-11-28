@@ -1,6 +1,8 @@
 package com.enseirb.gl.burdigalaapp.parser;
 
 
+import android.util.Log;
+
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
 import com.enseirb.gl.burdigalaapp.dto.PointS;
 import org.w3c.dom.Document;
@@ -15,8 +17,11 @@ import java.util.Map;
  * Created by alraffin on 24/11/15.
  */
 public class KmlGardenParser {
-    public static ArrayList<GardenDTO> parse(String allFile) {
 
+    private static final String TAG = "KmlGardenParser";
+
+    public static ArrayList<GardenDTO> parse(String allFile) {
+        Log.d(TAG, "[GardenParser] - parse start");
         String CDATA = null;
         Document doc = CommonParser.createDocument(allFile);
         ArrayList<GardenDTO> gardens = null;
@@ -50,6 +55,7 @@ public class KmlGardenParser {
                 gardens.add(new GardenDTO(name, type, use, gestionType, label, new PointS(x, y)));
             }
         }
+        Log.d(TAG, "[GardenParser] - parse end");
         return gardens;
     }
 }
