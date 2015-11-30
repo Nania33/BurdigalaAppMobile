@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Nania on 23/11/2015.
  */
-public interface IModelContainer {
+public interface IModelContainer<T extends Model> {
     public IModelContainer getSubContainer (Filter filter);
-    public List<Model> getModels();
+    public List<T> getModels();
 }

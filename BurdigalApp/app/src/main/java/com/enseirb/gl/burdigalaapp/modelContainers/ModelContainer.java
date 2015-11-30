@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Alex on 11/29/2015.
  */
-public class ModelContainer implements IModelContainer {
+public class ModelContainer implements  {
     List<Model> gardens;
 
     public ModelContainer(List<Model> gardens){
@@ -20,7 +20,7 @@ public class ModelContainer implements IModelContainer {
     }
 
     public ModelContainer getSubContainer(Filter filter){
-        return filter.filterModels(gardens);
+        return filter.filterModels(this);
     }
 }
 
