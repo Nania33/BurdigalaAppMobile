@@ -18,7 +18,6 @@ import com.enseirb.gl.burdigalaapp.business.GardenBusiness;
 import com.enseirb.gl.burdigalaapp.business.IGardenBusiness;
 import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
 import com.enseirb.gl.burdigalaapp.model.Garden;
-import com.enseirb.gl.burdigalaapp.presenter.fragment.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +132,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onListItemClick(DummyContent.ITEMS.get(position).id);
+            mListener.onListItemClick(gardenList.get(position).toString());
         }
     }
 
@@ -175,10 +174,13 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         gardenBusiness.retrieveGardenPlaces(new IGardenBusinessListener() {
             @Override
             public void onSuccess(List<Garden> garden) {
-                for (Garden grd : garden)
-                    Log.d(TAG, grd.toString());
                 gardenList.addAll(garden);
-                mAdapter.notifyDataSetChanged();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
             }
 
             @Override

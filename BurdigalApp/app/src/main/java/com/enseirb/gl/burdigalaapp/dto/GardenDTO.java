@@ -1,58 +1,57 @@
 package com.enseirb.gl.burdigalaapp.dto;
 
-import com.google.android.gms.maps.model.LatLng;
-
 /**
  * Created by rchabot on 17/11/15.
  */
 public class GardenDTO {
-    private String Name;
-    private String ParcType;
-    private String Use;
-    private String GestionType;
-    private String Label;
-    private PointS Point;
+    private String name;
+    private String parcType;
+    private String use;
+    private String gestionType;
+    private String label;
+    private PointS point; // Utilisation d'un LatLng ?
 
     public GardenDTO(String name, String type, String use, String gestionType, String label, PointS point){
-        this.Name = name;
-        this.Point = point;
-        this.ParcType = type;
-        this.Use = use;
-        this.GestionType = gestionType;
-        this.Label = label;
+        this.name = name;
+        this.point = point;
+        this.parcType = type;
+        this.use = use;
+        this.gestionType = gestionType;
+        this.label = label;
     }
 
     @Override
     public String toString(){
-        return  "Name: " + Name + "\n" +
-                Point.toString() +
-                "Parc Type: " + ParcType + "\n" +
-                "Use:" + Use + "\n" +
-                "Gestion Type: " + GestionType + "\n" +
-                "Label: " + Label + "\n\n";
-    }
-}
-/*
-alraffin @rchabot j'ai commenté ton code pour pouvoir commit. Faut voir ce qu'on garde
-    private String name;
-    private LatLng coords;
-
-    public GardenDTO(String name, LatLng coords) {
-        this.name = name;
-        this.coords = coords;
+        return  "name: " + name + "\n" +
+                point.toString() +
+                "Parc Type: " + parcType + "\n" +
+                "use:" + use + "\n" +
+                "Gestion Type: " + gestionType + "\n" +
+                "label: " + label + "\n\n";
     }
 
     public String getName() {
         return name;
     }
 
-    public LatLng getCoords() {
-        return coords;
+    public String getParcType() {
+        return parcType;
     }
 
-    @Override
-    public String toString() {
-        return name + " " + coords.toString();
+    public String getUse() {
+        return use;
+    }
+
+    public String getGestionType() {
+        return gestionType;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public PointS getPoint() {
+        return point;
     }
 }
-*/
+

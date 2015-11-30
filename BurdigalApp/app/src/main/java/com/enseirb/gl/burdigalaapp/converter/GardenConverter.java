@@ -47,7 +47,8 @@ public class GardenConverter implements IGardenConverter {
 
     @Override
     public Garden convert(GardenDTO gardenDTO) {
-        return new Garden(gardenDTO.getName(), gardenDTO.getCoords());
+        return new Garden(gardenDTO.getName(), gardenDTO.getParcType(), gardenDTO.getUse(), gardenDTO.getGestionType(),
+                gardenDTO.getLabel(), gardenDTO.getPoint());
     }
 
     public List<Garden> convertToList(List<GardenDTO> dtoList) {

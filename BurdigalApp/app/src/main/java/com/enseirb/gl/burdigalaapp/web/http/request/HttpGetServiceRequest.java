@@ -24,6 +24,7 @@ public class HttpGetServiceRequest implements HttpRequest {
     private static final int TIMEOUT = 2 * 1000; // Milliseconds
 
     private URL url;
+    private HttpURLConnection connection;
 
     public HttpGetServiceRequest(TypeOfService service) {
         try {
@@ -33,29 +34,28 @@ public class HttpGetServiceRequest implements HttpRequest {
         }
     }
 
-
     @Override
     public WebResponse executeRequest() {
-        Log.d(TAG, "[request] start - " + url);
+        Log.d(TAG, "[executeRequest] -  start" + url);
         InputStream is = null;
         WebResponse webResponse = new WebResponse(WebResponse.NO_DATA);
         try {
-            is = connectTo(this.url);
+            is = connectTo(url);
             webResponse = new WebResponse(inputStreamToString(is));
         } catch (Exception e){
             e.printStackTrace();
-            webResponse = new WebResponse(WebResponse.NO_DATA);
         } finally {
             closeInputStream(is);
+            if (connection != null)
+                connection.disconnect();
+            Log.d(TAG, "[connectTo] - disconnected ");
         }
-        Log.d(TAG,"[request] end - " + webResponse);
+        Log.d(TAG,"[request] - end");
         return webResponse;
     }
 
     private InputStream connectTo(URL urlToParse) throws IOException {
-        Log.d(TAG, "[connectTo] start - " + urlToParse);
         InputStream is = null;
-        HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(TIMEOUT);
@@ -64,12 +64,10 @@ public class HttpGetServiceRequest implements HttpRequest {
             connection.setDoInput(true);
             connection.connect();
             is = connection.getInputStream();
-        }finally {
-            Log.d(TAG, "[connectTo] disconnect - " + urlToParse);
-            if (connection != null)
-                connection.disconnect();
+            Log.d(TAG, "[connectTo] - connected " + urlToParse);
+        } catch (Exception e){
+            e.printStackTrace();
         }
-        Log.d(TAG, "[connectTo] end - ");
         return is;
     }
 
@@ -86,8 +84,9 @@ public class HttpGetServiceRequest implements HttpRequest {
         StringBuilder jsonResponse = new StringBuilder();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
         String line;
-        while ((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null) {
             jsonResponse.append(line);
+        }
         return jsonResponse.toString();
     }
 }
