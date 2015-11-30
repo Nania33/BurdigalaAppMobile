@@ -3,8 +3,41 @@ package com.enseirb.gl.burdigalaapp.dto;
 /**
  * Created by Nania on 17/11/2015.
  */
-public class ParkingDTO {
-    public ParkingDTO(String name, String numberOfSpots, String type, PointS pointS) {
 
+public class ParkingDTO{
+    private String name;
+    private PointS point;
+    private String parkingSpotNumber;
+    private String parkingType;
+
+    public ParkingDTO(String name, String parkingSpotNumber, String parkingType, PointS point){
+        this.point = point;
+        this.name = name;
+        this.parkingSpotNumber = parkingSpotNumber;
+        this.parkingType = parkingType;
+    }
+
+    @Override
+    public String toString(){
+        return  "name: " + name + "\n" +
+                point.toString() +
+                "Parking Spot Number: " + parkingSpotNumber + "\n" +
+                "Parking Type: " + parkingType + "\n\n";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public PointS getPoint() {
+        return point;
+    }
+
+    public String getParkingSpotNumber() {
+        return parkingSpotNumber;
+    }
+
+    public String getParkingType() {
+        return parkingType;
     }
 }

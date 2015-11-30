@@ -1,4 +1,4 @@
-package com.enseirb.gl.burdigalaapp.Florian;
+package com.enseirb.gl.burdigalaapp.florian;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -8,6 +8,7 @@ import com.enseirb.gl.burdigalaapp.dao.OpenDataGardenDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
 import com.enseirb.gl.burdigalaapp.model.Garden;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class GardenConverter implements IGardenConverter {
     @Override
     public Garden convert(GardenDTO gardenDTO) {
         return new Garden(gardenDTO.getName(), gardenDTO.getParcType(), gardenDTO.getUse(), gardenDTO.getGestionType(),
-                gardenDTO.getLabel(), gardenDTO.getPoint());
+                gardenDTO.getLabel(), gardenDTO.getPoint().toLatLng());
     }
 
     public List<Garden> convertToList(List<GardenDTO> dtoList) {

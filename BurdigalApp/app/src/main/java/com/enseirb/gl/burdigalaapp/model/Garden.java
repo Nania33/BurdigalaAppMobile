@@ -12,9 +12,9 @@ public class Garden implements Model {
     private String use;
     private String gestionType;
     private String label;
-    private PointS point; // Utilisation d'un LatLng ?
+    private LatLng point;
 
-    public Garden(String name, String type, String use, String gestionType, String label, PointS point){
+    public Garden(String name, String type, String use, String gestionType, String label, LatLng point){
         this.name = name;
         this.point = point;
         this.parcType = type;
@@ -26,15 +26,34 @@ public class Garden implements Model {
     @Override
     public String toString(){
         return  "name: " + name + "\n" +
-                point.toString();
-                //"Parc Type: " + parcType + "\n" +
-                //"use:" + use + "\n" +
-                //"Gestion Type: " + gestionType + "\n" +
-                //"label: " + label + "\n\n";
+                point.toString() +
+                "Parc Type: " + parcType + "\n" +
+                "use:" + use + "\n" +
+                "Gestion Type: " + gestionType + "\n" +
+                "label: " + label + "\n\n";
     }
 
-    @Override
-    public LatLng getPosition(){
-        return coords;
+    public String getParcType() {
+        return parcType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUse() {
+        return use;
+    }
+
+    public String getGestionType() {
+        return gestionType;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public LatLng getPoint() {
+        return point;
     }
 }
