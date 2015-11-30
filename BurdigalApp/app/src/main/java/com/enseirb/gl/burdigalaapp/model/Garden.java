@@ -33,12 +33,12 @@ public class Garden implements Model {
                 "label: " + label + "\n\n";
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getParcType() {
         return parcType;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getUse() {
@@ -53,5 +53,7 @@ public class Garden implements Model {
         return label;
     }
 
-    public LatLng getPosition(){return null;}
+    public LatLng getPoint() {
+        return point;
+    }
 }

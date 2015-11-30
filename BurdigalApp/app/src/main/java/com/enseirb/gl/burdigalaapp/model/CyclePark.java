@@ -1,26 +1,37 @@
 package com.enseirb.gl.burdigalaapp.model;
 
-import com.enseirb.gl.burdigalaapp.dto.PointS;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Nania on 17/11/2015.
  */
 public class CyclePark{
-    private PointS Point;
-    private String FixationType;
-    private String ParkingSpotNumber;
+    private LatLng point;
+    private String fixationType;
+    private String parkingSpotNumber;
 
-    public CyclePark(String fixationType, String parkingSpotNumber, PointS point){
-        this.Point = point;
-        this.FixationType = fixationType;
-        this.ParkingSpotNumber = parkingSpotNumber;
+    public CyclePark(String fixationType, String parkingSpotNumber, LatLng point){
+        this.point = point;
+        this.fixationType = fixationType;
+        this.parkingSpotNumber = parkingSpotNumber;
     }
 
     @Override
     public String toString(){
-        return  Point.toString() +
-                "Fixation Type: " + FixationType + "\n" +
-                "Parking Spot Number: " + ParkingSpotNumber + "\n\n";
+        return  point.toString() +
+                "Fixation Type: " + fixationType + "\n" +
+                "Parking Spot Number: " + parkingSpotNumber + "\n\n";
+    }
+
+    public String getFixationType() {
+        return fixationType;
+    }
+
+    public LatLng getPoint() {
+        return point;
+    }
+
+    public String getParkingSpotNumber() {
+        return parkingSpotNumber;
     }
 }
