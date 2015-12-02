@@ -1,7 +1,7 @@
-package com.enseirb.gl.burdigalaapp.modelContainers;
+package com.enseirb.gl.burdigalaapp.model.container;
 
 import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.model.Toilet;
+import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 
 import java.util.List;
 

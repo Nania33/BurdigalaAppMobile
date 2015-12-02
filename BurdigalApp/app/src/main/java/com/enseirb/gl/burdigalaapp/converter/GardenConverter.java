@@ -7,8 +7,7 @@ import com.enseirb.gl.burdigalaapp.dao.IGardenDAO;
 import com.enseirb.gl.burdigalaapp.dao.OpenDataGardenDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
-import com.enseirb.gl.burdigalaapp.model.Garden;
-import com.google.android.gms.maps.model.LatLng;
+import com.enseirb.gl.burdigalaapp.model.data.Garden;
 
 import java.util.ArrayList;
 import java.util.List;

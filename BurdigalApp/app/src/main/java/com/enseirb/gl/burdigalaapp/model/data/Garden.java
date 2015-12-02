@@ -1,6 +1,5 @@
-package com.enseirb.gl.burdigalaapp.model;
+package com.enseirb.gl.burdigalaapp.model.data;
 
-import com.enseirb.gl.burdigalaapp.dto.PointS;
 import com.google.android.gms.maps.model.LatLng;
 
 /**

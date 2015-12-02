@@ -1,4 +1,4 @@
-package com.enseirb.gl.burdigalaapp.model;
+package com.enseirb.gl.burdigalaapp.model.data;
 
 import com.google.android.gms.maps.model.LatLng;
 

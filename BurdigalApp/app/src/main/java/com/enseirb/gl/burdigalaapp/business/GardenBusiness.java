@@ -6,8 +6,7 @@ import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
 import com.enseirb.gl.burdigalaapp.converter.GardenConverter;
 import com.enseirb.gl.burdigalaapp.converter.IGardenConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IGardenConverterListener;
-import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
-import com.enseirb.gl.burdigalaapp.model.Garden;
+import com.enseirb.gl.burdigalaapp.model.data.Garden;
 
 import java.util.List;
 

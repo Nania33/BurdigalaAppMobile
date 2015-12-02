@@ -1,17 +1,9 @@
 package com.enseirb.gl.burdigalaapp.filters;
 
-import com.enseirb.gl.burdigalaapp.model.CyclePark;
-import com.enseirb.gl.burdigalaapp.model.Model;
-import com.enseirb.gl.burdigalaapp.model.Parking;
-import com.enseirb.gl.burdigalaapp.model.Toilet;
-import com.enseirb.gl.burdigalaapp.modelContainers.CycleParkContainer;
-import com.enseirb.gl.burdigalaapp.modelContainers.GardenContainer;
-import com.enseirb.gl.burdigalaapp.modelContainers.IModelContainer;
-import com.enseirb.gl.burdigalaapp.modelContainers.ModelContainer;
-import com.enseirb.gl.burdigalaapp.modelContainers.ParkingContainer;
-import com.enseirb.gl.burdigalaapp.modelContainers.ToiletContainer;
-
-import java.util.List;
+import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
+import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
+import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
+import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 
 /**
  * Created by Nania on 23/11/2015.
