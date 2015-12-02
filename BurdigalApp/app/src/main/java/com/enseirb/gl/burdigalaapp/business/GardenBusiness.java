@@ -23,15 +23,15 @@ public class GardenBusiness implements IGardenBusiness {
 
     @Override
     public void retrieveGardenPlaces(final IGardenBusinessListener listener) {
-        Log.d(TAG, "[retrieveGardenPlaces()] - start");
+        Log.d(TAG, "[retrievePlaces()] - start");
         gardenConverter.retrieveGardenPlaces(new IGardenConverterListener() {
             @Override
             public void onSuccess(List<Garden> garden) {
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - start");
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
                 for (Garden grd : garden)
                     Log.d(TAG, grd.toString());
                 listener.onSuccess(garden);
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - end");
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
             @Override

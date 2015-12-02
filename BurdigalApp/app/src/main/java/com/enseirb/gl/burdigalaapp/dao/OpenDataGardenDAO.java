@@ -13,10 +13,10 @@ public class OpenDataGardenDAO implements IGardenDAO {
 
     @Override
     public void retrieveGardenPlaces(final IGardenDAOListener listener) {
-        Log.d(TAG, "[retrieveGardenPlaces()] - start");
+        Log.d(TAG, "[retrievePlaces()] - start");
         AsyncTaskGetGarden asyncTaskGetGarden = new AsyncTaskGetGarden(listener);
         asyncTaskGetGarden.execute();
-        Log.d(TAG, "[retrieveGardenPlaces()] - end");
+        Log.d(TAG, "[retrievePlaces()] - end");
     }
 
 

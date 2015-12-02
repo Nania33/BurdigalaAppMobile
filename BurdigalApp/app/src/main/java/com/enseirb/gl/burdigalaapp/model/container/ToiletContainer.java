@@ -2,7 +2,9 @@ package com.enseirb.gl.burdigalaapp.model.container;
 
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +12,10 @@ import java.util.List;
  */
 public class ToiletContainer implements IModelContainer {
     private List<Toilet> toilets;
+
+    public ToiletContainer(){
+        toilets = new ArrayList<>();
+    }
 
     public ToiletContainer(List<Toilet> toilets){
         this.toilets = toilets;
@@ -23,5 +29,15 @@ public class ToiletContainer implements IModelContainer {
     @Override
     public List getModels() {
         return toilets;
+    }
+
+    @Override
+    public void put(List data) {
+
+    }
+
+    @Override
+    public void retrievePlaces(OpenDataRetriever retriever) {
+
     }
 }

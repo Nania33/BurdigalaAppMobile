@@ -80,7 +80,6 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
 
         initializeBusiness();
         gardenList = new ArrayList<>();
-        retrieveGardenPlaces();
 
         mAdapter = new ArrayAdapter<Garden>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, gardenList);
@@ -167,28 +166,6 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
 
     private void initializeBusiness(){
         gardenBusiness = new GardenBusiness();
-    }
-
-    private void retrieveGardenPlaces(){
-        Log.d(TAG, "[retrieveGardenPlaces()] - start");
-        gardenBusiness.retrieveGardenPlaces(new IGardenBusinessListener() {
-            @Override
-            public void onSuccess(List<Garden> garden) {
-                gardenList.addAll(garden);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-
-            @Override
-            public void onError(String message) {
-                //TODO afficher boite de dialogue avec message
-            }
-        });
-        Log.d(TAG, "[retrieveGardenPlaces()] - end");
     }
 
 }

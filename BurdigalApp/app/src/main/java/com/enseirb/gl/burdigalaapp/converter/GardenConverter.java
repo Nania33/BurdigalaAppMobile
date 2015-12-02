@@ -26,15 +26,15 @@ public class GardenConverter implements IGardenConverter {
 
     @Override
     public void retrieveGardenPlaces(final IGardenConverterListener listener) {
-        Log.d(TAG, "[retrieveGardenPlaces()] - start");
+        Log.d(TAG, "[retrievePlaces()] - start");
         gardenDAO.retrieveGardenPlaces(new IGardenDAOListener() {
             @Override
             public void onSuccess(List<GardenDTO> gardenDTO) {
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - start");
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
                 for (GardenDTO dto : gardenDTO)
                     Log.d(TAG, dto.toString());
                 listener.onSuccess(convertToList(gardenDTO));
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - end");
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
             @Override
@@ -42,7 +42,7 @@ public class GardenConverter implements IGardenConverter {
                 listener.onError(message);
             }
         });
-        Log.d(TAG, "[retrieveGardenPlaces()] - end");
+        Log.d(TAG, "[retrievePlaces()] - end");
     }
 
     @Override

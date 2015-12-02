@@ -2,7 +2,9 @@ package com.enseirb.gl.burdigalaapp.model.container;
 
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +12,10 @@ import java.util.List;
  */
 public class ParkingContainer implements IModelContainer{
     private List<Parking> parkings;
+
+    public ParkingContainer(){
+        parkings = new ArrayList<>();
+    }
 
     public ParkingContainer(List<Parking> parkings){
         this.parkings = parkings;
@@ -24,4 +30,15 @@ public class ParkingContainer implements IModelContainer{
     public List getModels() {
         return parkings;
     }
+
+    @Override
+    public void put(List data) {
+
+    }
+
+    @Override
+    public void retrievePlaces(OpenDataRetriever retriever) {
+
+    }
+
 }

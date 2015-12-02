@@ -3,17 +3,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
-import com.enseirb.gl.burdigalaapp.presenter.item.DataItem;
+import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,11 +23,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         PointListFragment.OnFragmentInteractionListener,
         PointDetailFragment.OnFragmentInteractionListener {
+
+    private static final String LIST_OF_SERVICES = "list_of_services";
+    private static final String TAG = "MapsActivity";
 
     private GoogleMap mMap;
     private Button btnShowList;
@@ -34,6 +37,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PointDetailFragment detailFragment;
     private PointListFragment listFragment;
     private SupportMapFragment mapFragment;
+
+    private ServiceManager serviceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         detailFragment = PointDetailFragment.newInstance("param1");
         listFragment = PointListFragment.newInstance("param1", "param2");
         mapFragment = SupportMapFragment.newInstance();
+
+        initializeServiceManager();
 
         if (findViewById(R.id.fragment_container_map) != null && findViewById(R.id.fragment_container) != null) {
             // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -77,6 +84,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ft.add(R.id.fragment_container, listFragment);
         mapFragment.getMapAsync(this);
         ft.commit();
+    }
+
+    private void initializeServiceManager(){
+        Intent intent = getIntent();
+        ArrayList<Service> listOfServices = intent.getParcelableArrayListExtra(LIST_OF_SERVICES);
+        serviceManager = new ServiceManager();
+        for (Service service : listOfServices) {
+            Log.d(TAG, service.toString() + " " + service.getType());
+        }
+        serviceManager.initializeServices(listOfServices);
     }
 
     private void putFragmentInContainer(Fragment fragment, int fragment_container) {
@@ -129,19 +146,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public static Intent getIntent(Context ctx, List<DataItem> itemsToDisplay){
+    public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){
         Intent i = new Intent(ctx, MapsActivity.class);
-        i.putCharSequenceArrayListExtra("items", getCharSequences(itemsToDisplay));
+        i.putParcelableArrayListExtra(LIST_OF_SERVICES, itemsToDisplay);
         return i;
     }
 
-    @NonNull
-    private static ArrayList<CharSequence> getCharSequences(List<DataItem> itemsToDisplay) {
-        ArrayList<CharSequence> list = new ArrayList<>();
-        for (DataItem item : itemsToDisplay)
-            list.add(item.toCharSequence());
-        return list;
-    }
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
