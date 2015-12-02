@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.enseirb.gl.burdigalaapp.presenter.fragment.PointDetailFragment">
+    tools:context=".presenter.fragment.detail.PointDetailFragment">
 
     <TextView
         android:id="@+id/tv_view"

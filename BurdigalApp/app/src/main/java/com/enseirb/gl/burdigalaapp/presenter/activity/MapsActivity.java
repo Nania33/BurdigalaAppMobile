@@ -11,8 +11,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.enseirb.gl.burdigalaapp.R;
-import com.enseirb.gl.burdigalaapp.presenter.fragment.PointDetailFragment;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
+import com.enseirb.gl.burdigalaapp.presenter.service.ChoiceFactory;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,7 +48,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         detailFragment = PointDetailFragment.newInstance("param1");
-        listFragment = PointListFragment.newInstance("param1", "param2");
+        listFragment = PointListFragment.newInstance(ChoiceFactory.makeGarden());
         mapFragment = SupportMapFragment.newInstance();
 
         initializeServiceManager();

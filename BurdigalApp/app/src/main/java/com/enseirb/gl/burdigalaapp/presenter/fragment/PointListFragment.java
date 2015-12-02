@@ -2,6 +2,7 @@ package com.enseirb.gl.burdigalaapp.presenter.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,12 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
-import com.enseirb.gl.burdigalaapp.business.GardenBusiness;
-import com.enseirb.gl.burdigalaapp.business.IGardenBusiness;
-import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
-import com.enseirb.gl.burdigalaapp.model.data.Garden;
+import com.enseirb.gl.burdigalaapp.model.data.Model;
+import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
+import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,29 +36,21 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     private static final String TAG = "PointListFragment";
 
     private Button btnReturnToMap;
-    private IGardenBusiness gardenBusiness;
-    private List<Garden> gardenList;
+    private List<Model> modelList;
+    private Service service;
+    private ServiceManager serviceManager;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String ARG_SERVICE = "service";
 
     private OnFragmentInteractionListener mListener;
 
     private AbsListView mListView;
     private ArrayAdapter mAdapter;
 
-    // TODO: Rename and change types of parameters
-    public static PointListFragment newInstance(String param1, String param2) {
+    public static PointListFragment newInstance(Service service) {
         PointListFragment fragment = new PointListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_SERVICE, service);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,15 +67,19 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            service = getArguments().getParcelable(ARG_SERVICE);
+            service.select();
         }
 
-        initializeBusiness();
-        gardenList = new ArrayList<>();
-
-        mAdapter = new ArrayAdapter<Garden>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, gardenList);
+        serviceManager = new ServiceManager();
+        ArrayList<Service> services = new ArrayList<Service>();
+        services.add(service);
+        serviceManager.initializeServices(services);
+        while (serviceManager.getContainer(service).getModels().size() == 0){}
+        modelList = new ArrayList<>((ArrayList<Model>) serviceManager.getContainer(service).getModels());
+        Log.d(TAG, "taille: " + modelList.size());
+        mAdapter = new ArrayAdapter<Model>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, modelList);
     }
 
     @Override
@@ -131,7 +128,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onListItemClick(gardenList.get(position).toString());
+            mListener.onListItemClick(modelList.get(position).toString());
         }
     }
 
@@ -162,10 +159,6 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         // TODO: Update argument type and name
         public void onListItemClick(String id);
         public void onButtonReturnToMapClick();
-    }
-
-    private void initializeBusiness(){
-        gardenBusiness = new GardenBusiness();
     }
 
 }

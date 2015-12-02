@@ -31,8 +31,6 @@ public class GardenConverter implements IGardenConverter {
             @Override
             public void onSuccess(List<GardenDTO> gardenDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                for (GardenDTO dto : gardenDTO)
-                    Log.d(TAG, dto.toString());
                 listener.onSuccess(convertToList(gardenDTO));
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }

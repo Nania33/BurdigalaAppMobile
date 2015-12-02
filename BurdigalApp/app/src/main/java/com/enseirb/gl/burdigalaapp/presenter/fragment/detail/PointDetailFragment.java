@@ -1,4 +1,4 @@
-package com.enseirb.gl.burdigalaapp.presenter.fragment;
+package com.enseirb.gl.burdigalaapp.presenter.fragment.detail;
 
 import android.app.Activity;
 import android.net.Uri;

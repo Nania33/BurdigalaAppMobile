@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
+import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 public class ServiceManager {
     private static final String TAG = "ServiceManager";
 
+    // TODO utilisé une map de container plutôt pour pouvoir en ajouter ?
+    // Clé service, value container ?
     public CycleParkContainer cycleParkContainer;
     public GardenContainer gardenContainer;
     public ParkingContainer parkingContainer;
@@ -57,6 +60,21 @@ public class ServiceManager {
         Log.d(TAG, "gardenPark size :" + gardenContainer.getModels().size());
     }
 
+    public IModelContainer getContainer(Service service){
+        Log.d(TAG, "getContainer() "+service.getType().toString());
+        switch (service.getType()){
+            case TOILET:
+                return toiletContainer;
+            case PARKING:
+                return parkingContainer;
+            case CYCLEPARK:
+                return cycleParkContainer;
+            case GARDEN:
+                return gardenContainer;
+            default:
+                return null;
+        }
+    }
 
 
 }
