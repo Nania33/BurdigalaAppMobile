@@ -110,4 +110,20 @@ public class Service implements Parcelable {
         dest.writeInt(color);
         dest.writeString(type.toString());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Service service = (Service) o;
+
+        return type == service.type;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return type.hashCode();
+    }
 }

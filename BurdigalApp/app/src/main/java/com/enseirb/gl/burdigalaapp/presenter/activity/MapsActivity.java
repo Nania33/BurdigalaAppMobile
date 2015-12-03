@@ -11,9 +11,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
-import com.enseirb.gl.burdigalaapp.presenter.service.ChoiceFactory;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         PointListFragment.OnFragmentInteractionListener,
@@ -48,7 +50,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         detailFragment = PointDetailFragment.newInstance("param1");
-        listFragment = PointListFragment.newInstance(ChoiceFactory.makeGarden());
+        listFragment = PointListFragment.newInstance(ServiceFactory.makeGarden());
         mapFragment = SupportMapFragment.newInstance();
 
         initializeServiceManager();
@@ -90,11 +92,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void initializeServiceManager(){
         Intent intent = getIntent();
         ArrayList<Service> listOfServices = intent.getParcelableArrayListExtra(LIST_OF_SERVICES);
-        serviceManager = new ServiceManager();
+        serviceManager = new ServiceManager(listOfServices);
         for (Service service : listOfServices) {
             Log.d(TAG, service.toString() + " " + service.getType());
         }
-        serviceManager.initializeServices(listOfServices);
+        serviceManager.initializeServices();
     }
 
     private void putFragmentInContainer(Fragment fragment, int fragment_container) {
@@ -134,6 +136,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onButtonReturnToMapClick() {
         onBackPressed();
         btnShowList.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public List<Model> getDataListToDisplay(Service service) {
+        return serviceManager.getContainer(service).getModels();
     }
 
     @Override

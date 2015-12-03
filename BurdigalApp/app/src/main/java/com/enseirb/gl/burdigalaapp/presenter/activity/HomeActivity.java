@@ -13,7 +13,7 @@ import android.widget.ListAdapter;
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.presenter.adapter.SelectMultipleItemsAdapter;
-import com.enseirb.gl.burdigalaapp.presenter.service.ChoiceFactory;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
@@ -58,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
         mItemsToDiplay = new ArrayList<>();
         for (ServiceType choice : ServiceType.values()) {
             try {
-                mItemsToDiplay.add(ChoiceFactory.makeChoice(choice));
+                mItemsToDiplay.add(ServiceFactory.makeChoice(choice));
             } catch (UnknownDataException ex) {
                 System.out.println("Erreur de type : " + ex.getMessage());
                 ex.printStackTrace();

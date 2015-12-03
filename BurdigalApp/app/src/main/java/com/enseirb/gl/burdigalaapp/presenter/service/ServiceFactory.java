@@ -6,7 +6,7 @@ import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 /**
  * Created by rchabot on 02/12/15.
  */
-public class ChoiceFactory {
+public class ServiceFactory {
     public static Service makeChoice(ServiceType type) throws UnknownDataException {
         switch (type){
             case TOILET:

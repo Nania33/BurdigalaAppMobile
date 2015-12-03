@@ -16,11 +16,9 @@ import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
-import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,13 +32,11 @@ import java.util.List;
  */
 public class PointListFragment extends android.support.v4.app.Fragment implements AbsListView.OnItemClickListener {
     private static final String TAG = "PointListFragment";
+    private static final String ARG_SERVICE = "service";
 
     private Button btnReturnToMap;
     private List<Model> modelList;
     private Service service;
-    private ServiceManager serviceManager;
-
-    private static final String ARG_SERVICE = "service";
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,13 +67,11 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
             service.select();
         }
 
-        serviceManager = new ServiceManager();
-        ArrayList<Service> services = new ArrayList<Service>();
-        services.add(service);
-        serviceManager.initializeServices(services);
-        while (serviceManager.getContainer(service).getModels().size() == 0){}
-        modelList = new ArrayList<>((ArrayList<Model>) serviceManager.getContainer(service).getModels());
-        Log.d(TAG, "taille: " + modelList.size());
+        if (mListener != null)
+            modelList = new ArrayList<>(mListener.getDataListToDisplay(service));
+        else
+            modelList = new ArrayList<>();
+
         mAdapter = new ArrayAdapter<Model>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, modelList);
     }
@@ -156,9 +150,9 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onListItemClick(String id);
         public void onButtonReturnToMapClick();
+        public List<Model> getDataListToDisplay(Service service);
     }
 
 }

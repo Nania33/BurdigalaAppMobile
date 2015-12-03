@@ -2,6 +2,7 @@ package com.enseirb.gl.burdigalaapp.presenter.manager;
 
 import android.util.Log;
 
+import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
@@ -10,8 +11,11 @@ import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
+import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by rchabot on 02/12/15.
@@ -19,62 +23,53 @@ import java.util.ArrayList;
 public class ServiceManager {
     private static final String TAG = "ServiceManager";
 
-    // TODO utilisé une map de container plutôt pour pouvoir en ajouter ?
-    // Clé service, value container ?
-    public CycleParkContainer cycleParkContainer;
-    public GardenContainer gardenContainer;
-    public ParkingContainer parkingContainer;
-    public ToiletContainer toiletContainer;
+    private Map<Service, IModelContainer> myServices;
 
-    public void initializeServices(ArrayList<Service> services){
+    public ServiceManager(ArrayList<Service> services){
+        myServices = new HashMap<>();
         for (Service service : services) {
-            if (service.isSelected()) {
-                if (service.getType().equals(ServiceType.CYCLEPARK)) {
-                    cycleParkContainer = new CycleParkContainer();
-                    cycleParkContainer.retrievePlaces(new WebRetriever());
-                    Log.d(TAG, "cyclePark initialized");
-                }
-                if (service.getType().equals(ServiceType.GARDEN)) {
-                    gardenContainer = new GardenContainer();
-                    gardenContainer.retrievePlaces(new WebRetriever());
-                    Log.d(TAG, "gardens initialized");
-                }
-                if (service.getType().equals(ServiceType.PARKING)) {
-                    parkingContainer = new ParkingContainer();
-                    parkingContainer.retrievePlaces(new WebRetriever());
-                    Log.d(TAG, "parking initialized");
-                }
-                if (service.getType().equals(ServiceType.TOILET)) {
-                    toiletContainer = new ToiletContainer();
-                    toiletContainer.retrievePlaces(new WebRetriever());
-                    Log.d(TAG, "toilets initialized");
-                }
+            try {
+                myServices.put(service, makeContainer(service.getType()));
+                Log.d(TAG, "New service : "+service);
+            } catch (UnknownDataException e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public void debug(){
-        Log.d(TAG, "cyclePark size :" + cycleParkContainer.getModels().size());
-        Log.d(TAG, "toilet size :" + toiletContainer.getModels().size());
-        Log.d(TAG, "parkingPark size :" + parkingContainer.getModels().size());
-        Log.d(TAG, "gardenPark size :" + gardenContainer.getModels().size());
-    }
-
-    public IModelContainer getContainer(Service service){
-        Log.d(TAG, "getContainer() "+service.getType().toString());
-        switch (service.getType()){
-            case TOILET:
-                return toiletContainer;
-            case PARKING:
-                return parkingContainer;
-            case CYCLEPARK:
-                return cycleParkContainer;
-            case GARDEN:
-                return gardenContainer;
-            default:
-                return null;
+    public void initializeServices(){
+        for (Service service : myServices.keySet()) {
+            if (service.isSelected()) {
+                IModelContainer container = myServices.get(service);
+                container.retrievePlaces(new WebRetriever());
+            }
         }
     }
 
+    public IModelContainer getContainer(Service service){
+        return myServices.get(service);
+    }
 
+
+    private static IModelContainer makeContainer(ServiceType type) throws UnknownDataException {
+        switch (type) {
+            case TOILET:
+                return new ToiletContainer();
+            case CYCLEPARK:
+                return new CycleParkContainer();
+            case GARDEN:
+                return new GardenContainer();
+            case PARKING:
+                return new ParkingContainer();
+            default:
+                throw new UnknownDataException("Type " + type + " inconnu");
+        }
+    }
+
+    public interface ServiceManagerListener {
+        void retrieveDataStart();
+        void retrieveDataEnd();
+        void onError(String message);
+        void onSucces();
+    }
 }
