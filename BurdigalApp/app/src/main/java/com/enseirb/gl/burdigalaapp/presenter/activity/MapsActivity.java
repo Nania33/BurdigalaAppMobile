@@ -39,8 +39,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button btnShowList;
 
     private PointDetailFragment detailFragment;
-    private PointListFragment listFragment;
+    private List<PointListFragment> listFragment = new ArrayList<>();
+    private int currentListFragment = 0;
+
     private SupportMapFragment mapFragment;
+
+    private ArrayList<Service> listOfServices = new ArrayList<>();
 
     private ServiceManager serviceManager;
 
@@ -49,9 +53,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
         detailFragment = PointDetailFragment.newInstance("param1");
-        listFragment = PointListFragment.newInstance(ServiceFactory.makeGarden());
+
+        listOfServices = getIntent().getParcelableArrayListExtra(LIST_OF_SERVICES);
+
+        for (Service service : listOfServices)
+            if (service.isSelected())
+                listFragment.add(PointListFragment.newInstance(service));
+
         mapFragment = SupportMapFragment.newInstance();
 
         initializeServiceManager();
@@ -70,7 +79,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                putFragmentInContainer(MapsActivity.this.listFragment, R.id.fragment_container);
+                putFragmentInContainer(MapsActivity.this.listFragment.get(currentListFragment), R.id.fragment_container);
                 btnShowList.setVisibility(View.GONE);
             }
         });
@@ -85,14 +94,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void initializeTablet() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container_map, mapFragment);
-        ft.add(R.id.fragment_container, listFragment);
+        ft.add(R.id.fragment_container, listFragment.get(currentListFragment));
         mapFragment.getMapAsync(this);
         ft.commit();
     }
 
     private void initializeServiceManager(){
         Intent intent = getIntent();
-        ArrayList<Service> listOfServices = intent.getParcelableArrayListExtra(LIST_OF_SERVICES);
         serviceManager = new ServiceManager(listOfServices);
         for (Service service : listOfServices) {
             Log.d(TAG, service.toString() + " " + service.getType());
@@ -145,6 +153,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    public void onNextPressed() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        if (currentListFragment == listFragment.size()-1)
+            currentListFragment = 0;
+        else
+            currentListFragment++;
+
+        ft.replace(R.id.fragment_container, listFragment.get(currentListFragment));
+        ft.commit();
+    }
+
+    @Override
+    public void onPreviousPressed() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        if (currentListFragment == 0)
+            currentListFragment = listFragment.size()-1;
+        else
+            currentListFragment--;
+
+        ft.replace(R.id.fragment_container, listFragment.get(currentListFragment));
+        ft.commit();
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
@@ -152,12 +186,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onButtonReturnClick() {
         onBackPressed();
-    }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        btnShowList.setVisibility(View.VISIBLE);
     }
 
     public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){

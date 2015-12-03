@@ -1,8 +1,8 @@
 package com.enseirb.gl.burdigalaapp.presenter.fragment;
 
 import android.app.Activity;
+import android.media.Image;
 import android.os.Bundle;
-import android.support.annotation.ArrayRes;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -35,6 +36,10 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     private static final String ARG_SERVICE = "service";
 
     private Button btnReturnToMap;
+    private ImageButton btnNext;
+    private ImageButton btnPrevious;
+    private TextView serviceName;
+
     private List<Model> modelList;
     private Service service;
 
@@ -44,6 +49,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     private ArrayAdapter mAdapter;
 
     public static PointListFragment newInstance(Service service) {
+        Log.d(TAG, "Nouvelle instance: Service " + service);
         PointListFragment fragment = new PointListFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_SERVICE, service);
@@ -64,7 +70,6 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
 
         if (getArguments() != null) {
             service = getArguments().getParcelable(ARG_SERVICE);
-            service.select();
         }
 
         if (mListener != null)
@@ -97,6 +102,25 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
                 }
             });
 
+        btnNext = (ImageButton) view.findViewById(R.id.btn_next);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                next();;
+            }
+        });
+
+        btnPrevious = (ImageButton) view.findViewById(R.id.btn_previous);
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                previous();
+            }
+        });
+
+        serviceName = (TextView) view.findViewById(R.id.service_name);
+        serviceName.setText(service.getName());
+
         return view;
     }
 
@@ -115,6 +139,18 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void next() {
+        if (mListener != null) {
+            mListener.onNextPressed();
+        }
+    }
+
+    public void previous() {
+        if (mListener != null) {
+            mListener.onPreviousPressed();
+        }
     }
 
     @Override
@@ -153,6 +189,10 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         public void onListItemClick(String id);
         public void onButtonReturnToMapClick();
         public List<Model> getDataListToDisplay(Service service);
+
+        void onNextPressed();
+
+        void onPreviousPressed();
     }
 
 }

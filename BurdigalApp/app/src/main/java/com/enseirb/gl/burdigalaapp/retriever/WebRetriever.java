@@ -3,7 +3,9 @@ package com.enseirb.gl.burdigalaapp.retriever;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.business.GardenBusiness;
+import com.enseirb.gl.burdigalaapp.business.ToiletBusiness;
 import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
+import com.enseirb.gl.burdigalaapp.business.listener.IToiletBusinessListener;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
@@ -45,8 +47,21 @@ public class WebRetriever implements OpenDataRetriever {
     }
 
     @Override
-    public void retrievePlaces(ToiletContainer container) {
+    public void retrievePlaces(final ToiletContainer container) {
+        ToiletBusiness toiletBusiness = new ToiletBusiness();
+        Log.d(TAG, "[retrievePlaces()] - start");
+        toiletBusiness.retrieveToiletPlaces(new IToiletBusinessListener() {
+            @Override
+            public void onSuccess(List<Toilet> toilet) {
+                container.put(toilet);
+            }
 
+            @Override
+            public void onError(String message) {
+                //TODO afficher boite de dialogue avec message
+            }
+        });
+        Log.d(TAG, "[retrievePlaces()] - end");
     }
 
     @Override

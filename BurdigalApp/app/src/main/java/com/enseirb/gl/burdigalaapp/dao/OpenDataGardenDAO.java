@@ -19,6 +19,4 @@ public class OpenDataGardenDAO implements IGardenDAO {
         Log.d(TAG, "[retrievePlaces()] - end");
     }
 
-
-
 }

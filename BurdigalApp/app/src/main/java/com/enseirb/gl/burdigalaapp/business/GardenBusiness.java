@@ -28,8 +28,6 @@ public class GardenBusiness implements IGardenBusiness {
             @Override
             public void onSuccess(List<Garden> garden) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                for (Garden grd : garden)
-                    Log.d(TAG, grd.toString());
                 listener.onSuccess(garden);
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }

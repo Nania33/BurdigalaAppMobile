@@ -11,7 +11,6 @@ import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +41,7 @@ public class ServiceManager {
             if (service.isSelected()) {
                 IModelContainer container = myServices.get(service);
                 container.retrievePlaces(new WebRetriever());
+                Log.d(TAG, "RetrieveData for service : " + service);
             }
         }
     }

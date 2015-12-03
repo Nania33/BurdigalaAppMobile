@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Alex on 11/30/2015.
  */
-public class CycleParkContainer implements IModelContainer {
+public class CycleParkContainer implements IModelContainer<CyclePark> {
     private List<CyclePark> cycleParks;
 
     public CycleParkContainer(){
@@ -32,12 +32,12 @@ public class CycleParkContainer implements IModelContainer {
     }
 
     @Override
-    public void put(List data) {
-
+    public void put(List<CyclePark> data) {
+        cycleParks.addAll(data);
     }
 
     @Override
     public void retrievePlaces(OpenDataRetriever retriever) {
-
+        retriever.retrievePlaces(this);
     }
 }
