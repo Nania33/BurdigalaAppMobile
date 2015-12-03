@@ -12,12 +12,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,6 +50,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private ServiceManager serviceManager;
 
+    private String type = "toilet";
+    private ServiceType serviceType = ServiceType.toServiceType(type);
+    private double longitude = -0.566741222966319;
+    private double latitude = 44.8384053932397;
+    private float zoom = 11.8f;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +69,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (service.isSelected())
                 listFragment.add(PointListFragment.newInstance(service));
 
+        //initializeServiceManager();
         mapFragment = SupportMapFragment.newInstance();
 
         initializeServiceManager();
@@ -115,6 +124,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ft.commit();
     }
 
+    public void displayPoints() throws UnknownDataException {
+        List<Model> listModels = getDataListToDisplay(ServiceFactory.makeChoice(serviceType));
+        for (int i = 0 ; i < listModels.size() ; i++){
+            LatLng point = listModels.get(i).getPoint();
+            mMap.addMarker(new MarkerOptions().position(point).title(type));
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -128,11 +144,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng reference = new LatLng(latitude, longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(reference));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
+        try {
+            displayPoints();
+        } catch (UnknownDataException e) {
+            System.out.println("Unknown type of service");
+            e.printStackTrace();
+        }
     }
 
 
