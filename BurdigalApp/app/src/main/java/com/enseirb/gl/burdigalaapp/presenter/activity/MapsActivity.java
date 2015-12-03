@@ -1,4 +1,5 @@
 package com.enseirb.gl.burdigalaapp.presenter.activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,11 +13,11 @@ import android.widget.Button;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
-import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
+import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -153,6 +154,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         onBackPressed();
     }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        btnShowList.setVisibility(View.VISIBLE);
+    }
 
     public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){
         Intent i = new Intent(ctx, MapsActivity.class);
