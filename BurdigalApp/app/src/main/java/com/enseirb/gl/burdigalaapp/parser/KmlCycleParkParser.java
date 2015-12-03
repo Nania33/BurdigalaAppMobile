@@ -43,8 +43,8 @@ public class KmlCycleParkParser {
 
                 String[] parts = coordinates.trim().split(",");
 
-                String x = parts[0];
-                String y = parts[1];
+                String x = parts[1];
+                String y = parts[0];
 
                 String type = parcDescription.get("Type de fixation").toString();
                 String spotNumber = parcDescription.get("Nombre").toString();

@@ -45,8 +45,8 @@ public class KmlGardenParser {
 
                 String[] parts = coordinates.trim().split(",");
 
-                String x = parts[0];
-                String y = parts[1];
+                String x = parts[1];
+                String y = parts[0];
                 String name = parcDescription.get("Nom").toString();
                 String type = parcDescription.get("Type d'espace").toString();
                 String use = parcDescription.get("Usage").toString();

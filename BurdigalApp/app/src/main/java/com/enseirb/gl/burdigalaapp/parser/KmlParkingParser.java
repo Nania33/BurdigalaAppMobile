@@ -37,8 +37,8 @@ public class KmlParkingParser implements IParkingParser{
                 String coordinates = eElement.getElementsByTagName("coordinates").item(0).getTextContent();
                 String[] parts = coordinates.trim().split(",");
 
-                String x = parts[0];
-                String y = parts[1];
+                String x = parts[1];
+                String y = parts[0];
                 String name = parkingDescription.get("nom").toString();
                 String numberOfSpots = parkingDescription.get("nombre de places").toString();
                 String type = parkingDescription.get("type de parking").toString();
