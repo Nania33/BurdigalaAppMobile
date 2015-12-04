@@ -27,7 +27,7 @@ public class CyclePark implements Model{
         return fixationType;
     }
 
-    public LatLng getPoint() {
+    public LatLng getLatLng() {
         return point;
     }
 

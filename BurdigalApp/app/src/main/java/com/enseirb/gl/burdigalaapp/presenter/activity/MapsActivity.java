@@ -2,6 +2,7 @@ package com.enseirb.gl.burdigalaapp.presenter.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,25 +11,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
-import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
+import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueData;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.PointDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         PointListFragment.OnFragmentInteractionListener,
@@ -50,11 +56,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private ServiceManager serviceManager;
 
-    private String type = "toilet";
-    private ServiceType serviceType = ServiceType.toServiceType(type);
-    private double longitude = -0.566741222966319;
-    private double latitude = 44.8384053932397;
-    private float zoom = 11.8f;
+    private BlockingQueue<BlockingQueueData> queue = new LinkedBlockingQueue<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +112,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeServiceManager(){
-        Intent intent = getIntent();
-        serviceManager = new ServiceManager(listOfServices);
+        serviceManager = new ServiceManager(listOfServices, new ServiceManager.ServiceManagerListener() {
+            @Override
+            public void onError(Service service, String message) {
+                Log.d(TAG, "onError : " + message);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+                try {
+                    queue.put(BlockingQueueData.recordFailure(service, message));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onDataRetrieved(Service service) {
+                Log.d(TAG, "onDataReceivedThread : " + Thread.currentThread().getId());
+                try {
+                    Log.d(TAG, "OnSuccess : putting "+service+" in queue (Thread" + Thread.currentThread().getId());
+                    queue.put(BlockingQueueData.recordSucces(service));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         for (Service service : listOfServices) {
             Log.d(TAG, service.toString() + " " + service.getType());
         }
+        Log.d(TAG, "MainThread : " + Thread.currentThread().getId());
         serviceManager.initializeServices();
     }
 
@@ -124,13 +153,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ft.commit();
     }
 
-    public void displayPoints() throws UnknownDataException {
-        List<Model> listModels = getDataListToDisplay(ServiceFactory.makeChoice(serviceType));
-        for (int i = 0 ; i < listModels.size() ; i++){
-            LatLng point = listModels.get(i).getPoint();
-            mMap.addMarker(new MarkerOptions().position(point).title(type));
-        }
-    }
+
+
 
     /**
      * Manipulates the map once available.
@@ -143,16 +167,69 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady : " + Thread.currentThread().getId());
         mMap = googleMap;
+        initializeMap();
+        handleDataRetrieving();
+    }
+
+    private void initializeMap(){
+        double longitude = -0.566741222966319;
+        double latitude = 44.8384053932397;
+        float zoom = 11.8f;
+
         LatLng reference = new LatLng(latitude, longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(reference));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
-        try {
-            displayPoints();
-        } catch (UnknownDataException e) {
-            System.out.println("Unknown type of service");
-            e.printStackTrace();
+    }
+
+    public void displayPointsOnMap(Service service) {
+        List<Model> points = getDataListToDisplay(service);
+        for (Model openDataPoint : points){
+            LatLng point = openDataPoint.getLatLng();
+            mMap.addMarker(new MarkerOptions().position(point)
+                    .title(service.getType().toString()));
         }
+    }
+
+    private void handleDataRetrieving(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Démarrage du thread "+Thread.currentThread().getId());
+                BlockingQueueData data;
+                try {
+                    while ((data = queue.poll(5, TimeUnit.MINUTES)) != null){
+                        final BlockingQueueData finalData = data;
+                        if (data.isSucces()) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG, "doSomeUpdate on thread " + Thread.currentThread().getId());
+                                    displayPointsOnMap(finalData.getService());
+                                }
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MapsActivity.this,
+                                            "Erreur à la récupération des "+finalData.getService().getName(),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    Log.d(TAG, "interruptionDuThread "+Thread.currentThread().getId());
+                    Thread.currentThread().interrupt();
+                    Log.d(TAG, "threadInterrompu");
+                }
+            }
+        });
+        thread.start();
     }
 
 

@@ -11,6 +11,7 @@ import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
+import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,10 @@ public class ServiceManager {
     private static final String TAG = "ServiceManager";
 
     private Map<Service, IModelContainer> myServices;
+    private ServiceManagerListener mListener;
 
-    public ServiceManager(ArrayList<Service> services){
+    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener){
+        mListener = listener;
         myServices = new HashMap<>();
         for (Service service : services) {
             try {
@@ -37,10 +40,20 @@ public class ServiceManager {
     }
 
     public void initializeServices(){
-        for (Service service : myServices.keySet()) {
+        for (final Service service : myServices.keySet()) {
             if (service.isSelected()) {
                 IModelContainer container = myServices.get(service);
-                container.retrievePlaces(new WebRetriever());
+                container.retrievePlaces(new WebRetriever(), new DataRetrieverListener() {
+                    @Override
+                    public void onDataRetreived() {
+                        mListener.onDataRetrieved(service);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        mListener.onError(service, message);
+                    }
+                });
                 Log.d(TAG, "RetrieveData for service : " + service);
             }
         }
@@ -67,9 +80,7 @@ public class ServiceManager {
     }
 
     public interface ServiceManagerListener {
-        void retrieveDataStart();
-        void retrieveDataEnd();
-        void onError(String message);
-        void onSucces();
+        void onError(Service service, String message);
+        void onDataRetrieved(Service service);
     }
 }

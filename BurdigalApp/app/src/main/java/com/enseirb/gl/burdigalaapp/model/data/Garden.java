@@ -52,7 +52,7 @@ public class Garden implements Model {
         return label;
     }
 
-    public LatLng getPoint() {
+    public LatLng getLatLng() {
         return point;
     }
 }

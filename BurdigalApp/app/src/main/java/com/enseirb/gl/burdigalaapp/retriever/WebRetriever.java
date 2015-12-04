@@ -10,10 +10,9 @@ import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
-import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
-import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
+import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 
 import java.util.List;
 
@@ -24,48 +23,50 @@ public class WebRetriever implements OpenDataRetriever {
     private static final String TAG = "WebRetriever";
 
     @Override
-    public void retrievePlaces(final GardenContainer container) {
+    public void retrievePlaces(final GardenContainer container, final DataRetrieverListener listener) {
         GardenBusiness gardenBusiness = new GardenBusiness();
         Log.d(TAG, "[retrievePlaces()] - start");
         gardenBusiness.retrieveGardenPlaces(new IGardenBusinessListener() {
             @Override
             public void onSuccess(List<Garden> garden) {
                 container.put(garden);
+                listener.onDataRetreived();
             }
 
             @Override
             public void onError(String message) {
-                //TODO afficher boite de dialogue avec message
+                listener.onError(message);
             }
         });
         Log.d(TAG, "[retrievePlaces()] - end");
     }
 
     @Override
-    public void retrievePlaces(CycleParkContainer container) {
+    public void retrievePlaces(CycleParkContainer container, DataRetrieverListener listener) {
 
     }
 
     @Override
-    public void retrievePlaces(final ToiletContainer container) {
+    public void retrievePlaces(final ToiletContainer container, final DataRetrieverListener listener) {
         ToiletBusiness toiletBusiness = new ToiletBusiness();
         Log.d(TAG, "[retrievePlaces()] - start");
         toiletBusiness.retrieveToiletPlaces(new IToiletBusinessListener() {
             @Override
             public void onSuccess(List<Toilet> toilet) {
                 container.put(toilet);
+                listener.onDataRetreived();
             }
 
             @Override
             public void onError(String message) {
-                //TODO afficher boite de dialogue avec message
+                listener.onError(message);
             }
         });
         Log.d(TAG, "[retrievePlaces()] - end");
     }
 
     @Override
-    public void retrievePlaces(ParkingContainer container) {
+    public void retrievePlaces(ParkingContainer container, DataRetrieverListener listener) {
 
     }
 

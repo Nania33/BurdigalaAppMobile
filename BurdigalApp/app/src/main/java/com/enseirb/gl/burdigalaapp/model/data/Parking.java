@@ -31,7 +31,7 @@ public class Parking implements Model{
     }
 
     @Override
-    public LatLng getPoint() {
+    public LatLng getLatLng() {
         return point;
     }
 

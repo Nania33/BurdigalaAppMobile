@@ -28,7 +28,7 @@ public class Toilet implements Model{
     }
 
     @Override
-    public LatLng getPoint() {
+    public LatLng getLatLng() {
         return point;
     }
 
