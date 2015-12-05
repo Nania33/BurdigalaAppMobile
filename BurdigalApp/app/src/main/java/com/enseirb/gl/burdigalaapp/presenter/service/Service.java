@@ -3,6 +3,10 @@ package com.enseirb.gl.burdigalaapp.presenter.service;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.enseirb.gl.burdigalaapp.R;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,6 +100,22 @@ public class Service implements Parcelable {
     public ServiceType getType() {
         return type;
     }
+
+    public BitmapDescriptor getMarkerIcon(){
+        switch (this.getType()){
+            case TOILET:
+                return BitmapDescriptorFactory.fromResource(R.drawable.ic_toilet_marker);
+            case GARDEN:
+                return BitmapDescriptorFactory.fromResource(R.drawable.marker_garden);
+            case CYCLEPARK:
+                return BitmapDescriptorFactory.fromResource(R.drawable.marker_cyclepark);
+            case PARKING:
+                return BitmapDescriptorFactory.fromResource(R.drawable.marker_parking);
+            default:
+                return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+        }
+    }
+
 
     @Override
     public int describeContents() {

@@ -10,21 +10,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
+import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
+import com.enseirb.gl.burdigalaapp.model.data.Parking;
+import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueData;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
-import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.PointDetailFragment;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.CycleParkDetailFragment;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.GardenDetailFragment;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ParkingDetailFragment;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ToiletDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -35,7 +46,10 @@ import java.util.concurrent.TimeUnit;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         PointListFragment.OnFragmentInteractionListener,
-        PointDetailFragment.OnFragmentInteractionListener {
+        ToiletDetailFragment.OnFragmentInteractionListener,
+        GardenDetailFragment.OnFragmentInteractionListener,
+        ParkingDetailFragment.OnFragmentInteractionListener,
+        CycleParkDetailFragment.OnFragmentInteractionListener{
 
     private static final String LIST_OF_SERVICES = "list_of_services";
     private static final String TAG = "MapsActivity";
@@ -43,7 +57,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private Button btnShowList;
 
-    private PointDetailFragment detailFragment;
+    private ToiletDetailFragment detailFragment;
     private List<PointListFragment> listFragment = new ArrayList<>();
     private int currentListFragment = 0;
 
@@ -60,8 +74,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
-        detailFragment = PointDetailFragment.newInstance("param1");
 
         listOfServices = getIntent().getParcelableArrayListExtra(LIST_OF_SERVICES);
 
@@ -185,9 +197,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (Model openDataPoint : points){
             LatLng point = openDataPoint.getLatLng();
             mMap.addMarker(new MarkerOptions().position(point)
-                    .title(service.getType().toString()));
+                    .title(service.getType().toString())
+                    .icon(service.getMarkerIcon()));
         }
     }
+
 
     private void handleDataRetrieving(){
         Thread thread = new Thread(new Runnable() {
@@ -238,8 +252,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public void onListItemClick(String id) {
-        putFragmentInContainer(PointDetailFragment.newInstance(id), R.id.fragment_container);
+    public void onListItemClick(Service service, int itemPosition) {
+        if (service.getType().equals(ServiceType.TOILET)) {
+            putFragmentInContainer(ToiletDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
+        } else if (service.getType().equals(ServiceType.GARDEN)){
+            putFragmentInContainer(GardenDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
+        } else if (service.getType().equals(ServiceType.PARKING)){
+            putFragmentInContainer(ParkingDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
+        } else if (service.getType().equals(ServiceType.CYCLEPARK)){
+            putFragmentInContainer(CycleParkDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
+        }
     }
 
     @Override
@@ -280,13 +302,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    public void onButtonReturnClick() {
+        onBackPressed();
     }
 
     @Override
-    public void onButtonReturnClick() {
-        onBackPressed();
+    public Parking getParking(Service service, int position) {
+        return ((List<Parking>) serviceManager.getContainer(service).getModels()).get(position);
+    }
+
+    @Override
+    public CyclePark getCyclePark(Service service, int position) {
+        return ((List<CyclePark>) serviceManager.getContainer(service).getModels()).get(position);
+    }
+
+    @Override
+    public Garden getGarden(Service service, int position) {
+        return ((List<Garden>) serviceManager.getContainer(service).getModels()).get(position);
+    }
+
+    @Override
+    public Toilet getToilet(Service service, int position) {
+        Toilet toilet = ((List<Toilet>) serviceManager.getContainer(service).getModels()).get(position);
+        return toilet;
     }
 
     public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){

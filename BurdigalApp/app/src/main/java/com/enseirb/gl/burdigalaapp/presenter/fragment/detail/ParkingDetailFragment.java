@@ -1,9 +1,9 @@
 package com.enseirb.gl.burdigalaapp.presenter.fragment.detail;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,57 +11,54 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.model.data.Parking;
+import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PointDetailFragment.OnFragmentInteractionListener} interface
+ * {@link ParkingDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PointDetailFragment#newInstance} factory method to
+ * Use the {@link ParkingDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PointDetailFragment extends android.support.v4.app.Fragment {
+public class ParkingDetailFragment extends android.support.v4.app.Fragment {
     private Button btnReturn;
     private TextView textView;
 
-    private static final String ITEM_NAME = "name";
+    private static final String SERVICE = "service";
+    private static final String POSITION = "position";
 
-    private String mParam1;
+    private Parking parking;
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param name Parameter 1.
-     * @return A new instance of fragment PointDetailFragment.
-     */
-    public static PointDetailFragment newInstance(String name) {
-        PointDetailFragment fragment = new PointDetailFragment();
+    public static ParkingDetailFragment newInstance(Service service, int position) {
+        Log.d("DetailParking", "Les parking sont initialisés");
+        ParkingDetailFragment fragment = new ParkingDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ITEM_NAME, name);
+        args.putParcelable(SERVICE, service);
+        args.putInt(POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public PointDetailFragment() {
-        // Required empty public constructor
-    }
+    public ParkingDetailFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ITEM_NAME);
+            Service service = getArguments().getParcelable(SERVICE);
+            int position = getArguments().getInt(POSITION, 0);
+            parking = mListener.getParking(service, position);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_point_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_parking_details, container, false);
         btnReturn = (Button) view.findViewById(R.id.btn_return);
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,16 +68,9 @@ public class PointDetailFragment extends android.support.v4.app.Fragment {
         });
 
         textView = (TextView) view.findViewById(R.id.tv_view);
-        textView.append(" je suis l'item en position "+mParam1);
+        textView.setText(parking.toString());
 
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -100,20 +90,9 @@ public class PointDetailFragment extends android.support.v4.app.Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
         public void onButtonReturnClick();
+        public Parking getParking(Service service, int position);
     }
 
 }

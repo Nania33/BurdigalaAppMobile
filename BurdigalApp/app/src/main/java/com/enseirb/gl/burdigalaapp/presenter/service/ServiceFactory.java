@@ -40,6 +40,6 @@ public class ServiceFactory {
 
     public static Service makeToilet(){
         return new Service(ServiceType.TOILET, "Toilettes", "Toilettes publiques",
-                R.color.red);
+                R.color.darkblue);
     }
 }

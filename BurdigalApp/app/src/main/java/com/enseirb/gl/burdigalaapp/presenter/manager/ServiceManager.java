@@ -8,6 +8,8 @@ import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
+import com.enseirb.gl.burdigalaapp.model.data.Model;
+import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
