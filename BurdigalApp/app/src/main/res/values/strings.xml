@@ -8,8 +8,21 @@
     <string name="detail">Detail du Point</string>
     <string name="list_point">Liste des points</string>
     <string name="return_to_map">Retour à la carte</string>
+    <string name="btn_return">Retour</string>
 
-<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_title">Rechercher</string>
+
+
+
+    <string name="cyclepark_spot_number">Numéro de spot : </string>
+    <string name="cyclepark_fixation_type">Type de fixation : </string>
+    <string name="cycle_park_title">Parkings deux roues</string>
+
+    <string name="garden_title">Parcs et jardins</string>
+    <string name="garden_type">Type de parc : </string>
+    <string name="garden_gestion_type">Gestion type : </string>
+    <string name="garden_label">Label : </string>
+    <string name="diplay_list_of_points">Voir la liste des points</string>
+    <string name="garden_use">Utilisation :</string>
 </resources>

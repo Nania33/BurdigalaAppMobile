@@ -24,7 +24,12 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
  */
 public class GardenDetailFragment extends android.support.v4.app.Fragment {
     private Button btnReturn;
-    private TextView textView;
+
+    private TextView gardenLabel;
+    private TextView gardenName;
+    private TextView gardenType;
+    private TextView gardenGestionType;
+    private TextView gardenUse;
 
     private static final String SERVICE = "service";
     private static final String POSITION = "position";
@@ -67,8 +72,20 @@ public class GardenDetailFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        textView = (TextView) view.findViewById(R.id.tv_view);
-        textView.setText(garden.toString());
+        gardenName = (TextView) view.findViewById(R.id.tv_garden_name);
+        gardenName.setText(garden.getName());
+
+        gardenType = (TextView) view.findViewById(R.id.tv_garden_type);
+        gardenType.append(" " + garden.getParcType());
+
+        gardenGestionType = (TextView) view.findViewById(R.id.tv_garden_gestion_type);
+        gardenGestionType.append(" " + garden.getGestionType());
+
+        gardenLabel = (TextView) view.findViewById(R.id.tv_garden_label);
+        gardenLabel.append(" " + garden.getLabel());
+
+        gardenUse = (TextView) view.findViewById(R.id.tv_garden_use);
+        gardenUse.append(" " + garden.getUse());
 
         return view;
     }

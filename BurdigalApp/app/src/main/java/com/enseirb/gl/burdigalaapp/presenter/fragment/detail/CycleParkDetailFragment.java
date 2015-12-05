@@ -24,7 +24,9 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
  */
 public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
     private Button btnReturn;
-    private TextView textView;
+
+    private TextView cpType;
+    private TextView cpSpotNumber;
 
     private static final String SERVICE = "service";
     private static final String POSITION = "position";
@@ -67,8 +69,11 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        textView = (TextView) view.findViewById(R.id.tv_view);
-        textView.setText(cyclePark.toString());
+        cpType = (TextView) view.findViewById(R.id.tv_cyclepark_type);
+        cpType.append(cyclePark.getFixationType());
+
+        cpSpotNumber = (TextView) view.findViewById(R.id.tv_cyclepark_spot_number);
+        cpSpotNumber.append(cyclePark.getParkingSpotNumber());
 
         return view;
     }

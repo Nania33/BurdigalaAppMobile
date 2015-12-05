@@ -14,11 +14,17 @@
     <!-- android:name="com.google.android.gms.maps.SupportMapFragment" !-->
 
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_show_list"
-            android:text="Afficher Liste"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/diplay_list_of_points"
+        android:id="@+id/btn_show_list"
+        android:background="@drawable/button_simple"/>
 
 
 
