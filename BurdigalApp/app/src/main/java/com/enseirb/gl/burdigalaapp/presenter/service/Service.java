@@ -104,7 +104,7 @@ public class Service implements Parcelable {
     public BitmapDescriptor getMarkerIcon(){
         switch (this.getType()){
             case TOILET:
-                return BitmapDescriptorFactory.fromResource(R.drawable.ic_toilet_marker);
+                return BitmapDescriptorFactory.fromResource(R.drawable.marker_toilet);
             case GARDEN:
                 return BitmapDescriptorFactory.fromResource(R.drawable.marker_garden);
             case CYCLEPARK:

@@ -25,21 +25,21 @@ public class ServiceFactory {
     //TODO mettre string dans fichier R.string
     public static Service makeCycleParkChoice(){
         return new Service(ServiceType.CYCLEPARK, "Parking deux roues", "Parking pour vélo et mobilette",
-                R.color.orange);
+                R.color.cycle_park_color);
     }
 
     public static Service makeGarden(){
         return new Service(ServiceType.GARDEN, "Parcs et jardins", "Parcs et jardins dans bordeaux",
-                R.color.green);
+                R.color.garden_color);
     }
 
     public static Service makeParking(){
         return new Service(ServiceType.PARKING, "Parking", "Parking pour voitures",
-                R.color.blue);
+                R.color.parking_color);
     }
 
     public static Service makeToilet(){
         return new Service(ServiceType.TOILET, "Toilettes", "Toilettes publiques",
-                R.color.darkblue);
+                R.color.toilet_color);
     }
 }

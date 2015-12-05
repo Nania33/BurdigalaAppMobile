@@ -24,7 +24,10 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
  */
 public class ParkingDetailFragment extends android.support.v4.app.Fragment {
     private Button btnReturn;
-    private TextView textView;
+
+    private TextView parkingName;
+    private TextView parkingSpotNumber;
+    private TextView parkingType;
 
     private static final String SERVICE = "service";
     private static final String POSITION = "position";
@@ -67,8 +70,14 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        textView = (TextView) view.findViewById(R.id.tv_view);
-        textView.setText(parking.toString());
+        parkingName = (TextView) view.findViewById(R.id.tv_parking_name);
+        parkingName.setText(parking.getName());
+
+        parkingSpotNumber = (TextView) view.findViewById(R.id.tv_parking_spot_number);
+        parkingSpotNumber.append(" "+parking.getParkingSpotNumber());
+
+        parkingType = (TextView) view.findViewById(R.id.tv_parking_type);
+        parkingType.append(" "+parking.getParkingType());
 
         return view;
     }

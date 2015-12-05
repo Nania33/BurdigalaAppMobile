@@ -13,9 +13,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_title">Rechercher</string>
 
+    <string name="undefined_value">Non renseigné</string>
 
-
-    <string name="cyclepark_spot_number">Numéro de spot : </string>
+    <string name="cyclepark_spot_number">Nombre de places : </string>
     <string name="cyclepark_fixation_type">Type de fixation : </string>
     <string name="cycle_park_title">Parkings deux roues</string>
 
@@ -25,4 +25,10 @@
     <string name="garden_label">Label : </string>
     <string name="diplay_list_of_points">Voir la liste des points</string>
     <string name="garden_use">Utilisation :</string>
+    <string name="parking_title">Parkings</string>
+    <string name="parking_type">Type de parking :</string>
+    <string name="parking_spot_number">Nombre de places :</string>
+    <string name="toilet_title">Toilettes</string>
+    <string name="toilet_neighbourhood">Quartier :</string>
+    <string name="toilet_type">Type de toilette :</string>
 </resources>

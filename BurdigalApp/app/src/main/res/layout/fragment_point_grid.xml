@@ -24,9 +24,11 @@
             android:layout_width="0dp"
             android:layout_height="32dp"
             android:layout_weight="1"
-            android:textSize="24dp"
-            android:gravity="center_horizontal"
-            android:hint="POULE X"/>
+            android:paddingLeft="@dimen/layout_margin_right_low"
+            android:paddingRight="@dimen/layout_margin_right_low"
+            android:textSize="@dimen/list_fragment_name_height"
+            android:textColor="@android:color/black"
+            android:gravity="center_horizontal"/>
 
         <ImageButton
             android:id="@+id/btn_next"

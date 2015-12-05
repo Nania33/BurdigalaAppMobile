@@ -18,9 +18,7 @@ public class CyclePark implements Model{
 
     @Override
     public String toString(){
-        return  point.toString() +
-                "Fixation Type: " + fixationType + "\n" +
-                "Parking Spot Number: " + parkingSpotNumber + "\n\n";
+        return  fixationType + " (" + parkingSpotNumber + " places)";
     }
 
     public String getFixationType() {

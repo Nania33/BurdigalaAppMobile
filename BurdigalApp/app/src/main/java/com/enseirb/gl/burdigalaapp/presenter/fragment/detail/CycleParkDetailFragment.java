@@ -70,10 +70,10 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
         });
 
         cpType = (TextView) view.findViewById(R.id.tv_cyclepark_type);
-        cpType.append(cyclePark.getFixationType());
+        cpType.append(" "+cyclePark.getFixationType());
 
         cpSpotNumber = (TextView) view.findViewById(R.id.tv_cyclepark_spot_number);
-        cpSpotNumber.append(cyclePark.getParkingSpotNumber());
+        cpSpotNumber.append(" "+cyclePark.getParkingSpotNumber());
 
         return view;
     }

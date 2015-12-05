@@ -24,12 +24,7 @@ public class Garden implements Model {
 
     @Override
     public String toString(){
-        return  "name: " + name + "\n" +
-                point.toString() +
-                "Parc Type: " + parcType + "\n" +
-                "use:" + use + "\n" +
-                "Gestion Type: " + gestionType + "\n" +
-                "label: " + label + "\n\n";
+        return name;
     }
 
     public String getParcType() {

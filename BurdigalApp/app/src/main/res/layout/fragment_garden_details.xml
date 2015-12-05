@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presenter.fragment.detail.ToiletDetailFragment">
+    tools:context=".presenter.fragment.detail.GardenDetailFragment">
 
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:textSize="28dp"
+        android:layout_height="@dimen/detail_fragment_title_height"
+        android:textSize="@dimen/text_size_detail_title"
         android:textColor="@android:color/white"
-        android:background="@color/green"
+        android:background="@color/garden_color"
         android:gravity="center"
         android:text="@string/garden_title"/>
 

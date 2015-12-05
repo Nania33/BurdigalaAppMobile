@@ -20,10 +20,7 @@ public class Toilet implements Model{
 
     @Override
     public String toString(){
-        return  point.toString() +
-                "address: " + address + "\n" +
-                "Neighbourood: " + neighbourhood + "\n" +
-                "Toilet Type: " + toiletType + "\n\n";
+        return address + " (" + toiletType + ")";
 
     }
 

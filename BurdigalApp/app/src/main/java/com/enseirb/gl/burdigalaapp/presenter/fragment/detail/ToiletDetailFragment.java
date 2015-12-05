@@ -24,7 +24,10 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
  */
 public class ToiletDetailFragment extends android.support.v4.app.Fragment {
     private Button btnReturn;
-    private TextView textView;
+
+    private TextView toiletAddr;
+    private TextView toiletNeighbourhood;
+    private TextView toiletType;
 
     private static final String SERVICE = "service";
     private static final String POSITION = "position";
@@ -67,8 +70,14 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        textView = (TextView) view.findViewById(R.id.tv_view);
-        textView.setText(toilet.toString());
+        toiletAddr = (TextView) view.findViewById(R.id.tv_toilet_address);
+        toiletAddr.setText(toilet.getAddress());
+
+        toiletNeighbourhood = (TextView) view.findViewById(R.id.tv_toilet_neighbourhood);
+        toiletNeighbourhood.append(" "+toilet.getNeighbourhood());
+
+        toiletType = (TextView) view.findViewById(R.id.tv_toilet_type);
+        toiletType.append(" "+toilet.getToiletType());
 
         return view;
     }

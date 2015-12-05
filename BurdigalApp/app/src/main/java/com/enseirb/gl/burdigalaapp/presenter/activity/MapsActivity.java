@@ -69,6 +69,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private BlockingQueue<BlockingQueueData> queue = new LinkedBlockingQueue<>();
 
+    private int depth = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                depth++;
                 putFragmentInContainer(MapsActivity.this.listFragment.get(currentListFragment), R.id.fragment_container);
                 btnShowList.setVisibility(View.GONE);
             }
@@ -253,6 +255,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onListItemClick(Service service, int itemPosition) {
+        depth++;
         if (service.getType().equals(ServiceType.TOILET)) {
             putFragmentInContainer(ToiletDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
         } else if (service.getType().equals(ServiceType.GARDEN)){
@@ -267,7 +270,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onButtonReturnToMapClick() {
         onBackPressed();
-        btnShowList.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -343,6 +345,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ft.replace(fragment_container, fragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        depth--;
+        if (depth == 0 && btnShowList != null)
+            btnShowList.setVisibility(View.VISIBLE);
     }
 
    /* @Override

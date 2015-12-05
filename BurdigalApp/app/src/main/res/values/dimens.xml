@@ -28,4 +28,8 @@
     <!-- Detail fragments dimens !-->
     <dimen name="text_size_detail_title">28sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
+
+    <dimen name="detail_fragment_title_height">40dp</dimen>
+
+    <dimen name="list_fragment_name_height">26sp</dimen>
 </resources>

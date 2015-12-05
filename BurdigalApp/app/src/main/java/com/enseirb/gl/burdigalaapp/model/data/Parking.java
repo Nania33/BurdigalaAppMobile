@@ -20,10 +20,7 @@ public class Parking implements Model{
 
     @Override
     public String toString(){
-        return  "name: " + name + "\n" +
-                point.toString() +
-                "Parking Spot Number: " + parkingSpotNumber + "\n" +
-                "Parking Type: " + parkingType + "\n\n";
+        return  name + " (" + parkingSpotNumber + " places)";
     }
 
     public String getName() {
