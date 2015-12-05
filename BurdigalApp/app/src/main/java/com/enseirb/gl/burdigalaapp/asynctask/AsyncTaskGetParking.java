@@ -3,70 +3,45 @@ package com.enseirb.gl.burdigalaapp.asynctask;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ParkingDTO;
+import com.enseirb.gl.burdigalaapp.parser.KmlParkingParser;
+import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
+import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
+import com.enseirb.gl.burdigalaapp.web.http.response.WebResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AsyncTaskGetParking extends AsyncTask<String, Void, Void> {
-    private static final String TAG = "ASYNC_GET_WEATHER";
+    private static final String TAG = "ASYNC_GET_PARKING";
 
-    private final AsyncTaskGetWeatherListener listener;
-    private ParkingDTO parkingDTO;
-    private boolean canStart;
+    private IParkingDAOListener listener;
 
-    public interface AsyncTaskGetWeatherListener {
-        boolean canStartTask();
-
-        void showProgressBar();
-
-        void onDataReceived(ParkingDTO parkingDTO);
-
-        void dismissProgressBar();
-    }
-
-    public AsyncTaskGetParking(AsyncTaskGetWeatherListener listener) {
+    public AsyncTaskGetParking(final IParkingDAOListener listener){
         this.listener = listener;
-        this.parkingDTO = null;
-        this.canStart = false;
-    }
-
-    protected void onPreExecute() {
-        canStart = listener.canStartTask();
-        if (canStart)
-            listener.showProgressBar();
     }
 
     @Override
     protected Void doInBackground(String... params) {
-        if (canStart) {
-            Log.d(TAG, "(doInBackground) - start task");
-            parkingDTO = startGetParkingTask(params[0], params[1]);
-        } else {
-            Log.d(TAG, "(doInBackground) - task already started");
-        }
-        return null;
-    }
-
-    protected void onPostExecute(Void v) {
-        if (canStart) {
-            listener.onDataReceived(parkingDTO);
-            listener.dismissProgressBar();
-        }
-    }
-
-    private ParkingDTO startGetParkingTask(String city, String format) {
-        Log.d(TAG, "[startGetWeatherTask] start");
+        Log.d(TAG, "[doInBackground()] - start get parkings");
+        List<ParkingDTO> parkingDTO = new ArrayList<>();
         try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            parkingDTO.addAll(startGetParkingTask());
+            listener.onSuccess(parkingDTO);
+        } catch (Exception e){
+            listener.onError(e.getMessage());
         }
-        //IGardenDAO dao = IGardenDAO.getFromWeb(city, format);
-        /*if (dao != null) {
-            Log.d(TAG, "[startGetWeatherTask] end successfully");
-            return null; //GardenDTO.createFromDAO(dao);
-        } else {
-            Log.d(TAG, "[startGetWeatherTask] - ERROR - end with no data received");
-            return null;
-        }*/
+        Log.d(TAG, "[doInBackground()] - end get parkings");
         return null;
+    }
+
+    private List<ParkingDTO> startGetParkingTask(){
+        Log.d(TAG, "[startGetWeatherTask] start get parkings");
+        HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.SIGPARKPUB);
+        WebResponse response = request.executeRequest();
+        List<ParkingDTO> dtoList = KmlParkingParser.parse(response.getData());
+        Log.d(TAG, "[startGetWeatherTask] end get parkings");
+        return dtoList;
     }
 }

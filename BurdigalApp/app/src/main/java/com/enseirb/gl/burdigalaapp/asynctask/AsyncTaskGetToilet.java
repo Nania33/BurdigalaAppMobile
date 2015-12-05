@@ -25,32 +25,19 @@ public class AsyncTaskGetToilet extends AsyncTask<String, Void, Void> {
         this.listener = listener;
     }
 
-    protected void onPreExecute() {
-
-    }
-
     @Override
     protected Void doInBackground(String... params) {
-        Log.d(TAG, "[doInBackground()] - start");
+        Log.d(TAG, "[doInBackground()] - start get toilets");
         List<ToiletDTO> toiletDTO = new ArrayList<>();
 
         try {
             toiletDTO.addAll(startGetToiletTask());
-            if (toiletDTO.isEmpty())
-                Log.d(TAG, "Résultat vide");
-            else {
-                Log.d(TAG, "Has data");
-            }
             listener.onSuccess(toiletDTO);
         } catch (Exception e){
             listener.onError(e.getMessage());
         }
-        Log.d(TAG, "[doInBackground()] - end");
+        Log.d(TAG, "[doInBackground()] - end get toilets");
         return null;
-    }
-
-    protected void onPostExecute(Void v) {
-
     }
 
     private List<ToiletDTO> startGetToiletTask(){

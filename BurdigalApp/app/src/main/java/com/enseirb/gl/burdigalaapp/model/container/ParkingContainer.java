@@ -39,7 +39,7 @@ public class ParkingContainer implements IModelContainer<Parking>{
 
     @Override
     public void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener) {
-        retriever.retrievePlaces(this, listener );
+        retriever.retrievePlaces(this, listener);
     }
 
 }

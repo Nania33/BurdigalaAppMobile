@@ -114,16 +114,23 @@ public class Service implements Parcelable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Service)) return false;
 
         Service service = (Service) o;
 
+        if (isSelected != service.isSelected) return false;
+        if (color != service.color) return false;
+        if (!name.equals(service.name)) return false;
+        if (description != null ? !description.equals(service.description) : service.description != null)
+            return false;
         return type == service.type;
 
     }
 
     @Override
     public int hashCode() {
-        return type.hashCode();
+        int result = name.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
     }
 }

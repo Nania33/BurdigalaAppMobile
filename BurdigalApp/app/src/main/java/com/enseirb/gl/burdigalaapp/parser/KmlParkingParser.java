@@ -44,7 +44,7 @@ public class KmlParkingParser implements IParkingParser{
                 String type = parkingDescription.get("type de parking").toString();
 
                 parkings.add(new ParkingDTO(name, numberOfSpots, type, new PointS(x, y)));
-                return parkings;
+                //return parkings;
             }
         }
         return parkings;

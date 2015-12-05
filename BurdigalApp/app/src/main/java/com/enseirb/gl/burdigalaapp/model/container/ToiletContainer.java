@@ -39,6 +39,6 @@ public class ToiletContainer implements IModelContainer<Toilet> {
 
     @Override
     public void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener) {
-        retriever.retrievePlaces(this, listener );
+        retriever.retrievePlaces(this, listener);
     }
 }

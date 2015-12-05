@@ -34,7 +34,7 @@ public class ServiceFactory {
     }
 
     public static Service makeParking(){
-        return new Service(ServiceType.CYCLEPARK, "Parking", "Parking pour voitures",
+        return new Service(ServiceType.PARKING, "Parking", "Parking pour voitures",
                 R.color.blue);
     }
 
