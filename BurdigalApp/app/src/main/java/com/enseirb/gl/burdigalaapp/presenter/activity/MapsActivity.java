@@ -2,7 +2,6 @@ package com.enseirb.gl.burdigalaapp.presenter.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,7 +32,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         PointListFragment.OnFragmentInteractionListener,
@@ -72,18 +69,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (service.isSelected())
                 listFragment.add(PointListFragment.newInstance(service));
 
-        //initializeServiceManager();
         mapFragment = SupportMapFragment.newInstance();
 
         initializeServiceManager();
 
         if (findViewById(R.id.fragment_container_map) != null && findViewById(R.id.fragment_container) != null) {
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
             initializeTablet();
         } else {
             initializePhone();
         }
     }
+
+
+
+    /*******************************
+     *   Initialization functions  *
+     *******************************/
 
     private void initializePhone() {
         btnShowList = (Button) findViewById(R.id.btn_show_list);
@@ -146,14 +147,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         serviceManager.initializeServices();
     }
 
-    private void putFragmentInContainer(Fragment fragment, int fragment_container) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(fragment_container, fragment);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
 
-
+    /*******************************
+     *        Map functions        *
+     *******************************/
 
 
     /**
@@ -233,6 +230,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+
+
+    /*******************************
+     *  Listeners implementations  *
+     *******************************/
+
+
     @Override
     public void onListItemClick(String id) {
         putFragmentInContainer(PointDetailFragment.newInstance(id), R.id.fragment_container);
@@ -291,6 +295,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return i;
     }
 
+
+    /*******************************
+     *       Other functions       *
+     *******************************/
+
+    private void putFragmentInContainer(Fragment fragment, int fragment_container) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(fragment_container, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,7 +1,6 @@
 package com.enseirb.gl.burdigalaapp.presenter.fragment;
 
 import android.app.Activity;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,15 +21,7 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- * <p>
- * Large screen devices (such as tablets) are supported by replacing the ListView
- * with a GridView.
- * <p>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
- * interface.
- */
+
 public class PointListFragment extends android.support.v4.app.Fragment implements AbsListView.OnItemClickListener {
     private static final String TAG = "PointListFragment";
     private static final String ARG_SERVICE = "service";
@@ -57,12 +48,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         return fragment;
     }
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public PointListFragment() {
-    }
+    public PointListFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,29 +148,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         }
     }
 
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
 
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
-        }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         public void onListItemClick(String id);
         public void onButtonReturnToMapClick();
