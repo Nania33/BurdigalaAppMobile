@@ -27,7 +27,7 @@
         <TextView
             android:id="@+id/service_name"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="@dimen/detail_fragment_title_height"
             android:layout_weight="1"
             android:paddingLeft="@dimen/layout_margin_right_low"
             android:paddingRight="@dimen/layout_margin_right_low"
