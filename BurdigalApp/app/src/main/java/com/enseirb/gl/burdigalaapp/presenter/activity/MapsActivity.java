@@ -57,9 +57,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private static final double bordeauxCenterLat = 44.836758;
     private static final double bordeauxCenterLong = -0.578746;
-    private boolean isLocationGetttable;
+
     private GoogleMap mMap;
     private Button btnShowList;
+    private LatLng userPosition = null;
 
     private ToiletDetailFragment detailFragment;
     private List<PointListFragment> listFragment = new ArrayList<>();
@@ -248,15 +249,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         thread.start();
     }
 
-    public boolean getIsLocationGettable() { return isLocationGetttable; }
-
     public LatLng getLastBestLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location locationGPS = null;
         Location locationNet = null;
-
-        isLocationGetttable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-                              locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         try {
             locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -266,14 +262,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         // if found, return the GPS location because it is more precise
-        if (locationGPS != null)
-            return new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
+        if (locationGPS != null) {
+            userPosition = new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
+            return userPosition;
+        }
 
-        else if(locationNet != null)
-            return new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
+        else if(locationNet != null) {
+            userPosition = new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
+            return userPosition;
+        }
 
         // hard coded values at the center of Bordeaux if we can't get the location of the user.
+        userPosition = null;
         return new LatLng(bordeauxCenterLat, bordeauxCenterLong);
+
+    }
+
+    public LatLng getUserPosition(){
+        return userPosition;
     }
 
 
