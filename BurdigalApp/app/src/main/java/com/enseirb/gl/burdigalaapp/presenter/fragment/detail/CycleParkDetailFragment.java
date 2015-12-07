@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.listener.InteractionListener;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 /**
@@ -34,6 +36,7 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
     private CyclePark cyclePark;
 
     private OnFragmentInteractionListener mListener;
+    private LinearLayout titleLayout;
 
     public static CycleParkDetailFragment newInstance(Service service, int position) {
         Log.d("DetailCyclePark", "Les cycleParktes sont initialisés");
@@ -70,10 +73,18 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
         });
 
         cpType = (TextView) view.findViewById(R.id.tv_cyclepark_type);
-        cpType.append(" "+cyclePark.getFixationType());
+        cpType.append(" " + cyclePark.getFixationType());
 
         cpSpotNumber = (TextView) view.findViewById(R.id.tv_cyclepark_spot_number);
-        cpSpotNumber.append(" "+cyclePark.getParkingSpotNumber());
+        cpSpotNumber.append(" " + cyclePark.getParkingSpotNumber());
+
+        titleLayout = (LinearLayout) view.findViewById(R.id.ll_focus);
+        titleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFocusRequired(cyclePark);
+            }
+        });
 
         return view;
     }
@@ -95,8 +106,7 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onButtonReturnClick();
+    public interface OnFragmentInteractionListener extends InteractionListener{
         public CyclePark getCyclePark(Service service, int position);
     }
 

@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.listener.InteractionListener;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 /**
@@ -35,6 +38,7 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
     private Toilet toilet;
 
     private OnFragmentInteractionListener mListener;
+    private LinearLayout titleLayout;
 
     public static ToiletDetailFragment newInstance(Service service, int position) {
         Log.d("DetailToilet", "Les toilettes sont initialisés");
@@ -74,10 +78,18 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
         toiletAddr.setText(toilet.getAddress());
 
         toiletNeighbourhood = (TextView) view.findViewById(R.id.tv_toilet_neighbourhood);
-        toiletNeighbourhood.append(" "+toilet.getNeighbourhood());
+        toiletNeighbourhood.append(" " + toilet.getNeighbourhood());
 
         toiletType = (TextView) view.findViewById(R.id.tv_toilet_type);
-        toiletType.append(" "+toilet.getToiletType());
+        toiletType.append(" " + toilet.getToiletType());
+
+        titleLayout = (LinearLayout) view.findViewById(R.id.ll_focus);
+        titleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFocusRequired(toilet);
+            }
+        });
 
         return view;
     }
@@ -99,8 +111,7 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onButtonReturnClick();
+    public interface OnFragmentInteractionListener extends InteractionListener {
         public Toilet getToilet(Service service, int position);
     }
 

@@ -333,6 +333,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    public void onFocusRequired(Model point) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(point.getLatLng()));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.f));
+        onBackPressed();
+        onBackPressed();
+    }
+
+    @Override
     public Parking getParking(Service service, int position) {
         return ((List<Parking>) serviceManager.getContainer(service).getModels()).get(position);
     }
