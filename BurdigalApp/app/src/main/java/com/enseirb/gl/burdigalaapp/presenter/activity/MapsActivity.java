@@ -14,6 +14,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.exceptions.UnknownServiceException;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -57,7 +59,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private Button btnShowList;
 
-    private ToiletDetailFragment detailFragment;
     private List<PointListFragment> listFragment = new ArrayList<>();
     private int currentListFragment = 0;
 
@@ -161,6 +162,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         serviceManager.initializeServices();
     }
 
+    private void initializeOnMarkerClickListener(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                goToPointDetails(marker.getTitle(), marker.getPosition());
+                return true;
+            }
+        });
+    }
+
 
     /*******************************
      *        Map functions        *
@@ -192,11 +203,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng reference = new LatLng(latitude, longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(reference));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
+
+        initializeOnMarkerClickListener();
     }
 
     public void displayPointsOnMap(Service service) {
         List<Model> points = getDataListToDisplay(service);
-        for (Model openDataPoint : points){
+        for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
             mMap.addMarker(new MarkerOptions().position(point)
                     .title(service.getType().toString())
@@ -245,7 +258,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         thread.start();
     }
 
-
+    private void goToPointDetails(String serv, LatLng position){
+        try {
+            Service service = serviceManager.getService(ServiceType.toServiceType(serv));
+            int itemPosition = serviceManager.getPointIndex(service, position);
+            onListItemClick(service, itemPosition);
+            btnShowList.setVisibility(View.INVISIBLE);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
 
     /*******************************
