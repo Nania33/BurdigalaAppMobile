@@ -57,7 +57,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private static final double bordeauxCenterLat = 44.836758;
     private static final double bordeauxCenterLong = -0.578746;
-
+    private boolean isLocationGetttable;
     private GoogleMap mMap;
     private Button btnShowList;
 
@@ -248,10 +248,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         thread.start();
     }
 
-    private LatLng getLastBestLocation() {
+    public boolean getIsLocationGettable() { return isLocationGetttable; }
+
+    public LatLng getLastBestLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location locationGPS = null;
         Location locationNet = null;
+
+        isLocationGetttable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                              locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         try {
             locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
