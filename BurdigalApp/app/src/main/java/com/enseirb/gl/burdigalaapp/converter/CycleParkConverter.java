@@ -7,6 +7,7 @@ import com.enseirb.gl.burdigalaapp.dao.ICycleParkDAO;
 import com.enseirb.gl.burdigalaapp.dao.OpenDataCycleParkDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
+import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class CycleParkConverter implements ICycleParkConverter{
             @Override
             public void onSuccess(List<CycleParkDTO> cycleParkDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                listener.onSuccess(convertToList(cycleParkDTO));
+                listener.onSuccess(convertToContainer(cycleParkDTO));
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
@@ -48,11 +49,11 @@ public class CycleParkConverter implements ICycleParkConverter{
         return new CyclePark(cycleParkDTO.getFixationType(), cycleParkDTO.getParkingSpotNumber(), cycleParkDTO.getPoint().toLatLng());
     }
 
-    public List<CyclePark> convertToList(List<CycleParkDTO> dtoList) {
+    public CycleParkContainer convertToContainer(List<CycleParkDTO> dtoList) {
         List<CyclePark> convertedList = new ArrayList<>();
         for (CycleParkDTO dto : dtoList){
             convertedList.add(convert(dto));
         }
-        return convertedList;
+        return new CycleParkContainer(convertedList);
     }
 }

@@ -1,5 +1,7 @@
 package com.enseirb.gl.burdigalaapp.business;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
@@ -8,7 +10,10 @@ import com.enseirb.gl.burdigalaapp.converter.IGardenConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IGardenConverterListener;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
+import com.enseirb.gl.burdigalaapp.filters.NearestPointsFilter;
+import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -20,9 +25,14 @@ public class GardenBusiness implements IGardenBusiness {
     private IGardenConverter gardenConverter;
     private Filter filter;
 
-    public GardenBusiness() {
+    /*public GardenBusiness() {
         this.gardenConverter = new GardenConverter();
         this.filter = new LinearFilter(10);
+    }*/
+
+    public GardenBusiness(Filter filter) {
+        this.gardenConverter = new GardenConverter();
+        this.filter = filter;
     }
 
     @Override
@@ -30,10 +40,10 @@ public class GardenBusiness implements IGardenBusiness {
         Log.d(TAG, "[retrievePlaces()] - start");
         gardenConverter.retrieveGardenPlaces(new IGardenConverterListener() {
             @Override
-            public void onSuccess(List<Garden> garden) {
+            public void onSuccess(final GardenContainer garden) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                // TODO appliquer le filtre
-                listener.onSuccess(garden);
+                GardenContainer g = filter.filterModels(garden);
+                listener.onSuccess(g.getModels());
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 

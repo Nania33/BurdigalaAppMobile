@@ -9,6 +9,7 @@ import com.enseirb.gl.burdigalaapp.converter.IParkingConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IParkingConverterListener;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
+import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class ParkingBusiness implements IParkingBusiness{
     private IParkingConverter parkingConverter;
     private Filter filter;
 
-    public ParkingBusiness() {
+    public ParkingBusiness(Filter filter) {
         this.parkingConverter = new ParkingConverter();
-        this.filter = new LinearFilter(10);
+        this.filter = filter;
     }
 
     @Override
@@ -31,10 +32,11 @@ public class ParkingBusiness implements IParkingBusiness{
         Log.d(TAG, "[retrievePlaces()] - start");
         parkingConverter.retrieveParkingPlaces(new IParkingConverterListener() {
             @Override
-            public void onSuccess(List<Parking> parking) {
+            public void onSuccess(final ParkingContainer parking) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
                 // TODO appliquer le filtre
-                listener.onSuccess(parking);
+                ParkingContainer p = filter.filterModels(parking);
+                listener.onSuccess(p.getModels());
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 

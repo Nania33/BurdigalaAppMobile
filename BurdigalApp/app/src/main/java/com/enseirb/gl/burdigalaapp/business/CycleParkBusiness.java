@@ -8,6 +8,7 @@ import com.enseirb.gl.burdigalaapp.converter.ICycleParkConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.ICycleParkConverterListener;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
+import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public class CycleParkBusiness implements ICycleParkBusiness {
     private ICycleParkConverter cycleParkConverter;
     private Filter filter;
 
-    public CycleParkBusiness() {
+    public CycleParkBusiness(Filter filter) {
         this.cycleParkConverter = new CycleParkConverter();
-        this.filter = new LinearFilter(10);
+        this.filter = filter;
     }
 
     @Override
@@ -30,10 +31,11 @@ public class CycleParkBusiness implements ICycleParkBusiness {
         Log.d(TAG, "[retrievePlaces()] - start");
         cycleParkConverter.retrieveCycleParkPlaces(new ICycleParkConverterListener() {
             @Override
-            public void onSuccess(List<CyclePark> cyclePark) {
+            public void onSuccess(final CycleParkContainer cyclePark) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
                 // TODO appliquer le filtre
-                listener.onSuccess(cyclePark);
+                CycleParkContainer p = filter.filterModels(cyclePark);
+                listener.onSuccess(p.getModels());
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
