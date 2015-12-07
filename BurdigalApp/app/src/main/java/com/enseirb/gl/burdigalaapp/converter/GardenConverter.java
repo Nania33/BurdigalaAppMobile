@@ -52,6 +52,7 @@ public class GardenConverter implements IGardenConverter {
                 gardenDTO.getLabel(), gardenDTO.getPoint().toLatLng());
     }
 
+    // return container when they are implemented
     public List<Garden> convertToList(List<GardenDTO> dtoList) {
         List<Garden> convertedList = new ArrayList<>();
         for (GardenDTO dto : dtoList){
