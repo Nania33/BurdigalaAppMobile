@@ -11,11 +11,11 @@ import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
-import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.ConcreteVisitor;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class ServiceManager {
         for (final Service service : myServices.keySet()) {
             if (service.isSelected()) {
                 IModelContainer container = myServices.get(service);
-                container.retrievePlaces(new WebRetriever(), new DataRetrieverListener() {
+                container.retrievePlaces(new ConcreteVisitor(), new IPresenterListener() {
                     @Override
                     public void onDataRetreived() {
                         mListener.onDataRetrieved(service);
@@ -60,7 +60,7 @@ public class ServiceManager {
                     public void onError(String message) {
                         mListener.onError(service, message);
                     }
-                },filter);
+                },filter, new WebRetriever());
                 Log.d(TAG, "RetrieveData for service : " + service);
             }
         }

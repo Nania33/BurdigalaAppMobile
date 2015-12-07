@@ -9,6 +9,7 @@ import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ParkingDTO;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ public class ParkingConverter implements IParkingConverter {
     }
 
     @Override
-    public void retrieveParkingPlaces(final IParkingConverterListener listener) {
+    public void retrieveParkingPlaces(OpenDataRetriever retriever, final IParkingConverterListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        parkingDAO.retrieveParkingPlaces(new IParkingDAOListener() {
+        parkingDAO.retrieveParkingPlaces(retriever, new IParkingDAOListener() {
             @Override
             public void onSuccess(List<ParkingDTO> parkingDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");

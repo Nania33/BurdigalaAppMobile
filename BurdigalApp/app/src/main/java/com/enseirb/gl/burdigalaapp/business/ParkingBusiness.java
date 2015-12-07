@@ -3,16 +3,12 @@ package com.enseirb.gl.burdigalaapp.business;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.business.listener.IParkingBusinessListener;
-import com.enseirb.gl.burdigalaapp.business.listener.IParkingBusinessListener;
 import com.enseirb.gl.burdigalaapp.converter.ParkingConverter;
 import com.enseirb.gl.burdigalaapp.converter.IParkingConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IParkingConverterListener;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
-import com.enseirb.gl.burdigalaapp.model.data.Parking;
-
-import java.util.List;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 /**
  * Created by rchabot on 05/12/15.
@@ -28,9 +24,9 @@ public class ParkingBusiness implements IParkingBusiness{
     }
 
     @Override
-    public void retrieveParkingPlaces(final IParkingBusinessListener listener) {
+    public void retrieveParkingPlaces(OpenDataRetriever retriever, final IParkingBusinessListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        parkingConverter.retrieveParkingPlaces(new IParkingConverterListener() {
+        parkingConverter.retrieveParkingPlaces(retriever, new IParkingConverterListener() {
             @Override
             public void onSuccess(final ParkingContainer parking) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");

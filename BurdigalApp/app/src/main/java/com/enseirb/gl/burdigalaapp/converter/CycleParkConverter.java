@@ -9,6 +9,7 @@ import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ public class CycleParkConverter implements ICycleParkConverter{
     }
 
     @Override
-    public void retrieveCycleParkPlaces(final ICycleParkConverterListener listener) {
+    public void retrieveCycleParkPlaces(OpenDataRetriever retriever, final ICycleParkConverterListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        cycleParkDAO.retrieveCycleParkPlaces(new ICycleParkDAOListener() {
+        cycleParkDAO.retrieveCycleParkPlaces(retriever, new ICycleParkDAOListener() {
             @Override
             public void onSuccess(List<CycleParkDTO> cycleParkDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");

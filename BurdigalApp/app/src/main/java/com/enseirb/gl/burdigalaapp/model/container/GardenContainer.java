@@ -2,8 +2,9 @@ package com.enseirb.gl.burdigalaapp.model.container;
 
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.Visitor;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,8 @@ public class GardenContainer implements IModelContainer<Garden> {
     }
 
     @Override
-    public void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener, Filter filter) {
-        retriever.retrievePlaces(this, listener, filter);
+    public void retrievePlaces(Visitor visitor, IPresenterListener listener, Filter filter, OpenDataRetriever retriever) {
+        visitor.callToBusiness(this, listener, filter, retriever);
     }
 
     public GardenContainer getSubContainer(Filter filter){

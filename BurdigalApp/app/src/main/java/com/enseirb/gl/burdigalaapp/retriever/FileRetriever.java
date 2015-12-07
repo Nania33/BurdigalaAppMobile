@@ -1,35 +1,31 @@
 package com.enseirb.gl.burdigalaapp.retriever;
 
-import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
-import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
-import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
-import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
+import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
+import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
+import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;
+import com.enseirb.gl.burdigalaapp.dao.listener.IToiletDAOListener;
 
 /**
- * Created by rchabot on 02/12/15.
+ * Created by rchabot on 07/12/15.
  */
 public class FileRetriever implements OpenDataRetriever {
-
-
     @Override
-    public void retrievePlaces(GardenContainer container, DataRetrieverListener listener, Filter filter) {
+    public void retrieveToiletPlaces(IToiletDAOListener listener) {
 
     }
 
     @Override
-    public void retrievePlaces(CycleParkContainer container, DataRetrieverListener listener, Filter filter) {
+    public void retrieveGardenPlaces(IGardenDAOListener listener) {
 
     }
 
     @Override
-    public void retrievePlaces(ToiletContainer container, DataRetrieverListener listener, Filter filter) {
+    public void retrieveCycleParkPlaces(ICycleParkDAOListener listener) {
 
     }
 
     @Override
-    public void retrievePlaces(ParkingContainer container, DataRetrieverListener listener, Filter filter) {
+    public void retrieveParkingPlaces(IParkingDAOListener listener) {
 
     }
 }

@@ -7,11 +7,8 @@ import com.enseirb.gl.burdigalaapp.converter.CycleParkConverter;
 import com.enseirb.gl.burdigalaapp.converter.ICycleParkConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.ICycleParkConverterListener;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
-import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
-
-import java.util.List;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 /**
  * Created by rchabot on 05/12/15.
@@ -27,9 +24,9 @@ public class CycleParkBusiness implements ICycleParkBusiness {
     }
 
     @Override
-    public void retrieveCycleParkPlaces(final ICycleParkBusinessListener listener) {
+    public void retrieveCycleParkPlaces(OpenDataRetriever retriever, final ICycleParkBusinessListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        cycleParkConverter.retrieveCycleParkPlaces(new ICycleParkConverterListener() {
+        cycleParkConverter.retrieveCycleParkPlaces(retriever, new ICycleParkConverterListener() {
             @Override
             public void onSuccess(final CycleParkContainer cyclePark) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");

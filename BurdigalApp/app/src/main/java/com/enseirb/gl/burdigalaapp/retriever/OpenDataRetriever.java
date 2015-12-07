@@ -1,24 +1,19 @@
 package com.enseirb.gl.burdigalaapp.retriever;
 
-import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
-import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
-import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
-import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
-import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
-import com.enseirb.gl.burdigalaapp.model.data.Garden;
-import com.enseirb.gl.burdigalaapp.model.data.Parking;
-import com.enseirb.gl.burdigalaapp.model.data.Toilet;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
+import android.util.Log;
 
-import java.util.List;
+import com.enseirb.gl.burdigalaapp.asynctask.AsyncTaskGetToilet;
+import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
+import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
+import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;
+import com.enseirb.gl.burdigalaapp.dao.listener.IToiletDAOListener;
 
 /**
- * Created by rchabot on 02/12/15.
+ * Created by rchabot on 07/12/15.
  */
 public interface OpenDataRetriever {
-    void retrievePlaces(GardenContainer container, DataRetrieverListener listener, Filter filter);
-    void retrievePlaces(CycleParkContainer container, DataRetrieverListener listener, Filter filter);
-    void retrievePlaces(ToiletContainer container, DataRetrieverListener listener, Filter filter);
-    void retrievePlaces(ParkingContainer container, DataRetrieverListener listener, Filter filter);
+    void retrieveToiletPlaces(final IToiletDAOListener listener);
+    void retrieveGardenPlaces(final IGardenDAOListener listener);
+    void retrieveCycleParkPlaces(final ICycleParkDAOListener listener);
+    void retrieveParkingPlaces(final IParkingDAOListener listener);
 }

@@ -9,6 +9,7 @@ import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ public class GardenConverter implements IGardenConverter {
     }
 
     @Override
-    public void retrieveGardenPlaces(final IGardenConverterListener listener) {
+    public void retrieveGardenPlaces(OpenDataRetriever retriever, final IGardenConverterListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        gardenDAO.retrieveGardenPlaces(new IGardenDAOListener() {
+        gardenDAO.retrieveGardenPlaces(retriever, new IGardenDAOListener() {
             @Override
             public void onSuccess(List<GardenDTO> gardenDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");

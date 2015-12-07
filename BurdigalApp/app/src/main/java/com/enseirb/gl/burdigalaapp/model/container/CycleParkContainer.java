@@ -2,8 +2,9 @@ package com.enseirb.gl.burdigalaapp.model.container;
 
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.Visitor;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class CycleParkContainer implements IModelContainer<CyclePark> {
     }
 
     @Override
-    public void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener, Filter filter) {
-        retriever.retrievePlaces(this, listener, filter);
+    public void retrievePlaces(Visitor businessVisitor, IPresenterListener listener, Filter filter, OpenDataRetriever retriever) {
+        businessVisitor.callToBusiness(this, listener, filter, retriever);
     }
 }

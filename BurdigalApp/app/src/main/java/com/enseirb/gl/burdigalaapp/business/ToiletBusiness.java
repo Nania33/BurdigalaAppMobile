@@ -3,15 +3,12 @@ package com.enseirb.gl.burdigalaapp.business;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.business.listener.IToiletBusinessListener;
-import com.enseirb.gl.burdigalaapp.business.listener.IToiletBusinessListener;
 import com.enseirb.gl.burdigalaapp.converter.ToiletConverter;
 import com.enseirb.gl.burdigalaapp.converter.IToiletConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IToiletConverterListener;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
-import com.enseirb.gl.burdigalaapp.model.data.Toilet;
-
-import java.util.List;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 /**
  * Created by rchabot on 03/12/15.
@@ -27,9 +24,9 @@ public class ToiletBusiness implements IToiletBusiness {
     }
 
     @Override
-    public void retrieveToiletPlaces(final IToiletBusinessListener listener) {
+    public void retrieveToiletPlaces(OpenDataRetriever retriever, final IToiletBusinessListener listener) {
         Log.d(TAG, "[retrieveToiletPlaces()] - start");
-        gardenConverter.retrieveToiletPlaces(new IToiletConverterListener() {
+        gardenConverter.retrieveToiletPlaces(retriever, new IToiletConverterListener() {
             @Override
             public void onSuccess(final ToiletContainer toilet) {
                 Log.d(TAG, "[retrieveToiletPlaces()] - onSuccess - start");
