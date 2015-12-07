@@ -3,7 +3,7 @@ package com.enseirb.gl.burdigalaapp.presenter.manager;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
-import com.enseirb.gl.burdigalaapp.filters.Filter;
+import com.enseirb.gl.burdigalaapp.exceptions.UnknownServiceException;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
@@ -15,9 +15,11 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
 import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,10 +30,8 @@ public class ServiceManager {
 
     private Map<Service, IModelContainer> myServices;
     private ServiceManagerListener mListener;
-    private Filter filter;
 
-    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener,Filter filter){
-        this.filter = filter;
+    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener){
         mListener = listener;
         myServices = new HashMap<>();
         for (Service service : services) {
@@ -58,13 +58,11 @@ public class ServiceManager {
                     public void onError(String message) {
                         mListener.onError(service, message);
                     }
-                }, filter);
+                });
                 Log.d(TAG, "RetrieveData for service : " + service);
             }
         }
     }
-
-
 
     public IModelContainer getContainer(Service service){
         return myServices.get(service);
@@ -84,6 +82,28 @@ public class ServiceManager {
             default:
                 throw new UnknownDataException("Type " + type + " inconnu");
         }
+    }
+
+    public Service getService(ServiceType serviceType) throws UnknownServiceException {
+        for (Service serv : myServices.keySet()){
+            if (serv.getType().equals(serviceType)){
+                return serv;
+            }
+        }
+        throw new UnknownServiceException("Service " + serviceType.toString() + " inconnu");
+    }
+
+    public int getPointIndex (Service service, LatLng position) throws UnknownDataException {
+        IModelContainer container = myServices.get(service);
+        List<Model> models = container.getModels();
+        Model model;
+        for (int i=0;i<models.size();i++){
+            model = models.get(i);
+            if (model.getLatLng().equals(position)){
+                return i;
+            }
+        }
+        throw new UnknownDataException("Position " + position.toString() + " inconnue");
     }
 
     public interface ServiceManagerListener {
