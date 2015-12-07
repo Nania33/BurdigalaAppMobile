@@ -16,13 +16,14 @@ import java.util.List;
 
 
 public class nearestPointsFilter implements Filter {
-    private final int N_NEAREST_LOCATIONS = 10;
+    private int nbPoints;
     private LatLng currentLocation;
     private ArrayList<Integer> listPositions;
     private ArrayList <Double> listDistances;
 
-    public nearestPointsFilter(LatLng currentLocation){
+    public nearestPointsFilter(int nbPoints, LatLng currentLocation){
         super();
+        this.nbPoints = nbPoints;
         this.currentLocation = currentLocation;
     }
 
@@ -30,7 +31,7 @@ public class nearestPointsFilter implements Filter {
     @Override
     public GardenContainer filterModels(GardenContainer container) {
         List<Garden> result = new ArrayList<>();
-        nearestPositions(container.getModels(), N_NEAREST_LOCATIONS);
+        nearestPositions(container.getModels(), nbPoints);
         for (int i = 0 ; i<listPositions.size() ; i++){
             result.add(container.getModels().get(listPositions.get(i)));
         }
@@ -42,7 +43,7 @@ public class nearestPointsFilter implements Filter {
     @Override
     public CycleParkContainer filterModels(CycleParkContainer container) {
         List<CyclePark> result = new ArrayList<>();
-        nearestPositions(container.getModels(), N_NEAREST_LOCATIONS);
+        nearestPositions(container.getModels(), nbPoints);
         for (int i = 0 ; i<listPositions.size() ; i++){
             result.add(container.getModels().get(listPositions.get(i)));
         }
@@ -52,7 +53,7 @@ public class nearestPointsFilter implements Filter {
     @Override
     public ParkingContainer filterModels(ParkingContainer container) {
         List<Parking> result = new ArrayList<>();
-        nearestPositions(container.getModels(), N_NEAREST_LOCATIONS);
+        nearestPositions(container.getModels(), nbPoints);
         for (int i = 0 ; i<listPositions.size() ; i++){
             result.add(container.getModels().get(listPositions.get(i)));
         }
@@ -62,7 +63,7 @@ public class nearestPointsFilter implements Filter {
     @Override
     public ToiletContainer filterModels(ToiletContainer container) {
         List<Toilet> result = new ArrayList<>();
-        nearestPositions(container.getModels(), N_NEAREST_LOCATIONS);
+        nearestPositions(container.getModels(), nbPoints);
         for (int i = 0 ; i<listPositions.size() ; i++){
             result.add(container.getModels().get(listPositions.get(i)));
         }
