@@ -43,4 +43,23 @@ public class CycleParkBusiness implements ICycleParkBusiness {
             }
         });
     }
+
+    @Override
+    public void retrieveCycleParkPlacesFromFile(final ICycleParkBusinessListener listener){
+        Log.d(TAG,"[retrievePlacesFromFile()] - start");
+        cycleParkConverter.retrieveCycleParkPlacesFromFile(new ICycleParkConverterListener() {
+            @Override
+            public void onSuccess(List<CyclePark> cyclePark) {
+                Log.d(TAG, "[retrievePlacesFromFile()] - onSuccess - start");
+                // TODO appliquer le filtre
+                listener.onSuccess(cyclePark);
+                Log.d(TAG, "[retrievePlacesFromFile()] - onSuccess - end");
+            }
+
+            @Override
+            public void onError(String message) {
+                listener.onError(message);
+            }
+        });
+    }
 }

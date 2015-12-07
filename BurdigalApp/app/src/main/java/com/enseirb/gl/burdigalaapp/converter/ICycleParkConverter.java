@@ -9,5 +9,6 @@ import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
  */
 public interface ICycleParkConverter {
     void retrieveCycleParkPlaces(final ICycleParkConverterListener listener);
+    void retrieveCycleParkPlacesFromFile(final ICycleParkConverterListener listener);
     CyclePark convert(CycleParkDTO gardenDTO);
 }

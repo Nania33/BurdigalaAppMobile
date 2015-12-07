@@ -19,6 +19,7 @@ import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
+import com.enseirb.gl.burdigalaapp.preferences.MapsActivityPreferences;
 import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueData;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.CycleParkDetailFragment;
@@ -65,6 +66,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private ArrayList<Service> listOfServices = new ArrayList<>();
 
+    private MapsActivityPreferences mapsActivityPreferences;
+
     private ServiceManager serviceManager;
 
     private BlockingQueue<BlockingQueueData> queue = new LinkedBlockingQueue<>();
@@ -77,6 +80,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         listOfServices = getIntent().getParcelableArrayListExtra(LIST_OF_SERVICES);
+
+       initializeMapsActivityPreferences();
 
         for (Service service : listOfServices)
             if (service.isSelected())
@@ -93,6 +98,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void initializeMapsActivityPreferences() {
+        mapsActivityPreferences = new MapsActivityPreferences(this);
+        mapsActivityPreferences.loadPreferences();
+    }
 
 
     /*******************************

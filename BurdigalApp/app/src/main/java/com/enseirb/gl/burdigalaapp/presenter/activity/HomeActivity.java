@@ -3,7 +3,9 @@ package com.enseirb.gl.burdigalaapp.presenter.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,6 +14,7 @@ import android.widget.ListAdapter;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
+import com.enseirb.gl.burdigalaapp.preferences.HomeActivityPreferences;
 import com.enseirb.gl.burdigalaapp.presenter.adapter.SelectMultipleItemsAdapter;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
@@ -23,6 +26,7 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
+    private final String blank = "";
 
     private AbsListView mListView;
     private ListAdapter mAdapter;
@@ -30,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private ArrayList<Service> mItemsToDiplay;
     private List<Map<String, String>> mListOfChoices;
+    private HomeActivityPreferences homeActivityPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         initializeListOfChoices();
+        initializeHomeActivityPreferences();
+        loadHomeActivityPreferences(mItemsToDiplay);
 
         btnStartMap = (Button) findViewById(R.id.btn_start_map_activity);
         btnStartMap.setOnClickListener(new View.OnClickListener() {
@@ -51,8 +58,12 @@ public class HomeActivity extends AppCompatActivity {
 
         mListView = (AbsListView) findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+
     }
 
+    private void initializeHomeActivityPreferences(){
+        homeActivityPreferences = new HomeActivityPreferences(this);
+    }
 
     private void initializeListOfChoices(){
         mItemsToDiplay = new ArrayList<>();
@@ -71,8 +82,49 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void startMapsActivity(ArrayList<Service> items){
+
+        saveHomeActivityPreferences(items);
+
         Intent intent = MapsActivity.getIntent(this, items);
         startActivity(intent);
+    }
+
+    private void loadHomeActivityPreferences(ArrayList<Service> items) {
+        homeActivityPreferences.loadPreferences();
+        Map<String,String> preferences = homeActivityPreferences.getServices();
+        for(Map.Entry<String,String> preference : preferences.entrySet()){
+            Log.d(TAG,"[loadHomeActivityPreferences] - selected - " + preference.getValue());
+            for(Service item : items){
+                if(preference.getValue().equals(item.getName())){
+                    item.select();
+                }
+                else{
+                    item.unselect();
+                }
+            }
+        }
+    }
+
+    private boolean noCheckBoxSelected(ArrayList<Service> items) {
+        for(Service item : items){
+            if(item.isSelected()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void saveHomeActivityPreferences(ArrayList<Service> items) {
+        for(Service item : items){
+            if(item.isSelected()){
+                Log.d(TAG,"[isSelected] - " + item.getName() + " : "+  item.isSelected());
+                homeActivityPreferences.addServiceToPreferences(item.getName(),item.getName());
+            }
+            else{
+                homeActivityPreferences.removeServiceFromPreferences(item.getName());
+            }
+        }
+        homeActivityPreferences.savePreferences();
     }
 
     public void checkBoxHandler(View v) {

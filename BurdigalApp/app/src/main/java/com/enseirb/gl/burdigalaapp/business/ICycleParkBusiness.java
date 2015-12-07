@@ -7,4 +7,5 @@ import com.enseirb.gl.burdigalaapp.business.listener.ICycleParkBusinessListener;
  */
 public interface ICycleParkBusiness {
     void retrieveCycleParkPlaces(final ICycleParkBusinessListener listener);
+    void retrieveCycleParkPlacesFromFile(final ICycleParkBusinessListener listener);
 }

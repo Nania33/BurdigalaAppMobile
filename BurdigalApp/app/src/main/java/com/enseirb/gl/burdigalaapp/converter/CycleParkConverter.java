@@ -3,6 +3,7 @@ package com.enseirb.gl.burdigalaapp.converter;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.converter.listener.ICycleParkConverterListener;
+import com.enseirb.gl.burdigalaapp.dao.FileCycleParkDAO;
 import com.enseirb.gl.burdigalaapp.dao.ICycleParkDAO;
 import com.enseirb.gl.burdigalaapp.dao.OpenDataCycleParkDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
@@ -19,9 +20,11 @@ public class CycleParkConverter implements ICycleParkConverter{
     public static final String TAG = "CycleParkConverter";
 
     private ICycleParkDAO cycleParkDAO;
+    private ICycleParkDAO fileCycleParkDAO;
 
     public CycleParkConverter() {
         this.cycleParkDAO = new OpenDataCycleParkDAO();
+        this.fileCycleParkDAO = new FileCycleParkDAO();
     }
 
     @Override
@@ -41,6 +44,25 @@ public class CycleParkConverter implements ICycleParkConverter{
             }
         });
         Log.d(TAG, "[retrievePlaces()] - end");
+    }
+
+    @Override
+    public void retrieveCycleParkPlacesFromFile(final ICycleParkConverterListener listener) {
+        Log.d(TAG, "[retrievePlacesFromFile()] - start");
+        fileCycleParkDAO.retrieveCycleParkPlaces(new ICycleParkDAOListener() {
+            @Override
+            public void onSuccess(List<CycleParkDTO> cycleParkDTO) {
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
+                listener.onSuccess(convertToList(cycleParkDTO));
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
+            }
+
+            @Override
+            public void onError(String message) {
+                listener.onError(message);
+            }
+        });
+        Log.d(TAG, "[retrievePlacesFromFile()] - end");
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
  * Created by rchabot on 02/12/15.
  */
 public class FileRetriever implements OpenDataRetriever {
+    private static final String TAG = "FileRetriever";
 
 
     @Override
