@@ -1,6 +1,6 @@
 package com.enseirb.gl.burdigalaapp.business.listener;
 
-import com.enseirb.gl.burdigalaapp.model.Garden;
+import com.enseirb.gl.burdigalaapp.model.data.Garden;
 
 import java.util.List;
 

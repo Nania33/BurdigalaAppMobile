@@ -3,7 +3,6 @@ package com.enseirb.gl.burdigalaapp.presenter.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -14,8 +13,9 @@ import android.widget.ListAdapter;
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.presenter.adapter.SelectMultipleItemsAdapter;
-import com.enseirb.gl.burdigalaapp.presenter.choices.ChoiceEnum;
-import com.enseirb.gl.burdigalaapp.presenter.item.DataItem;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
+import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
+import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
     private ListAdapter mAdapter;
     private Button btnStartMap;
 
-    private List<DataItem> mItemsToDiplay;
+    private ArrayList<Service> mItemsToDiplay;
     private List<Map<String, String>> mListOfChoices;
 
     @Override
@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         mAdapter = new SelectMultipleItemsAdapter(this, mListOfChoices , R.layout.item_list_home_activity,
-                new String[] {DataItem.KEY_NAME}, new int[]{R.id.tv_item_name});
+                new String[] {Service.KEY_NAME}, new int[]{R.id.tv_item_name});
 
         mListView = (AbsListView) findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
@@ -56,9 +56,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initializeListOfChoices(){
         mItemsToDiplay = new ArrayList<>();
-        for (ChoiceEnum choice : ChoiceEnum.values()) {
+        for (ServiceType choice : ServiceType.values()) {
             try {
-                mItemsToDiplay.add(new DataItem(choice));
+                mItemsToDiplay.add(ServiceFactory.makeChoice(choice));
             } catch (UnknownDataException ex) {
                 System.out.println("Erreur de type : " + ex.getMessage());
                 ex.printStackTrace();
@@ -66,14 +66,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         mListOfChoices = new ArrayList<>();
-        for (DataItem item : mItemsToDiplay)
+        for (Service item : mItemsToDiplay)
             mListOfChoices.add(item.getMap());
     }
 
-    private void startMapsActivity(List<DataItem> items){
+    private void startMapsActivity(ArrayList<Service> items){
         Intent intent = MapsActivity.getIntent(this, items);
-        for (DataItem item : items)
-            Log.d(TAG, item.toString());
         startActivity(intent);
     }
 
@@ -83,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
 
         View itemView = mListView.getChildAt(position).findViewById(R.id.layout_item_raw);
 
-        DataItem item = mItemsToDiplay.get(position);
+        Service item = mItemsToDiplay.get(position);
 
         if (checkBox.isChecked()) {
             item.select();

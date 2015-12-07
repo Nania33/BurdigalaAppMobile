@@ -1,12 +1,13 @@
 package com.enseirb.gl.burdigalaapp.florian;
 
 import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.model.Model;
-import com.enseirb.gl.burdigalaapp.modelContainers.ModelContainer;
+import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
+import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
+import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
+import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by flo on 29/11/15.
@@ -22,7 +23,7 @@ public class nearestPointsFilter implements Filter {
         this.currentLocation = currentLocation;
     }
 
-    @Override
+    /*@Override
     public ModelContainer filterModels(List<Model> models) {
         List<Model> selectedModels = new LinkedList<Model>();
         nearestPositions(models, N_NEAREST_LOCATIONS);
@@ -30,9 +31,9 @@ public class nearestPointsFilter implements Filter {
             selectedModels.add(models.get(listPositions.get(i)));
         }
         return null;
-    }
+    }*/
 
-
+/*
     public void nearestPositions(List<Model> models, int numberLocations){
         listPositions = new LinkedList();
         listDistances = new LinkedList();
@@ -50,6 +51,7 @@ public class nearestPointsFilter implements Filter {
             i ++;
         }
     }
+    */
 
     public void insertPosition(LatLng position, int positionModel){
         int i = 0;
@@ -69,5 +71,25 @@ public class nearestPointsFilter implements Filter {
         double longitude = position.longitude;
         double distance = Math.sqrt(Math.pow((latitude - ourLatitude), 2) + Math.pow((longitude - ourLongitude), 2));
         return distance;
+    }
+
+    @Override
+    public GardenContainer filterModels(GardenContainer container) {
+        return null;
+    }
+
+    @Override
+    public CycleParkContainer filterModels(CycleParkContainer container) {
+        return null;
+    }
+
+    @Override
+    public ParkingContainer filterModels(ParkingContainer container) {
+        return null;
+    }
+
+    @Override
+    public ToiletContainer filterModels(ToiletContainer container) {
+        return null;
     }
 }

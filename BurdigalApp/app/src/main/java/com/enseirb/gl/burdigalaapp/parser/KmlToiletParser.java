@@ -36,8 +36,8 @@ public class KmlToiletParser {
                 String coordinates = eElement.getElementsByTagName("coordinates").item(0).getTextContent();
                 String[] parts = coordinates.trim().split(",");
 
-                String x = parts[0];
-                String y = parts[1];
+                String x = parts[1];
+                String y = parts[0];
 
                 String type = toiletDescription.get("type de toilettes").toString();
                 String address = toiletDescription.get("adresse").toString();

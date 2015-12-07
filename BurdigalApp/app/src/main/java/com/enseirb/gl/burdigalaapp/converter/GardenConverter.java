@@ -7,8 +7,7 @@ import com.enseirb.gl.burdigalaapp.dao.IGardenDAO;
 import com.enseirb.gl.burdigalaapp.dao.OpenDataGardenDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
-import com.enseirb.gl.burdigalaapp.model.Garden;
-import com.google.android.gms.maps.model.LatLng;
+import com.enseirb.gl.burdigalaapp.model.data.Garden;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +26,13 @@ public class GardenConverter implements IGardenConverter {
 
     @Override
     public void retrieveGardenPlaces(final IGardenConverterListener listener) {
-        Log.d(TAG, "[retrieveGardenPlaces()] - start");
+        Log.d(TAG, "[retrievePlaces()] - start");
         gardenDAO.retrieveGardenPlaces(new IGardenDAOListener() {
             @Override
             public void onSuccess(List<GardenDTO> gardenDTO) {
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - start");
-                for (GardenDTO dto : gardenDTO)
-                    Log.d(TAG, dto.toString());
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
                 listener.onSuccess(convertToList(gardenDTO));
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - end");
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
             @Override
@@ -43,7 +40,7 @@ public class GardenConverter implements IGardenConverter {
                 listener.onError(message);
             }
         });
-        Log.d(TAG, "[retrieveGardenPlaces()] - end");
+        Log.d(TAG, "[retrievePlaces()] - end");
     }
 
     @Override

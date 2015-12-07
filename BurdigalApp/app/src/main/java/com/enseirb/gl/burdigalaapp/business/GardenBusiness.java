@@ -6,8 +6,9 @@ import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
 import com.enseirb.gl.burdigalaapp.converter.GardenConverter;
 import com.enseirb.gl.burdigalaapp.converter.IGardenConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IGardenConverterListener;
-import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
-import com.enseirb.gl.burdigalaapp.model.Garden;
+import com.enseirb.gl.burdigalaapp.filters.Filter;
+import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
+import com.enseirb.gl.burdigalaapp.model.data.Garden;
 
 import java.util.List;
 
@@ -17,22 +18,23 @@ import java.util.List;
 public class GardenBusiness implements IGardenBusiness {
     private static final String TAG = "GardenBusiness";
     private IGardenConverter gardenConverter;
+    private Filter filter;
 
     public GardenBusiness() {
         this.gardenConverter = new GardenConverter();
+        this.filter = new LinearFilter(10);
     }
 
     @Override
     public void retrieveGardenPlaces(final IGardenBusinessListener listener) {
-        Log.d(TAG, "[retrieveGardenPlaces()] - start");
+        Log.d(TAG, "[retrievePlaces()] - start");
         gardenConverter.retrieveGardenPlaces(new IGardenConverterListener() {
             @Override
             public void onSuccess(List<Garden> garden) {
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - start");
-                for (Garden grd : garden)
-                    Log.d(TAG, grd.toString());
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
+                // TODO appliquer le filtre
                 listener.onSuccess(garden);
-                Log.d(TAG, "[retrieveGardenPlaces()] - onSuccess - end");
+                Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
             @Override

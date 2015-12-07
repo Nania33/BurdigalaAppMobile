@@ -2,7 +2,7 @@ package com.enseirb.gl.burdigalaapp.parser;
 
 import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
 import com.enseirb.gl.burdigalaapp.dto.PointS;
-import com.enseirb.gl.burdigalaapp.model.CyclePark;
+import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -43,8 +43,8 @@ public class KmlCycleParkParser {
 
                 String[] parts = coordinates.trim().split(",");
 
-                String x = parts[0];
-                String y = parts[1];
+                String x = parts[1];
+                String y = parts[0];
 
                 String type = parcDescription.get("Type de fixation").toString();
                 String spotNumber = parcDescription.get("Nombre").toString();

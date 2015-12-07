@@ -14,9 +14,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class ActivityTest2 extends FragmentActivity implements OnMapReadyCallback {
+public class ActivityTest2 {
+//extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    /*private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,6 @@ public class ActivityTest2 extends FragmentActivity implements OnMapReadyCallbac
 		}
 	    });  
     }
-
+*/
 
 }

@@ -16,11 +16,20 @@
     <dimen name="layout_margin_top_med">35dp</dimen>
     <dimen name="layout_margin_top_high">180dp</dimen>
     <dimen name="layout_margin_bottom_med">25dp</dimen>
+    <dimen name="layout_margin_bottom_low_low">5dp</dimen>
     <dimen name="text_size_low">20sp</dimen>
-    <dimen name="text_size_med">40sp</dimen>
+
+    <dimen name="text_size_big">40sp</dimen>
     <dimen name="padding_left_low">4dp</dimen>
     <dimen name="padding_left_med">20dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Detail fragments dimens !-->
+    <dimen name="text_size_detail_title">28sp</dimen>
+    <dimen name="text_size_normal">18sp</dimen>
+
+    <dimen name="detail_fragment_title_height">40dp</dimen>
+
+    <dimen name="list_fragment_name_height">26sp</dimen>
 </resources>
