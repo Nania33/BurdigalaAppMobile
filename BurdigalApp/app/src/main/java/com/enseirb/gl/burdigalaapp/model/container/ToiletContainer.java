@@ -28,7 +28,7 @@ public class ToiletContainer implements IModelContainer<Toilet> {
     }
 
     @Override
-    public List getModels() {
+    public List<Toilet> getModels() {
         return toilets;
     }
 

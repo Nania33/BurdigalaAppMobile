@@ -28,7 +28,7 @@ public class ParkingContainer implements IModelContainer<Parking>{
     }
 
     @Override
-    public List getModels() {
+    public List<Parking> getModels() {
         return parkings;
     }
 
