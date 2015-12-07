@@ -1,6 +1,10 @@
 package com.enseirb.gl.burdigalaapp.presenter.activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -51,8 +55,16 @@ public class HomeActivity extends AppCompatActivity {
 
         mListView = (AbsListView) findViewById(android.R.id.list);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-    }
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setMessage(R.string.error_network_unavailable)
+                    .setTitle(R.string.error_network_title);
+            builder.create().show();
+        }
+    }
 
     private void initializeListOfChoices(){
         mItemsToDiplay = new ArrayList<>();
