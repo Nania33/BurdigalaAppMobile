@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class nearestPointsFilter implements Filter {
+public class NearestPointsFilter implements Filter {
     private int nbPoints;
     private LatLng currentLocation;
     private ArrayList<Integer> listPositions;
     private ArrayList <Double> listDistances;
 
-    public nearestPointsFilter(int nbPoints, LatLng currentLocation){
+    public NearestPointsFilter(int nbPoints, LatLng currentLocation){
         super();
         this.nbPoints = nbPoints;
         this.currentLocation = currentLocation;
