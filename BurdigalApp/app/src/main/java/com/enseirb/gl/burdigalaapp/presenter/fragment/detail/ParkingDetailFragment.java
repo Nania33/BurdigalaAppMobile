@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.listener.InteractionListener;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 /**
@@ -35,6 +37,7 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
     private Parking parking;
 
     private OnFragmentInteractionListener mListener;
+    private LinearLayout titleLayout;
 
     public static ParkingDetailFragment newInstance(Service service, int position) {
         Log.d("DetailParking", "Les parking sont initialisés");
@@ -74,10 +77,18 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
         parkingName.setText(parking.getName());
 
         parkingSpotNumber = (TextView) view.findViewById(R.id.tv_parking_spot_number);
-        parkingSpotNumber.append(" "+parking.getParkingSpotNumber());
+        parkingSpotNumber.append(" " + parking.getParkingSpotNumber());
 
         parkingType = (TextView) view.findViewById(R.id.tv_parking_type);
-        parkingType.append(" "+parking.getParkingType());
+        parkingType.append(" " + parking.getParkingType());
+
+        titleLayout = (LinearLayout) view.findViewById(R.id.ll_focus);
+        titleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFocusRequired(parking);
+            }
+        });
 
         return view;
     }
@@ -99,8 +110,7 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onButtonReturnClick();
+    public interface OnFragmentInteractionListener extends InteractionListener {
         public Parking getParking(Service service, int position);
     }
 

@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
+import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.listener.InteractionListener;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 
 /**
@@ -37,6 +39,7 @@ public class GardenDetailFragment extends android.support.v4.app.Fragment {
     private Garden garden;
 
     private OnFragmentInteractionListener mListener;
+    private LinearLayout titleLayout;
 
     public static GardenDetailFragment newInstance(Service service, int position) {
         Log.d("DetailGarden", "Les gardentes sont initialisés");
@@ -87,6 +90,14 @@ public class GardenDetailFragment extends android.support.v4.app.Fragment {
         gardenUse = (TextView) view.findViewById(R.id.tv_garden_use);
         gardenUse.append(" " + garden.getUse());
 
+        titleLayout = (LinearLayout) view.findViewById(R.id.ll_focus);
+        titleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFocusRequired(garden);
+            }
+        });
+
         return view;
     }
 
@@ -107,8 +118,7 @@ public class GardenDetailFragment extends android.support.v4.app.Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        public void onButtonReturnClick();
+    public interface OnFragmentInteractionListener extends InteractionListener{
         public Garden getGarden(Service service, int position);
     }
 
