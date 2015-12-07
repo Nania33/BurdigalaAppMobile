@@ -10,6 +10,7 @@ import com.enseirb.gl.burdigalaapp.business.listener.ICycleParkBusinessListener;
 import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
 import com.enseirb.gl.burdigalaapp.business.listener.IParkingBusinessListener;
 import com.enseirb.gl.burdigalaapp.business.listener.IToiletBusinessListener;
+import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
@@ -29,8 +30,8 @@ public class WebRetriever implements OpenDataRetriever {
     private static final String TAG = "WebRetriever";
 
     @Override
-    public void retrievePlaces(final GardenContainer container, final DataRetrieverListener listener) {
-        GardenBusiness gardenBusiness = new GardenBusiness();
+    public void retrievePlaces(final GardenContainer container, final DataRetrieverListener listener, Filter filter){
+        GardenBusiness gardenBusiness = new GardenBusiness(filter);
         Log.d(TAG, "[retrievePlaces()] - start retrieve gardens");
         gardenBusiness.retrieveGardenPlaces(new IGardenBusinessListener() {
             @Override
@@ -47,9 +48,11 @@ public class WebRetriever implements OpenDataRetriever {
         Log.d(TAG, "[retrievePlaces()] - end retrieve gardens");
     }
 
+
+
     @Override
-    public void retrievePlaces(final CycleParkContainer container, final DataRetrieverListener listener) {
-        CycleParkBusiness cycleParkBusiness = new CycleParkBusiness();
+    public void retrievePlaces(final CycleParkContainer container, final DataRetrieverListener listener, Filter filter) {
+        CycleParkBusiness cycleParkBusiness = new CycleParkBusiness(filter);
         Log.d(TAG, "[retrievePlaces()] - start retrieve cycleparks");
         cycleParkBusiness.retrieveCycleParkPlaces(new ICycleParkBusinessListener() {
             @Override
@@ -66,9 +69,11 @@ public class WebRetriever implements OpenDataRetriever {
         Log.d(TAG, "[retrievePlaces()] - end retrieve cycleparks");
     }
 
+
+
     @Override
-    public void retrievePlaces(final ToiletContainer container, final DataRetrieverListener listener) {
-        ToiletBusiness toiletBusiness = new ToiletBusiness();
+    public void retrievePlaces(final ToiletContainer container, final DataRetrieverListener listener, Filter filter) {
+        ToiletBusiness toiletBusiness = new ToiletBusiness(filter);
         Log.d(TAG, "[retrievePlaces()] - start retrieve toilets");
         toiletBusiness.retrieveToiletPlaces(new IToiletBusinessListener() {
             @Override
@@ -86,8 +91,8 @@ public class WebRetriever implements OpenDataRetriever {
     }
 
     @Override
-    public void retrievePlaces(final ParkingContainer container, final DataRetrieverListener listener) {
-        ParkingBusiness parkingBusiness = new ParkingBusiness();
+    public void retrievePlaces(final ParkingContainer container, final DataRetrieverListener listener, Filter filter) {
+        ParkingBusiness parkingBusiness = new ParkingBusiness(filter);
         Log.d(TAG, "[retrievePlaces()] - start retrieve parkings");
         parkingBusiness.retrieveParkingPlaces(new IParkingBusinessListener() {
             @Override

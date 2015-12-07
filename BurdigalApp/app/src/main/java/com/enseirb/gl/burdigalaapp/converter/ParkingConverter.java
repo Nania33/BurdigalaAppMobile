@@ -7,6 +7,7 @@ import com.enseirb.gl.burdigalaapp.dao.IParkingDAO;
 import com.enseirb.gl.burdigalaapp.dao.OpenDataParkingDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ParkingDTO;
+import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class ParkingConverter implements IParkingConverter {
             @Override
             public void onSuccess(List<ParkingDTO> parkingDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                listener.onSuccess(convertToList(parkingDTO));
+                listener.onSuccess(convertToContainer(parkingDTO));
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
@@ -49,11 +50,11 @@ public class ParkingConverter implements IParkingConverter {
                 parkingDTO.getPoint().toLatLng());
     }
 
-    public List<Parking> convertToList(List<ParkingDTO> dtoList) {
+    public ParkingContainer convertToContainer(List<ParkingDTO> dtoList) {
         List<Parking> convertedList = new ArrayList<>();
         for (ParkingDTO dto : dtoList){
             convertedList.add(convert(dto));
         }
-        return convertedList;
+        return new ParkingContainer(convertedList);
     }
 }

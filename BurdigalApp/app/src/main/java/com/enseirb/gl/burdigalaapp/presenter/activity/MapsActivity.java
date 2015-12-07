@@ -16,6 +16,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
+import com.enseirb.gl.burdigalaapp.filters.NearestPointsFilter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
@@ -158,7 +160,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     e.printStackTrace();
                 }
             }
-        });
+        }, new NearestPointsFilter(6,new LatLng(bordeauxCenterLat,bordeauxCenterLong)));
         for (Service service : listOfServices) {
             Log.d(TAG, service.toString() + " " + service.getType());
         }

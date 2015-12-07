@@ -3,6 +3,7 @@ package com.enseirb.gl.burdigalaapp.presenter.manager;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
+import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
@@ -27,8 +28,10 @@ public class ServiceManager {
 
     private Map<Service, IModelContainer> myServices;
     private ServiceManagerListener mListener;
+    private Filter filter;
 
-    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener){
+    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener,Filter filter){
+        this.filter = filter;
         mListener = listener;
         myServices = new HashMap<>();
         for (Service service : services) {
@@ -55,11 +58,13 @@ public class ServiceManager {
                     public void onError(String message) {
                         mListener.onError(service, message);
                     }
-                });
+                }, filter);
                 Log.d(TAG, "RetrieveData for service : " + service);
             }
         }
     }
+
+
 
     public IModelContainer getContainer(Service service){
         return myServices.get(service);

@@ -1,5 +1,6 @@
 package com.enseirb.gl.burdigalaapp.retriever;
 
+import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
@@ -16,8 +17,8 @@ import java.util.List;
  * Created by rchabot on 02/12/15.
  */
 public interface OpenDataRetriever {
-    void retrievePlaces(GardenContainer container, DataRetrieverListener listener);
-    void retrievePlaces(CycleParkContainer container, DataRetrieverListener listener);
-    void retrievePlaces(ToiletContainer container, DataRetrieverListener listener);
-    void retrievePlaces(ParkingContainer container, DataRetrieverListener listener);
+    void retrievePlaces(GardenContainer container, DataRetrieverListener listener, Filter filter);
+    void retrievePlaces(CycleParkContainer container, DataRetrieverListener listener, Filter filter);
+    void retrievePlaces(ToiletContainer container, DataRetrieverListener listener, Filter filter);
+    void retrievePlaces(ParkingContainer container, DataRetrieverListener listener, Filter filter);
 }

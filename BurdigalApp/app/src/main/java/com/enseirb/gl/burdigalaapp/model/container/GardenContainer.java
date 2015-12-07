@@ -32,8 +32,8 @@ public class GardenContainer implements IModelContainer<Garden> {
     }
 
     @Override
-    public void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener) {
-        retriever.retrievePlaces(this, listener);
+    public void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener, Filter filter) {
+        retriever.retrievePlaces(this, listener, filter);
     }
 
     public GardenContainer getSubContainer(Filter filter){

@@ -1,13 +1,12 @@
 package com.enseirb.gl.burdigalaapp.converter.listener;
 
-import com.enseirb.gl.burdigalaapp.model.data.Garden;
+import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 
-import java.util.List;
 
 /**
  * Created by rchabot on 17/11/15.
  */
 public interface IGardenConverterListener {
-    void onSuccess(final List<Garden> garden);
+    void onSuccess(final GardenContainer garden);
     void onError(String message);
 }

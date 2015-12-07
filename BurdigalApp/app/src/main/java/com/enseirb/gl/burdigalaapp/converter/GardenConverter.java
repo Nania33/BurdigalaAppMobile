@@ -7,6 +7,7 @@ import com.enseirb.gl.burdigalaapp.dao.IGardenDAO;
 import com.enseirb.gl.burdigalaapp.dao.OpenDataGardenDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
+import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class GardenConverter implements IGardenConverter {
             @Override
             public void onSuccess(List<GardenDTO> gardenDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                listener.onSuccess(convertToList(gardenDTO));
+                listener.onSuccess(convertToContainer(gardenDTO));
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
@@ -50,11 +51,11 @@ public class GardenConverter implements IGardenConverter {
     }
 
     // return container when they are implemented
-    public List<Garden> convertToList(List<GardenDTO> dtoList) {
+    public GardenContainer convertToContainer(List<GardenDTO> dtoList) {
         List<Garden> convertedList = new ArrayList<>();
         for (GardenDTO dto : dtoList){
             convertedList.add(convert(dto));
         }
-        return convertedList;
+        return new GardenContainer(convertedList);
     }
 }

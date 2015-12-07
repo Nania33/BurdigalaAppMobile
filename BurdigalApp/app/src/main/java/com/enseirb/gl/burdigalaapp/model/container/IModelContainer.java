@@ -14,5 +14,6 @@ public interface IModelContainer<T extends Model> {
     IModelContainer getSubContainer (Filter filter);
     List<T> getModels();
     void put(List<T> data);
-    void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener);
+    //void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener);
+    void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener, Filter filter);
 }
