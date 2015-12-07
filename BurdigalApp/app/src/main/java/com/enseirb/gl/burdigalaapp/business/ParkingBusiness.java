@@ -42,4 +42,9 @@ public class ParkingBusiness implements IParkingBusiness{
             }
         });
     }
+
+    @Override
+    public ParkingContainer filterParkings(ParkingContainer container) {
+        return filter.filterModels(container);
+    }
 }

@@ -45,4 +45,9 @@ public class GardenBusiness implements IGardenBusiness {
             }
         });
     }
+
+    @Override
+    public GardenContainer filterGardens(GardenContainer container) {
+        return filter.filterModels(container);
+    }
 }

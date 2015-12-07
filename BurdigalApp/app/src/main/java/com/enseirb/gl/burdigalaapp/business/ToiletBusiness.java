@@ -41,4 +41,9 @@ public class ToiletBusiness implements IToiletBusiness {
             }
         });
     }
+
+    @Override
+    public ToiletContainer filterToilets(ToiletContainer container) {
+        return filter.filterModels(container);
+    }
 }

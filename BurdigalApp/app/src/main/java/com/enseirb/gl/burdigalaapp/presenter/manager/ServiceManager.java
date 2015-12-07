@@ -13,8 +13,8 @@ import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
-import com.enseirb.gl.burdigalaapp.presenter.visitor.ConcreteVisitor;
-import com.enseirb.gl.burdigalaapp.presenter.visitor.listener.IPresenterListener;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.ConcreteBusinessVisitor;
+import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -31,9 +31,8 @@ public class ServiceManager {
 
     private Map<Service, IModelContainer> myServices;
     private ServiceManagerListener mListener;
-    private Filter filter;
-    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener,Filter filter){
-        this.filter = filter;
+
+    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener){
         mListener = listener;
         myServices = new HashMap<>();
         for (Service service : services) {
@@ -46,11 +45,11 @@ public class ServiceManager {
         }
     }
 
-    public void initializeServices(){
+    public void initializeServices(Filter filter){
         for (final Service service : myServices.keySet()) {
             if (service.isSelected()) {
                 IModelContainer container = myServices.get(service);
-                container.retrievePlaces(new ConcreteVisitor(), new IPresenterListener() {
+                container.retrievePlaces(new ConcreteBusinessVisitor(), filter, new WebRetriever(), new IPresenterListener() {
                     @Override
                     public void onDataRetreived() {
                         mListener.onDataRetrieved(service);
@@ -60,11 +59,21 @@ public class ServiceManager {
                     public void onError(String message) {
                         mListener.onError(service, message);
                     }
-                },filter, new WebRetriever());
+                });
                 Log.d(TAG, "RetrieveData for service : " + service);
             }
         }
     }
+
+
+    public List<Model> pointsToDisplatOnMap(Service service, Filter filter){
+        return getContainer(service).applyFilter(new ConcreteBusinessVisitor(), filter).getModels();
+    }
+
+    public List<Model> pointsToDisplayOnList(Service service, Filter filter){
+        return getContainer(service).applyFilter(new ConcreteBusinessVisitor(), filter).getModels();
+    }
+
 
     public IModelContainer getContainer(Service service){
         return myServices.get(service);

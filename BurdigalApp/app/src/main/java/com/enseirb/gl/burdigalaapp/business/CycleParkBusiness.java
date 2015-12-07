@@ -42,4 +42,9 @@ public class CycleParkBusiness implements ICycleParkBusiness {
             }
         });
     }
+
+    @Override
+    public CycleParkContainer filterCycleParks(CycleParkContainer container) {
+        return filter.filterModels(container);
+    }
 }

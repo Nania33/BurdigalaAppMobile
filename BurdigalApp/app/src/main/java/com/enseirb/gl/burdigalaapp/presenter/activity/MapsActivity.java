@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,12 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
-import com.enseirb.gl.burdigalaapp.exceptions.UnknownServiceException;
 import com.enseirb.gl.burdigalaapp.filters.NearestPointsFilter;
+import com.enseirb.gl.burdigalaapp.filters.NoFilter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
@@ -32,14 +30,11 @@ import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ParkingDetailFragme
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ToiletDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -161,23 +156,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     e.printStackTrace();
                 }
             }
-        },new NearestPointsFilter(6,new LatLng(bordeauxCenterLat,bordeauxCenterLong)));
+        });
         for (Service service : listOfServices) {
             Log.d(TAG, service.toString() + " " + service.getType());
         }
         Log.d(TAG, "MainThread : " + Thread.currentThread().getId());
-        serviceManager.initializeServices();
+        serviceManager.initializeServices(new NoFilter());
     }
 
-    private void initializeOnMarkerClickListener(){
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                goToPointDetails(marker.getTitle(), marker.getPosition());
-                return true;
-            }
-        });
-    }
+
 
 
     /*******************************
@@ -203,7 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeMap(){
-        float zoom = 11.8f;
+        float zoom = 13f;
         LatLng userLocation = getLastBestLocation();
 
         mMap.addMarker(new MarkerOptions().position(userLocation));
@@ -213,8 +200,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         initializeOnMarkerClickListener();
     }
 
+    private void initializeOnMarkerClickListener(){
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                goToPointDetails(marker.getTitle(), marker.getPosition());
+                return true;
+            }
+        });
+    }
+
     public void displayPointsOnMap(Service service) {
-        List<Model> points = getDataListToDisplay(service);
+        List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, userPosition));
         for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
             mMap.addMarker(new MarkerOptions().position(point)
@@ -264,17 +261,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         thread.start();
     }
 
+
     private void goToPointDetails(String serv, LatLng position){
         try {
             Service service = serviceManager.getService(ServiceType.toServiceType(serv));
             int itemPosition = serviceManager.getPointIndex(service, position);
+            btnShowList.setVisibility(View.GONE);
             onListItemClick(service, itemPosition);
-            btnShowList.setVisibility(View.INVISIBLE);
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
     }
+
 
     public LatLng getLastBestLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -315,6 +314,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      *******************************/
 
 
+
+    /*******************************
+     *  ListFragment Listener      *
+     *******************************/
+
     @Override
     public void onListItemClick(Service service, int itemPosition) {
         depth++;
@@ -335,8 +339,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public List<Model> getDataListToDisplay(Service service) {
-        return serviceManager.getContainer(service).getModels();
+    public List<Model> getListOfPoints(Service service) {
+        return serviceManager.pointsToDisplayOnList(service, new NoFilter());
     }
 
     @Override
@@ -365,6 +369,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ft.commit();
     }
 
+
+
+    /*******************************
+     *  DetailFragment Listener    *
+     *******************************/
+
     @Override
     public void onButtonReturnClick() {
         onBackPressed();
@@ -374,8 +384,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onFocusRequired(Model point) {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15.f));
-        onBackPressed();
-        onBackPressed();
+        if(depth == 1) {
+            onBackPressed();
+        } else if (depth == 2) {
+            onBackPressed();
+            onBackPressed();
+        }
     }
 
     @Override
@@ -395,20 +409,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public Toilet getToilet(Service service, int position) {
-        Toilet toilet = ((List<Toilet>) serviceManager.getContainer(service).getModels()).get(position);
-        return toilet;
-    }
-
-    public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){
-        Intent i = new Intent(ctx, MapsActivity.class);
-        i.putParcelableArrayListExtra(LIST_OF_SERVICES, itemsToDisplay);
-        return i;
+        return ((List<Toilet>) serviceManager.getContainer(service).getModels()).get(position);
     }
 
 
     /*******************************
      *       Other functions       *
      *******************************/
+
+    public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){
+        Intent i = new Intent(ctx, MapsActivity.class);
+        i.putParcelableArrayListExtra(LIST_OF_SERVICES, itemsToDisplay);
+        return i;
+    }
 
     private void putFragmentInContainer(Fragment fragment, int fragment_container) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

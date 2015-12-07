@@ -59,7 +59,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         }
 
         if (mListener != null)
-            modelList = new ArrayList<>(mListener.getDataListToDisplay(service));
+            modelList = new ArrayList<>(mListener.getListOfPoints(service));
         else
             modelList = new ArrayList<>();
 
@@ -150,7 +150,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     public interface OnFragmentInteractionListener {
         public void onListItemClick(Service service, int position);
         public void onButtonReturnToMapClick();
-        public List<Model> getDataListToDisplay(Service service);
+        public List<Model> getListOfPoints(Service service);
 
         void onNextPressed();
 

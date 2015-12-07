@@ -19,7 +19,7 @@ import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
-import com.enseirb.gl.burdigalaapp.presenter.visitor.listener.IPresenterListener;
+import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 import java.util.List;
@@ -27,8 +27,8 @@ import java.util.List;
 /**
  * Created by rchabot on 02/12/15.
  */
-public class ConcreteVisitor implements Visitor {
-    private static final String TAG = "ConcreteVisitor";
+public class ConcreteBusinessVisitor implements BusinessVisitor {
+    private static final String TAG = "ConcreteBusinessVisitor";
 
     @Override
     public void callToBusiness(final GardenContainer container, final IPresenterListener listener, Filter filter, OpenDataRetriever retriever){
@@ -108,6 +108,31 @@ public class ConcreteVisitor implements Visitor {
             }
         });
         Log.d(TAG, "[retrievePlaces()] - end retrieve parkings");
+    }
+
+
+    @Override
+    public GardenContainer applyFilter(GardenContainer container, Filter filter) {
+        GardenBusiness business = new GardenBusiness(filter);
+        return business.filterGardens(container);
+    }
+
+    @Override
+    public CycleParkContainer applyFilter(CycleParkContainer container, Filter filter) {
+        CycleParkBusiness business = new CycleParkBusiness(filter);
+        return business.filterCycleParks(container);
+    }
+
+    @Override
+    public ToiletContainer applyFilter(ToiletContainer container, Filter filter) {
+        ToiletBusiness business = new ToiletBusiness(filter);
+        return business.filterToilets(container);
+    }
+
+    @Override
+    public ParkingContainer applyFilter(ParkingContainer container, Filter filter) {
+        ParkingBusiness business = new ParkingBusiness(filter);
+        return business.filterParkings(container);
     }
 
 

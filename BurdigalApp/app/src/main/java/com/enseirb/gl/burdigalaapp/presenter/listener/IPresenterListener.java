@@ -1,4 +1,4 @@
-package com.enseirb.gl.burdigalaapp.presenter.visitor.listener;
+package com.enseirb.gl.burdigalaapp.presenter.listener;
 
 /**
  * Created by rchabot on 04/12/15.
