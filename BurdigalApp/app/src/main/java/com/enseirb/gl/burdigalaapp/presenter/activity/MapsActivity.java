@@ -2,6 +2,8 @@ package com.enseirb.gl.burdigalaapp.presenter.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -53,6 +55,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String LIST_OF_SERVICES = "list_of_services";
     private static final String TAG = "MapsActivity";
+    private static final double bordeauxCenterLat = 44.836758;
+    private static final double bordeauxCenterLong = -0.578746;
 
     private GoogleMap mMap;
     private Button btnShowList;
@@ -185,12 +189,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeMap(){
-        double longitude = -0.566741222966319;
-        double latitude = 44.8384053932397;
         float zoom = 11.8f;
+        LatLng userLocation = getLastBestLocation();
 
-        LatLng reference = new LatLng(latitude, longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(reference));
+        mMap.addMarker(new MarkerOptions().position(userLocation));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
     }
 
@@ -245,12 +248,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         thread.start();
     }
 
+    private LatLng getLastBestLocation() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location locationGPS = null;
+        Location locationNet = null;
+
+        try {
+            locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        // if found, return the GPS location because it is more precise
+        if (locationGPS != null)
+            return new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
+
+        else if(locationNet != null)
+            return new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
+
+        // hard coded values at the center of Bordeaux if we can't get the location of the user.
+        return new LatLng(bordeauxCenterLat, bordeauxCenterLong);
+    }
 
 
-
-    /*******************************
-     *  Listeners implementations  *
-     *******************************/
+        /*******************************
+         *  Listeners implementations  *
+         *******************************/
 
 
     @Override
