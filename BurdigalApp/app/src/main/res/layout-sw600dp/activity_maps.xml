@@ -16,6 +16,7 @@
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:id="@+id/fragment_container_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             tools:context=".MapsActivity"/>
         <!-- android:name="com.google.android.gms.maps.SupportMapFragment" !-->
 
