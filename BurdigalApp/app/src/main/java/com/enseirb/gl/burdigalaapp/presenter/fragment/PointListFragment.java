@@ -139,13 +139,18 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         }
     }
 
+    public void update(){
+        modelList.clear();
+        populateList();
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
             mListener.onListItemClick(service, position);
         }
     }
-
 
     public interface OnFragmentInteractionListener {
         public void onListItemClick(Service service, int position);
@@ -156,5 +161,17 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
 
         void onPreviousPressed();
     }
+
+    private void populateList(){
+        if (mListener != null)
+            modelList = new ArrayList<>(mListener.getListOfPoints(service));
+        else
+            modelList = new ArrayList<>();
+    }
+
+    public Service getService(){
+        return this.service;
+    }
+
 
 }

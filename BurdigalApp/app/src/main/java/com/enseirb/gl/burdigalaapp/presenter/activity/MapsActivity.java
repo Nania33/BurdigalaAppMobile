@@ -134,11 +134,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onError(Service service, String message) {
                 Log.d(TAG, "onError : " + message);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
                 try {
                     queue.put(BlockingQueueData.recordFailure(service, message));
                 } catch (InterruptedException e) {
@@ -211,7 +206,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void displayPointsOnMap(Service service) {
-        List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, userPosition));
+        List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, new LatLng(bordeauxCenterLat, bordeauxCenterLong)));
         for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
             mMap.addMarker(new MarkerOptions().position(point)
@@ -220,6 +215,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+
+    private PointListFragment findListFragment(Service service){
+        for (PointListFragment fragment : listFragment){
+            if (fragment.getService() != null){
+                if (fragment.getService().equals(service)){
+                    return fragment;
+                }
+            } else {
+                Log.d(TAG, "Appel à onCreate non effectué");
+            }
+        }
+        return null;
+    }
 
     private void handleDataRetrieving(){
         Thread thread = new Thread(new Runnable() {
@@ -230,12 +238,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 try {
                     while ((data = queue.poll(5, TimeUnit.MINUTES)) != null){
                         final BlockingQueueData finalData = data;
+                        final Service service = finalData.getService();
                         if (data.isSucces()) {
+                            final PointListFragment fragment = findListFragment(service);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Log.d(TAG, "doSomeUpdate on thread " + Thread.currentThread().getId());
-                                    displayPointsOnMap(finalData.getService());
+                                    displayPointsOnMap(service);
+                                    if (fragment != null)
+                                        fragment.update();
+                                    else Log.d(TAG, "Fragment non trouvé");
                                 }
                             });
                         } else {
@@ -243,7 +256,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 @Override
                                 public void run() {
                                     Toast.makeText(MapsActivity.this,
-                                            "Erreur à la récupération des "+finalData.getService().getName(),
+                                            "Erreur à la récupération des "+service.getName(),
                                             Toast.LENGTH_LONG).show();
                                 }
                             });
