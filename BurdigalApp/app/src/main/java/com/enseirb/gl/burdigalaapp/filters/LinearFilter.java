@@ -12,9 +12,6 @@ import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 11/30/2015.
- */
 
 
 public class LinearFilter implements Filter{
@@ -26,29 +23,13 @@ public class LinearFilter implements Filter{
     }
 
 
-    private Garden getNextModelGarden(List<Garden> models){
-        return models.get(nbPoints);
-    }
-
-    private CyclePark getNextModelCyclePark(List<CyclePark> models){
-        return models.get(nbPoints);
-    }
-
-    private Parking getNextModelParking(List<Parking> models){
-        return models.get(nbPoints);
-    }
-
-    private Toilet getNextModelToilet(List<Toilet> models) {
-        return models.get(nbPoints);
-    }
-
     @Override
     public GardenContainer filterModels(GardenContainer container) {
         List<Garden> result = new ArrayList<>();
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
             System.out.println("Application du Filtre : Ajout point : " + nbPoints);
-            result.add(getNextModelGarden(container.getModels()));
+            result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
         return new GardenContainer(result);
@@ -61,7 +42,7 @@ public class LinearFilter implements Filter{
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
             System.out.println("Application du Filtre : Ajout point : " + nbPoints);
-            result.add(getNextModelCyclePark(container.getModels()));
+            result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
         return new CycleParkContainer(result);
@@ -73,7 +54,7 @@ public class LinearFilter implements Filter{
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
             System.out.println("Application du Filtre : Ajout point : " + nbPoints);
-            result.add(getNextModelParking(container.getModels()));
+            result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
         return new ParkingContainer(result);
@@ -85,7 +66,7 @@ public class LinearFilter implements Filter{
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
             System.out.println("Application du Filtre : Ajout point : " + nbPoints);
-            result.add(getNextModelToilet(container.getModels()));
+            result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
         return new ToiletContainer(result);
