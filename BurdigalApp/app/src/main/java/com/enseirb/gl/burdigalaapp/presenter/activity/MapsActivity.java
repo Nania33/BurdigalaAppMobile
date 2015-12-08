@@ -72,6 +72,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private BlockingQueue<BlockingQueueData> queue = new LinkedBlockingQueue<>();
 
+    private ArrayList<Marker> mapMarkers = new ArrayList<>();
+
     private int depth = 0;
 
     @Override
@@ -214,9 +216,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, new LatLng(bordeauxCenterLat, bordeauxCenterLong)));
         for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
-            mMap.addMarker(new MarkerOptions().position(point)
+            Marker marker = mMap.addMarker(new MarkerOptions().position(point)
                     .title(service.getType().toString())
                     .icon(service.getMarkerIcon()));
+            mapMarkers.add(marker);
         }
     }
 
@@ -400,7 +403,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onFocusRequired(Model point) {
+    public void onFocusRequired(Model point, Service service) {
+        if (!isDisplayedOnMap(point)) {
+            Log.d(TAG, "onFocusRequired - new Marker()");
+            Marker marker = mMap.addMarker(new MarkerOptions().position(point.getLatLng())
+                    .title(service.getType().toString())
+                    .icon(service.getMarkerIcon()));
+            mapMarkers.add(marker);
+        }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15.f));
         if(depth == 1) {
@@ -455,6 +465,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         depth--;
         if (depth == 0 && btnShowList != null)
             btnShowList.setVisibility(View.VISIBLE);
+    }
+
+    private boolean isDisplayedOnMap(Model point){
+        for (Marker marker : mapMarkers){
+            if (marker.getPosition().equals(point.getLatLng()))
+                return true;
+        }
+        return false;
     }
 
    /* @Override

@@ -26,7 +26,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/ll_focus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/layout_margin_top_low"
@@ -94,6 +93,33 @@
             android:layout_height="@dimen/layout_height_app_low_2"
             android:textSize="@dimen/text_size_normal"
             android:text="@string/garden_label"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_focus"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:background="@drawable/button_simple">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/layout_margin_right_low"
+            android:src="@drawable/ic_map_locate"/>
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_low"
+            android:text="@string/locate_on_map"/>
 
     </LinearLayout>
 

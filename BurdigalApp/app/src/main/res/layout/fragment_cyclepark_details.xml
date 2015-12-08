@@ -16,7 +16,6 @@
         android:text="@string/cycle_park_title"/>
 
     <LinearLayout
-        android:id="@+id/ll_focus"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -48,6 +47,33 @@
                 android:text="@string/cyclepark_spot_number"/>
 
         </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_focus"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:background="@drawable/button_simple">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/layout_margin_right_low"
+            android:src="@drawable/ic_map_locate"/>
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_size_low"
+            android:text="@string/locate_on_map"/>
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

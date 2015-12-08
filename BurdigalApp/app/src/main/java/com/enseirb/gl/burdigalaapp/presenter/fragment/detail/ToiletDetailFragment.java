@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +35,7 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
     private static final String POSITION = "position";
 
     private Toilet toilet;
+    private Service service;
 
     private OnFragmentInteractionListener mListener;
     private LinearLayout titleLayout;
@@ -56,7 +56,7 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Service service = getArguments().getParcelable(SERVICE);
+            service = getArguments().getParcelable(SERVICE);
             int position = getArguments().getInt(POSITION, 0);
             toilet = mListener.getToilet(service, position);
         }
@@ -87,7 +87,7 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
         titleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onFocusRequired(toilet);
+                mListener.onFocusRequired(toilet, service);
             }
         });
 
