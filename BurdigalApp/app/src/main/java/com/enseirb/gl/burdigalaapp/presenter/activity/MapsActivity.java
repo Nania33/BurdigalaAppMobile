@@ -103,6 +103,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      *******************************/
 
     private void initializePhone() {
+        Log.d(TAG, "initializePhone : " + Thread.currentThread().getId());
         btnShowList = (Button) findViewById(R.id.btn_show_list);
 
         btnShowList.setOnClickListener(new View.OnClickListener() {
@@ -122,10 +123,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeTablet() {
+        Log.d(TAG, "initializeTablet : " + Thread.currentThread().getId());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container_map, mapFragment);
-        ft.add(R.id.fragment_container, listFragment.get(currentListFragment));
         mapFragment.getMapAsync(this);
+        ft.add(R.id.fragment_container, listFragment.get(currentListFragment));
         ft.commit();
     }
 
@@ -185,17 +187,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeMap(){
+        Log.d(TAG, "initializeMap");
         float zoom = 13f;
-        LatLng userLocation = getLastBestLocation();
+        LatLng zoomLocation = getLastBestLocation();
 
-        mMap.addMarker(new MarkerOptions().position(userLocation));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+        mMap.addMarker(new MarkerOptions().position(zoomLocation));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(zoomLocation));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
 
         initializeOnMarkerClickListener();
     }
 
     private void initializeOnMarkerClickListener(){
+        Log.d(TAG, "initializeOnMarkerClickListener");
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -206,6 +210,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void displayPointsOnMap(Service service) {
+        Log.d(TAG, "displayPointsOnMap");
         List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, new LatLng(bordeauxCenterLat, bordeauxCenterLong)));
         for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
@@ -279,7 +284,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
             Service service = serviceManager.getService(ServiceType.toServiceType(serv));
             int itemPosition = serviceManager.getPointIndex(service, position);
-            btnShowList.setVisibility(View.GONE);
+            if (btnShowList != null)
+                btnShowList.setVisibility(View.GONE);
             onListItemClick(service, itemPosition);
         }
         catch (Exception ex){
