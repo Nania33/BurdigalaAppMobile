@@ -16,6 +16,17 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
+        android:textSize="@dimen/text_size_normal"
         android:gravity="center"
         android:id="@+id/tv_item_name" />
+
+    <CheckBox
+        android:id="@+id/chk_bx_home_choice"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="10dp"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center"/>
+
 </LinearLayout>
