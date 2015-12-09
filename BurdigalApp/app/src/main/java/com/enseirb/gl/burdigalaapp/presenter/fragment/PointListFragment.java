@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.enseirb.gl.burdigalaapp.R;
@@ -36,7 +37,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
 
     private OnFragmentInteractionListener mListener;
 
-    private AbsListView mListView;
+    private ListView mListView;
     private ArrayAdapter mAdapter;
 
     public static PointListFragment newInstance(Service service) {
@@ -53,13 +54,15 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate listFrgament : (init des données)" + service);
+
 
         if (getArguments() != null) {
             service = getArguments().getParcelable(ARG_SERVICE);
         }
 
         if (mListener != null)
-            modelList = new ArrayList<>(mListener.getDataListToDisplay(service));
+            modelList = new ArrayList<>(mListener.getListOfPoints(service));
         else
             modelList = new ArrayList<>();
 
@@ -73,8 +76,8 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         View view = inflater.inflate(R.layout.fragment_point, container, false);
 
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        mListView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
@@ -139,6 +142,20 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         }
     }
 
+    public void update(){
+        Log.d(TAG, "Update ");
+        modelList.clear();
+        populateList();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        for (Model model : modelList)
+            Log.d(TAG, "Update "+model.toString());
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
@@ -146,15 +163,28 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
         }
     }
 
-
     public interface OnFragmentInteractionListener {
         public void onListItemClick(Service service, int position);
         public void onButtonReturnToMapClick();
-        public List<Model> getDataListToDisplay(Service service);
+        public List<Model> getListOfPoints(Service service);
 
         void onNextPressed();
 
         void onPreviousPressed();
     }
+
+    private void populateList(){
+        if (mListener != null) {
+            modelList.clear();
+            modelList.addAll(mListener.getListOfPoints(service));
+        } else {
+            modelList.clear();
+        }
+    }
+
+    public Service getService(){
+        return this.service;
+    }
+
 
 }

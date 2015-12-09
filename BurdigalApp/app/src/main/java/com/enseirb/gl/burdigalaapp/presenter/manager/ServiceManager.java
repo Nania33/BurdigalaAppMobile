@@ -3,20 +3,24 @@ package com.enseirb.gl.burdigalaapp.presenter.manager;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
+import com.enseirb.gl.burdigalaapp.exceptions.UnknownServiceException;
+import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
-import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.ConcreteBusinessVisitor;
+import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,11 +45,11 @@ public class ServiceManager {
         }
     }
 
-    public void initializeServices(){
+    public void initializeServices(Filter filter){
         for (final Service service : myServices.keySet()) {
             if (service.isSelected()) {
                 IModelContainer container = myServices.get(service);
-                container.retrievePlaces(new WebRetriever(), new DataRetrieverListener() {
+                container.retrievePlaces(new ConcreteBusinessVisitor(), filter, new WebRetriever(), new IPresenterListener() {
                     @Override
                     public void onDataRetreived() {
                         mListener.onDataRetrieved(service);
@@ -60,6 +64,16 @@ public class ServiceManager {
             }
         }
     }
+
+
+    public List<Model> pointsToDisplatOnMap(Service service, Filter filter){
+        return getContainer(service).applyFilter(new ConcreteBusinessVisitor(), filter).getModels();
+    }
+
+    public List<Model> pointsToDisplayOnList(Service service, Filter filter){
+        return getContainer(service).applyFilter(new ConcreteBusinessVisitor(), filter).getModels();
+    }
+
 
     public IModelContainer getContainer(Service service){
         return myServices.get(service);
@@ -79,6 +93,28 @@ public class ServiceManager {
             default:
                 throw new UnknownDataException("Type " + type + " inconnu");
         }
+    }
+
+    public Service getService(ServiceType serviceType) throws UnknownServiceException {
+        for (Service serv : myServices.keySet()){
+            if (serv.getType().equals(serviceType)){
+                return serv;
+            }
+        }
+        throw new UnknownServiceException("Service " + serviceType.toString() + " inconnu");
+    }
+
+    public int getPointIndex (Service service, LatLng position) throws UnknownDataException {
+        IModelContainer container = myServices.get(service);
+        List<Model> models = container.getModels();
+        Model model;
+        for (int i=0;i<models.size();i++){
+            model = models.get(i);
+            if (model.getLatLng().equals(position)){
+                return i;
+            }
+        }
+        throw new UnknownDataException("Position " + position.toString() + " inconnue");
     }
 
     public interface ServiceManagerListener {

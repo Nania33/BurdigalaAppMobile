@@ -2,8 +2,9 @@ package com.enseirb.gl.burdigalaapp.model.container;
 
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
+import com.enseirb.gl.burdigalaapp.presenter.visitor.BusinessVisitor;
+import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
-import com.enseirb.gl.burdigalaapp.retriever.listener.DataRetrieverListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +24,6 @@ public class CycleParkContainer implements IModelContainer<CyclePark> {
     }
 
     @Override
-    public CycleParkContainer getSubContainer(Filter filter) {
-        return filter.filterModels(this);
-    }
-
-    @Override
     public List<CyclePark> getModels() {
         return cycleParks;
     }
@@ -37,8 +33,18 @@ public class CycleParkContainer implements IModelContainer<CyclePark> {
         cycleParks.addAll(data);
     }
 
+    /********************************
+     *  Accès à la couche business  *
+     ********************************/
+
     @Override
-    public void retrievePlaces(OpenDataRetriever retriever, DataRetrieverListener listener) {
-        retriever.retrievePlaces(this, listener);
+    public void retrievePlaces(BusinessVisitor businessVisitor, Filter filter, OpenDataRetriever retriever, IPresenterListener listener) {
+        businessVisitor.callToBusiness(this, listener, filter, retriever);
     }
+
+    @Override
+    public CycleParkContainer applyFilter(BusinessVisitor businessVisitor, Filter filter) {
+        return businessVisitor.applyFilter(this, filter);
+    }
+
 }
