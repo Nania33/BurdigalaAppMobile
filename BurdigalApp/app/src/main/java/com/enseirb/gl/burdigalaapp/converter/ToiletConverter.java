@@ -7,7 +7,9 @@ import com.enseirb.gl.burdigalaapp.dao.IToiletDAO;
 import com.enseirb.gl.burdigalaapp.dao.OpenDataToiletDAO;
 import com.enseirb.gl.burdigalaapp.dao.listener.IToiletDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ToiletDTO;
+import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +27,13 @@ public class ToiletConverter implements IToiletConverter {
     }
 
     @Override
-    public void retrieveToiletPlaces(final IToiletConverterListener listener) {
+    public void retrieveToiletPlaces(OpenDataRetriever retriever, final IToiletConverterListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        gardenDAO.retrieveToiletPlaces(new IToiletDAOListener() {
+        gardenDAO.retrieveToiletPlaces(retriever, new IToiletDAOListener() {
             @Override
             public void onSuccess(List<ToiletDTO> gardenDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                listener.onSuccess(convertToList(gardenDTO));
+                listener.onSuccess(convertToContainer(gardenDTO));
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
@@ -48,11 +50,11 @@ public class ToiletConverter implements IToiletConverter {
         return new Toilet(toiletDTO.getAddress(), toiletDTO.getNeighbourhood(), toiletDTO.getToiletType(), toiletDTO.getPoint().toLatLng());
     }
 
-    public List<Toilet> convertToList(List<ToiletDTO> dtoList) {
+    public ToiletContainer convertToContainer(List<ToiletDTO> dtoList) {
         List<Toilet> convertedList = new ArrayList<>();
         for (ToiletDTO dto : dtoList){
             convertedList.add(convert(dto));
         }
-        return convertedList;
+        return new ToiletContainer(convertedList);
     }
 }

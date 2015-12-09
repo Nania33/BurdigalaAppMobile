@@ -6,25 +6,16 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
- <!--   <ImageView
-        android:id="@+id/img_service_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="@dimen/activity_horizontal_margin"/>-->
+    <!--   <ImageView
+           android:id="@+id/img_service_icon"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:paddingRight="@dimen/activity_horizontal_margin"/>-->
 
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:id="@+id/tv_item_name"/>
-
-    <CheckBox android:layout_height="wrap_content"
-        android:id="@+id/chk_bx_home_choice"
-        android:layout_width="wrap_content"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:onClick="checkBoxHandler"/>
-
-
+        android:id="@+id/tv_item_name" />
 </LinearLayout>

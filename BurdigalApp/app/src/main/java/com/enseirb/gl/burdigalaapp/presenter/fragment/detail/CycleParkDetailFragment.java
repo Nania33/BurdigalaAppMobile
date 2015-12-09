@@ -34,6 +34,7 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
     private static final String POSITION = "position";
 
     private CyclePark cyclePark;
+    private Service service;
 
     private OnFragmentInteractionListener mListener;
     private LinearLayout titleLayout;
@@ -54,7 +55,7 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Service service = getArguments().getParcelable(SERVICE);
+            service = getArguments().getParcelable(SERVICE);
             int position = getArguments().getInt(POSITION, 0);
             cyclePark = mListener.getCyclePark(service, position);
         }
@@ -82,7 +83,7 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
         titleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onFocusRequired(cyclePark);
+                mListener.onFocusRequired(cyclePark, service);
             }
         });
 

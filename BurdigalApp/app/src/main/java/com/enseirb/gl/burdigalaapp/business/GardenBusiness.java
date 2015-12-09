@@ -7,10 +7,8 @@ import com.enseirb.gl.burdigalaapp.converter.GardenConverter;
 import com.enseirb.gl.burdigalaapp.converter.IGardenConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IGardenConverterListener;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
-import com.enseirb.gl.burdigalaapp.model.data.Garden;
-
-import java.util.List;
+import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
+import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
 
 /**
  * Created by rchabot on 23/11/15.
@@ -22,18 +20,22 @@ public class GardenBusiness implements IGardenBusiness {
 
     public GardenBusiness() {
         this.gardenConverter = new GardenConverter();
-        this.filter = new LinearFilter(10);
+    }
+
+    public GardenBusiness(Filter filter) {
+        this.gardenConverter = new GardenConverter();
+        this.filter = filter;
     }
 
     @Override
-    public void retrieveGardenPlaces(final IGardenBusinessListener listener) {
+    public void retrieveGardenPlaces(OpenDataRetriever retriever, final IGardenBusinessListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        gardenConverter.retrieveGardenPlaces(new IGardenConverterListener() {
+        gardenConverter.retrieveGardenPlaces(retriever, new IGardenConverterListener() {
             @Override
-            public void onSuccess(List<Garden> garden) {
+            public void onSuccess(final GardenContainer garden) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                // TODO appliquer le filtre
-                listener.onSuccess(garden);
+                GardenContainer g = filter.filterModels(garden);
+                listener.onSuccess(g.getModels());
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");
             }
 
@@ -42,5 +44,10 @@ public class GardenBusiness implements IGardenBusiness {
                 listener.onError(message);
             }
         });
+    }
+
+    @Override
+    public GardenContainer filterGardens(GardenContainer container) {
+        return filter.filterModels(container);
     }
 }

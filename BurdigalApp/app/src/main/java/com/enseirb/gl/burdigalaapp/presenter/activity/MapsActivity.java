@@ -1,10 +1,10 @@
+
 package com.enseirb.gl.burdigalaapp.presenter.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,10 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.filters.NearestPointsFilter;
+import com.enseirb.gl.burdigalaapp.filters.NoFilter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
@@ -30,15 +31,13 @@ import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ParkingDetailFragme
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ToiletDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
 import com.enseirb.gl.burdigalaapp.presenter.service.Service;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -55,15 +54,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         CycleParkDetailFragment.OnFragmentInteractionListener{
 
     private static final String LIST_OF_SERVICES = "list_of_services";
+    private static final String DETAIL_FRAGMENT_TAG = "detail";
     private static final String TAG = "MapsActivity";
+
     private static final double bordeauxCenterLat = 44.836758;
     private static final double bordeauxCenterLong = -0.578746;
 
     private GoogleMap mMap;
     private Button btnShowList;
-    private LatLng userPosition = null;
+    private LatLng userLocation = null;
 
-    private ToiletDetailFragment detailFragment;
     private List<PointListFragment> listFragment = new ArrayList<>();
     private int currentListFragment = 0;
 
@@ -75,6 +75,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private BlockingQueue<BlockingQueueData> queue = new LinkedBlockingQueue<>();
 
+    private ArrayList<Marker> mapMarkers = new ArrayList<>();
+
     private int depth = 0;
 
     @Override
@@ -84,11 +86,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         listOfServices = getIntent().getParcelableArrayListExtra(LIST_OF_SERVICES);
 
-        for (Service service : listOfServices)
-            if (service.isSelected())
-                listFragment.add(PointListFragment.newInstance(service));
-
-        mapFragment = SupportMapFragment.newInstance();
+        initializeFragments();
 
         initializeServiceManager();
 
@@ -101,36 +99,57 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
-
+    
     /*******************************
      *   Initialization functions  *
      *******************************/
 
+    private void initializeFragments() {
+        for (Service service : listOfServices)
+            if (service.isSelected())
+                listFragment.add(PointListFragment.newInstance(service));
+
+        mapFragment = SupportMapFragment.newInstance();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        for (PointListFragment fragment : listFragment) {
+            ft.add(R.id.fragment_container, fragment);
+            ft.hide(fragment);
+        }
+        ft.commit();
+    }
+
+
     private void initializePhone() {
+        Log.d(TAG, "initializePhone : " + Thread.currentThread().getId());
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container, mapFragment);
+        mapFragment.getMapAsync(this);
+        ft.commit();
+
         btnShowList = (Button) findViewById(R.id.btn_show_list);
 
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 depth++;
-                putFragmentInContainer(MapsActivity.this.listFragment.get(currentListFragment), R.id.fragment_container);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.hide(mapFragment);
                 btnShowList.setVisibility(View.GONE);
+                ft.show(MapsActivity.this.listFragment.get(currentListFragment));
+                ft.commit();
             }
         });
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, mapFragment);
-        mapFragment.getMapAsync(this);
-        ft.commit();
     }
 
     private void initializeTablet() {
+        Log.d(TAG, "initializeTablet : " + Thread.currentThread().getId());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container_map, mapFragment);
-        ft.add(R.id.fragment_container, listFragment.get(currentListFragment));
         mapFragment.getMapAsync(this);
+        ft.show(listFragment.get(currentListFragment));
         ft.commit();
     }
 
@@ -139,11 +158,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onError(Service service, String message) {
                 Log.d(TAG, "onError : " + message);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
                 try {
                     queue.put(BlockingQueueData.recordFailure(service, message));
                 } catch (InterruptedException e) {
@@ -166,8 +180,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG, service.toString() + " " + service.getType());
         }
         Log.d(TAG, "MainThread : " + Thread.currentThread().getId());
-        serviceManager.initializeServices();
+        serviceManager.initializeServices(new NoFilter());
     }
+
+
 
 
     /*******************************
@@ -192,25 +208,59 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         handleDataRetrieving();
     }
 
+    private void initializeUserLocation(){
+        userLocation = getLastBestLocation();
+    }
+
     private void initializeMap(){
-        float zoom = 11.8f;
-        LatLng userLocation = getLastBestLocation();
+        Log.d(TAG, "initializeMap");
+        float zoom = 13f;
+
+        initializeUserLocation();
 
         mMap.addMarker(new MarkerOptions().position(userLocation));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
+
+        initializeOnMarkerClickListener();
+    }
+
+    private void initializeOnMarkerClickListener(){
+        Log.d(TAG, "initializeOnMarkerClickListener");
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                goToPointDetails(marker.getTitle(), marker.getPosition());
+                return true;
+            }
+        });
     }
 
     public void displayPointsOnMap(Service service) {
-        List<Model> points = getDataListToDisplay(service);
-        for (Model openDataPoint : points){
+        Log.d(TAG, "displayPointsOnMap");
+        List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, userLocation));
+        for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
-            mMap.addMarker(new MarkerOptions().position(point)
+            Marker marker = mMap.addMarker(new MarkerOptions().position(point)
                     .title(service.getType().toString())
                     .icon(service.getMarkerIcon()));
+            mapMarkers.add(marker);
         }
     }
 
+
+    private PointListFragment findListFragment(Service service){
+        for (PointListFragment fragment : listFragment){
+            if (fragment.getService() != null){
+                if (fragment.getService().equals(service)){
+                    return fragment;
+                }
+            } else {
+                Log.d(TAG, "Appel à onCreate non effectué");
+            }
+        }
+        return null;
+    }
 
     private void handleDataRetrieving(){
         Thread thread = new Thread(new Runnable() {
@@ -221,12 +271,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 try {
                     while ((data = queue.poll(5, TimeUnit.MINUTES)) != null){
                         final BlockingQueueData finalData = data;
+                        final Service service = finalData.getService();
                         if (data.isSucces()) {
+                            final PointListFragment fragment = findListFragment(service);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     Log.d(TAG, "doSomeUpdate on thread " + Thread.currentThread().getId());
-                                    displayPointsOnMap(finalData.getService());
+                                    displayPointsOnMap(service);
+                                    if (fragment != null)
+                                        fragment.update();
+                                    else Log.d(TAG, "Fragment non trouvé");
                                 }
                             });
                         } else {
@@ -234,7 +289,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 @Override
                                 public void run() {
                                     Toast.makeText(MapsActivity.this,
-                                            "Erreur à la récupération des "+finalData.getService().getName(),
+                                            "Erreur à la récupération des "+service.getName(),
                                             Toast.LENGTH_LONG).show();
                                 }
                             });
@@ -252,7 +307,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         thread.start();
     }
 
-    public LatLng getLastBestLocation() {
+
+    private void goToPointDetails(String serv, LatLng position){
+        try {
+            Service service = serviceManager.getService(ServiceType.toServiceType(serv));
+            int itemPosition = serviceManager.getPointIndex(service, position);
+            if (btnShowList != null)
+                btnShowList.setVisibility(View.GONE);
+            displayDetailFragment(service, itemPosition);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+    private LatLng getLastBestLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location locationGPS = null;
         Location locationNet = null;
@@ -266,92 +336,115 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // if found, return the GPS location because it is more precise
         if (locationGPS != null) {
-            userPosition = new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
-            return userPosition;
+            return new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
         }
 
         else if(locationNet != null) {
-            userPosition = new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
-            return userPosition;
+            return new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
         }
 
         // hard coded values at the center of Bordeaux if we can't get the location of the user.
-        userPosition = null;
         return new LatLng(bordeauxCenterLat, bordeauxCenterLong);
 
     }
 
-    public LatLng getUserPosition(){
-        return userPosition;
-    }
+
+    /*******************************
+     *  Listeners implementations  *
+     *******************************/
 
 
-        /*******************************
-         *  Listeners implementations  *
-         *******************************/
 
+    /*******************************
+     *  ListFragment Listener      *
+     *******************************/
 
     @Override
     public void onListItemClick(Service service, int itemPosition) {
-        depth++;
-        if (service.getType().equals(ServiceType.TOILET)) {
-            putFragmentInContainer(ToiletDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        } else if (service.getType().equals(ServiceType.GARDEN)){
-            putFragmentInContainer(GardenDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        } else if (service.getType().equals(ServiceType.PARKING)){
-            putFragmentInContainer(ParkingDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        } else if (service.getType().equals(ServiceType.CYCLEPARK)){
-            putFragmentInContainer(CycleParkDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        }
+        displayDetailFragment(service, itemPosition);
     }
 
     @Override
     public void onButtonReturnToMapClick() {
-        onBackPressed();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(listFragment.get(currentListFragment));
+        ft.show(mapFragment);
+        ft.commit();
+        depth--;
+        if (depth == 0 && btnShowList != null)
+            btnShowList.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public List<Model> getDataListToDisplay(Service service) {
-        return serviceManager.getContainer(service).getModels();
+    public List<Model> getListOfPoints(Service service) {
+        return serviceManager.pointsToDisplayOnList(service, new NoFilter());
     }
 
     @Override
     public void onNextPressed() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
+        ft.hide(listFragment.get(currentListFragment));
+
         if (currentListFragment == listFragment.size()-1)
             currentListFragment = 0;
         else
             currentListFragment++;
 
-        ft.replace(R.id.fragment_container, listFragment.get(currentListFragment));
+        ft.show(listFragment.get(currentListFragment));
         ft.commit();
     }
 
     @Override
     public void onPreviousPressed() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(listFragment.get(currentListFragment));
 
         if (currentListFragment == 0)
             currentListFragment = listFragment.size()-1;
         else
             currentListFragment--;
 
-        ft.replace(R.id.fragment_container, listFragment.get(currentListFragment));
+        ft.show(listFragment.get(currentListFragment));
         ft.commit();
     }
 
+
+
+    /*******************************
+     *  DetailFragment Listener    *
+     *******************************/
+
+
     @Override
     public void onButtonReturnClick() {
-        onBackPressed();
+        if (depth == 2){
+            replaceDetailFragmentWith(listFragment.get(currentListFragment));
+        } else if (depth == 1){
+            replaceDetailFragmentWith(mapFragment);
+        }
+        depth--;
+        if (depth == 0 && btnShowList != null)
+            btnShowList.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onFocusRequired(Model point) {
+    public void onFocusRequired(Model point, Service service) {
+        if (!isDisplayedOnMap(point)) {
+            Log.d(TAG, "onFocusRequired - new Marker()");
+            Marker marker = mMap.addMarker(new MarkerOptions().position(point.getLatLng())
+                    .title(service.getType().toString())
+                    .icon(service.getMarkerIcon()));
+            mapMarkers.add(marker);
+        }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15.f));
-        onBackPressed();
-        onBackPressed();
+        if (depth == 1) {
+            onButtonReturnClick();
+        } else if (depth == 2) {
+            depth--;
+            onButtonReturnClick();
+        }
     }
 
     @Override
@@ -371,14 +464,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public Toilet getToilet(Service service, int position) {
-        Toilet toilet = ((List<Toilet>) serviceManager.getContainer(service).getModels()).get(position);
-        return toilet;
-    }
-
-    public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){
-        Intent i = new Intent(ctx, MapsActivity.class);
-        i.putParcelableArrayListExtra(LIST_OF_SERVICES, itemsToDisplay);
-        return i;
+        return ((List<Toilet>) serviceManager.getContainer(service).getModels()).get(position);
     }
 
 
@@ -386,26 +472,52 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      *       Other functions       *
      *******************************/
 
-    private void putFragmentInContainer(Fragment fragment, int fragment_container) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(fragment_container, fragment);
-        ft.addToBackStack(null);
-        ft.commit();
+    public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){
+        Intent i = new Intent(ctx, MapsActivity.class);
+        i.putParcelableArrayListExtra(LIST_OF_SERVICES, itemsToDisplay);
+        return i;
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        depth--;
-        if (depth == 0 && btnShowList != null)
-            btnShowList.setVisibility(View.VISIBLE);
+    private boolean isDisplayedOnMap(Model point){
+        for (Marker marker : mapMarkers){
+            if (marker.getPosition().equals(point.getLatLng()))
+                return true;
+        }
+        return false;
+    }
+
+    private void displayDetailFragment(Service service, int itemPosition) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        if (depth == 0)
+            ft.hide(mapFragment);
+        else if (depth == 1)
+            ft.hide(listFragment.get(currentListFragment));
+
+        if (service.getType().equals(ServiceType.TOILET)) {
+            ft.add(R.id.fragment_container, ToiletDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        } else if (service.getType().equals(ServiceType.GARDEN)) {
+            ft.add(R.id.fragment_container, GardenDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        } else if (service.getType().equals(ServiceType.PARKING)){
+            ft.add(R.id.fragment_container, ParkingDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        } else if (service.getType().equals(ServiceType.CYCLEPARK)){
+            ft.add(R.id.fragment_container, CycleParkDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        }
+        ft.commit();
+        depth++;
+    }
+
+    private void replaceDetailFragmentWith(Fragment fragment){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG));
+        ft.show(fragment);
+        ft.commit();
     }
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
-
         return true;
     }*/
 }

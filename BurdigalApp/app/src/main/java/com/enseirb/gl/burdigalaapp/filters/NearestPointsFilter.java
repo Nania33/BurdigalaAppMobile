@@ -82,8 +82,8 @@ public class NearestPointsFilter implements Filter {
         while (i < models.size()){
             if (computeDistanceLocation(models.get(i).getLatLng()) < listDistances.get(numberLocations - 1)){
                 insertPosition(models.get(i).getLatLng(), i);
-                listPositions.remove(numberLocations - 1);
-                listDistances.remove(numberLocations - 1);
+                listPositions.remove(numberLocations);
+                listDistances.remove(numberLocations);
             }
             i ++;
         }

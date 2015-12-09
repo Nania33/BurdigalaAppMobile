@@ -35,6 +35,7 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
     private static final String POSITION = "position";
 
     private Parking parking;
+    private Service service;
 
     private OnFragmentInteractionListener mListener;
     private LinearLayout titleLayout;
@@ -55,7 +56,7 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            Service service = getArguments().getParcelable(SERVICE);
+            service = getArguments().getParcelable(SERVICE);
             int position = getArguments().getInt(POSITION, 0);
             parking = mListener.getParking(service, position);
         }
@@ -86,7 +87,7 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
         titleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onFocusRequired(parking);
+                mListener.onFocusRequired(parking, service);
             }
         });
 

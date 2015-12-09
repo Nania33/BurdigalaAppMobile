@@ -27,8 +27,6 @@ public class SelectMultipleItemsAdapter extends SimpleAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null){
             convertView = mInflater.inflate(R.layout.item_list_home_activity, null);
-            CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.chk_bx_home_choice);
-            checkBox.setTag(position);
         }
         return super.getView(position, convertView, parent);
     }
