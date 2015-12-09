@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
+import com.enseirb.gl.burdigalaapp.parser.FileManager;
 import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueData;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.CycleParkDetailFragment;
@@ -89,6 +91,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initializeServiceManager();
 
+        FileManager fileCreator = new FileManager(this);
+        fileCreator.writeToFile("Test", "Garden");
+        fileCreator.readFromFile("Garden");
         if (findViewById(R.id.fragment_container_map) != null && findViewById(R.id.fragment_container) != null) {
             initializeTablet();
         } else {
