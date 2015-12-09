@@ -53,7 +53,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         CycleParkDetailFragment.OnFragmentInteractionListener{
 
     private static final String LIST_OF_SERVICES = "list_of_services";
+    private static final String DETAIL_FRAGMENT_TAG = "detail";
     private static final String TAG = "MapsActivity";
+
     private static final double bordeauxCenterLat = 44.836758;
     private static final double bordeauxCenterLong = -0.578746;
 
@@ -83,11 +85,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         listOfServices = getIntent().getParcelableArrayListExtra(LIST_OF_SERVICES);
 
-        for (Service service : listOfServices)
-            if (service.isSelected())
-                listFragment.add(PointListFragment.newInstance(service));
-
-        mapFragment = SupportMapFragment.newInstance();
+        initializeFragments();
 
         initializeServiceManager();
 
@@ -98,30 +96,49 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
-
+    
     /*******************************
      *   Initialization functions  *
      *******************************/
 
+    private void initializeFragments() {
+        for (Service service : listOfServices)
+            if (service.isSelected())
+                listFragment.add(PointListFragment.newInstance(service));
+
+        mapFragment = SupportMapFragment.newInstance();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        for (PointListFragment fragment : listFragment) {
+            ft.add(R.id.fragment_container, fragment);
+            ft.hide(fragment);
+        }
+        ft.commit();
+    }
+
+
     private void initializePhone() {
         Log.d(TAG, "initializePhone : " + Thread.currentThread().getId());
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fragment_container, mapFragment);
+        mapFragment.getMapAsync(this);
+        ft.commit();
+
         btnShowList = (Button) findViewById(R.id.btn_show_list);
 
         btnShowList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 depth++;
-                putFragmentInContainer(MapsActivity.this.listFragment.get(currentListFragment), R.id.fragment_container);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.hide(mapFragment);
                 btnShowList.setVisibility(View.GONE);
+                ft.show(MapsActivity.this.listFragment.get(currentListFragment));
+                ft.commit();
             }
         });
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, mapFragment);
-        mapFragment.getMapAsync(this);
-        ft.commit();
     }
 
     private void initializeTablet() {
@@ -129,7 +146,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.fragment_container_map, mapFragment);
         mapFragment.getMapAsync(this);
-        ft.add(R.id.fragment_container, listFragment.get(currentListFragment));
+        ft.show(listFragment.get(currentListFragment));
         ft.commit();
     }
 
@@ -294,7 +311,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             int itemPosition = serviceManager.getPointIndex(service, position);
             if (btnShowList != null)
                 btnShowList.setVisibility(View.GONE);
-            onListItemClick(service, itemPosition);
+            displayDetailFragment(service, itemPosition);
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -341,21 +358,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onListItemClick(Service service, int itemPosition) {
-        depth++;
-        if (service.getType().equals(ServiceType.TOILET)) {
-            putFragmentInContainer(ToiletDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        } else if (service.getType().equals(ServiceType.GARDEN)){
-            putFragmentInContainer(GardenDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        } else if (service.getType().equals(ServiceType.PARKING)){
-            putFragmentInContainer(ParkingDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        } else if (service.getType().equals(ServiceType.CYCLEPARK)){
-            putFragmentInContainer(CycleParkDetailFragment.newInstance(service, itemPosition), R.id.fragment_container);
-        }
+        displayDetailFragment(service, itemPosition);
     }
 
     @Override
     public void onButtonReturnToMapClick() {
-        onBackPressed();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(listFragment.get(currentListFragment));
+        ft.show(mapFragment);
+        ft.commit();
+        depth--;
+        if (depth == 0 && btnShowList != null)
+            btnShowList.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -367,25 +381,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onNextPressed() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
+        ft.hide(listFragment.get(currentListFragment));
+
         if (currentListFragment == listFragment.size()-1)
             currentListFragment = 0;
         else
             currentListFragment++;
 
-        ft.replace(R.id.fragment_container, listFragment.get(currentListFragment));
+        ft.show(listFragment.get(currentListFragment));
         ft.commit();
     }
 
     @Override
     public void onPreviousPressed() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(listFragment.get(currentListFragment));
 
         if (currentListFragment == 0)
             currentListFragment = listFragment.size()-1;
         else
             currentListFragment--;
 
-        ft.replace(R.id.fragment_container, listFragment.get(currentListFragment));
+        ft.show(listFragment.get(currentListFragment));
         ft.commit();
     }
 
@@ -395,9 +412,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      *  DetailFragment Listener    *
      *******************************/
 
+
     @Override
     public void onButtonReturnClick() {
-        onBackPressed();
+        if (depth == 2){
+            replaceDetailFragmentWith(listFragment.get(currentListFragment));
+        } else if (depth == 1){
+            replaceDetailFragmentWith(mapFragment);
+        }
+        depth--;
+        if (depth == 0 && btnShowList != null)
+            btnShowList.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -411,11 +436,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15.f));
-        if(depth == 1) {
-            onBackPressed();
+        if (depth == 1) {
+            onButtonReturnClick();
         } else if (depth == 2) {
-            onBackPressed();
-            onBackPressed();
+            depth--;
+            onButtonReturnClick();
         }
     }
 
@@ -450,28 +475,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return i;
     }
 
-    private void putFragmentInContainer(Fragment fragment, int fragment_container) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(fragment_container, fragment);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        depth--;
-        if (depth == 0 && btnShowList != null)
-            btnShowList.setVisibility(View.VISIBLE);
-    }
-
-
     private boolean isDisplayedOnMap(Model point){
         for (Marker marker : mapMarkers){
             if (marker.getPosition().equals(point.getLatLng()))
                 return true;
         }
         return false;
+    }
+
+    private void displayDetailFragment(Service service, int itemPosition) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        if (depth == 0)
+            ft.hide(mapFragment);
+        else if (depth == 1)
+            ft.hide(listFragment.get(currentListFragment));
+
+        if (service.getType().equals(ServiceType.TOILET)) {
+            ft.add(R.id.fragment_container, ToiletDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        } else if (service.getType().equals(ServiceType.GARDEN)) {
+            ft.add(R.id.fragment_container, GardenDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        } else if (service.getType().equals(ServiceType.PARKING)){
+            ft.add(R.id.fragment_container, ParkingDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        } else if (service.getType().equals(ServiceType.CYCLEPARK)){
+            ft.add(R.id.fragment_container, CycleParkDetailFragment.newInstance(service, itemPosition), DETAIL_FRAGMENT_TAG);
+        }
+        ft.commit();
+        depth++;
+    }
+
+    private void replaceDetailFragmentWith(Fragment fragment){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG));
+        ft.show(fragment);
+        ft.commit();
     }
 
    /* @Override
