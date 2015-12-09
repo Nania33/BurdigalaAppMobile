@@ -15,35 +15,42 @@ import java.util.Map;
 public class HomeActivityPreferences implements IActivityPreferences{
 
     final private String SERVICE = "services";
+    final private int DEFAULT_NBPOINTS = 10;
+    final private String NB_POINTS = "nb_points";
     final private String TAG = "HomeActivityPreferences";
     final private String keys[] = {"Toilettes","Parking","Parcs et jardins","Parking deux roues"};
-    HashMap<String,String> services;
+    HashMap<String,String> selectedServices;
+    private int nbPoints;
     Context context;
 
     public HomeActivityPreferences(Context context){
         this.context = context;
-        this.services = new HashMap<>();
+        this.selectedServices = new HashMap<>();
+        nbPoints = DEFAULT_NBPOINTS;
     }
 
     public void addServiceToPreferences(String key, String service){
-        services.put(key, service);
+        selectedServices.put(key, service);
     }
 
     public void removeServiceFromPreferences(String name){
-        services.remove(name);
+        selectedServices.remove(name);
+    }
+
+    public void changeNbPointsFromPreferences(int nbPoints){
+        this.nbPoints = nbPoints;
     }
 
     @Override
     public void savePreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        for(int i = 0 ; i < keys.length ; ++i){
-            editor.remove(keys[i]);
-        }
-        for(Map.Entry<String,String> entry : services.entrySet()){
+        editor.clear();
+        for(Map.Entry<String,String> entry : selectedServices.entrySet()){
             Log.d(TAG, "[save] -" + entry.getKey());
             editor.putString(entry.getKey(), entry.getValue());
         }
+        editor.putInt(NB_POINTS,nbPoints);
         editor.commit();
     }
 
@@ -58,21 +65,27 @@ public class HomeActivityPreferences implements IActivityPreferences{
         for(int i = 0 ; i < keys.length ; ++i){
             String preference = pref.getString(keys[i],null);
             if(preference != null){
-                if(!services.containsValue(keys[i])){
+                if(!selectedServices.containsValue(keys[i])){
                     Log.d(TAG,"[load] - add - " + keys[i]);
                     addServiceToPreferences(keys[i], keys[i]);
                 }
             }
             else{
-                if(services.containsValue(keys[i])){
+                if(selectedServices.containsValue(keys[i])){
                     Log.d(TAG,"[load] - remove - " + keys[i]);
                     addServiceToPreferences(keys[i], keys[i]);
                 }
             }
         }
+        changeNbPointsFromPreferences(pref.getInt(NB_POINTS,DEFAULT_NBPOINTS));
+        Log.d(TAG,Integer.toString(pref.getInt(NB_POINTS,DEFAULT_NBPOINTS)));
     }
 
-    public Map getServices(){
-        return services;
+    public Map getSelectedServices(){
+        return selectedServices;
+    }
+
+    public int getNbPoints(){
+        return nbPoints;
     }
 }

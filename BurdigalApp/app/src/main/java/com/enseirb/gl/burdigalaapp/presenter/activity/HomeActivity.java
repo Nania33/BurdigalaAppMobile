@@ -37,6 +37,7 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
+    final private String NB_POINTS = "nb_points";
 
     private HomeActivityPreferences homeActivityPreferences;
 
@@ -76,9 +77,11 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+        loadHomeActivityPreferences(mItemsToDiplay);
 
         edNbPoints = (EditText) findViewById(R.id.ed_nb_points);
         edNbPoints.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        edNbPoints.setText(Integer.toString(homeActivityPreferences.getNbPoints()));
 
         radioGroup = (RadioGroup) findViewById(R.id.rg_user_filter);
 
@@ -115,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
             builder.create().show();
         }
 
-        loadHomeActivityPreferences(mItemsToDiplay);
     }
 
     private void initializeRadioGroupe(){
@@ -128,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadHomeActivityPreferences(ArrayList<Service> items) {
         homeActivityPreferences.loadPreferences();
-        Map<String,String> preferences = homeActivityPreferences.getServices();
+        Map<String,String> preferences = homeActivityPreferences.getSelectedServices();
         for(Map.Entry<String,String> preference : preferences.entrySet()){
             Log.d(TAG,"[loadHomeActivityPreferences] - selected - " + preference.getValue());
             for(Service item : items){
@@ -172,6 +174,7 @@ public class HomeActivity extends AppCompatActivity {
                 homeActivityPreferences.removeServiceFromPreferences(item.getName());
             }
         }
+        homeActivityPreferences.changeNbPointsFromPreferences(Integer.parseInt(edNbPoints.getText().toString()));
         homeActivityPreferences.savePreferences();
     }
 
