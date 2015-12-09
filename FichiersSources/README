@@ -1,0 +1,3 @@
+Dans overviewFragment il y a un exemple de comment on fait l'appel pour créer le fichier
+
+Dans SelectionEquipeTournoi il y a juste un exemple de comment accéder au répertoire et afficher les fichiers à l'écrans (comme un explorateur de fichier) ça peut peut être être utile
