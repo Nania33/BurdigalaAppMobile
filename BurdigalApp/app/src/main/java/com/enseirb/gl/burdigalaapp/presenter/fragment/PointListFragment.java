@@ -152,8 +152,6 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
                 mAdapter.notifyDataSetChanged();
             }
         });
-        for (Model model : modelList)
-            Log.d(TAG, "Update "+model.toString());
     }
 
     @Override

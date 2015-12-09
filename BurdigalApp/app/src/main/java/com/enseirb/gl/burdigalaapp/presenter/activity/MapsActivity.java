@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
+import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.filters.NearestPointsFilter;
 import com.enseirb.gl.burdigalaapp.filters.NoFilter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
@@ -23,6 +24,7 @@ import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueData;
+import com.enseirb.gl.burdigalaapp.presenter.conf.Conf;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.CycleParkDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.GardenDetailFragment;
@@ -53,11 +55,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         CycleParkDetailFragment.OnFragmentInteractionListener{
 
     private static final String LIST_OF_SERVICES = "list_of_services";
+    private static final String TYPE_OF_FILTER = "type_of_filter";
+    private static final String NB_POINTS = "nb_points";
+
     private static final String DETAIL_FRAGMENT_TAG = "detail";
     private static final String TAG = "MapsActivity";
 
     private static final double bordeauxCenterLat = 44.836758;
     private static final double bordeauxCenterLong = -0.578746;
+
+    private Filter mapFilter;
 
     private GoogleMap mMap;
     private Button btnShowList;
@@ -233,9 +240,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+
+    private Filter getMapFilter(){
+        int nbPoints = getIntent().getIntExtra(NB_POINTS,10);
+        String filterType = getIntent().getStringExtra(TYPE_OF_FILTER);
+        mapFilter = Conf.makeFilter(filterType, nbPoints, userLocation);
+        return mapFilter;
+    }
+
     public void displayPointsOnMap(Service service) {
         Log.d(TAG, "displayPointsOnMap");
-        List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, userLocation));
+        List<Model> points = serviceManager.pointsToDisplatOnMap(service, getMapFilter());
         for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
             Marker marker = mMap.addMarker(new MarkerOptions().position(point)
@@ -469,9 +484,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      *       Other functions       *
      *******************************/
 
-    public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay){
+    public static Intent getIntent(Context ctx, ArrayList<Service> itemsToDisplay, String filterType, int nbPoints){
         Intent i = new Intent(ctx, MapsActivity.class);
         i.putParcelableArrayListExtra(LIST_OF_SERVICES, itemsToDisplay);
+        i.putExtra(TYPE_OF_FILTER, filterType);
+        i.putExtra(NB_POINTS, nbPoints);
         return i;
     }
 
