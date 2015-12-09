@@ -34,6 +34,7 @@
 
         <activity
             android:name=".presenter.activity.MapsActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_maps" >
         </activity>
         <activity android:name=".presenter.activity.HomeActivity" >

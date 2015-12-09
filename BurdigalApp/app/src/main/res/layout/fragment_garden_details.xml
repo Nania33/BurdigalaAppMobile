@@ -15,86 +15,93 @@
         android:gravity="center"
         android:text="@string/garden_title"/>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/layout_margin_top_low"
-            android:orientation="horizontal">
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/marker_garden"
-                android:layout_marginEnd="@dimen/layout_margin_right_med"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/tv_garden_name"
-                android:gravity="center"
-                android:textSize="@dimen/text_size_normal"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_garden_type"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_height_app_low_2"
-            android:textSize="@dimen/text_size_normal"
-            android:text="@string/garden_type"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/layout_margin_bottom_low_low"
-            android:orientation="horizontal">
-            <View
-                android:layout_width="1dp"
-                android:layout_height="@dimen/layout_height_app_low_2" />
-            <TextView
-                android:id="@+id/tv_garden_gestion_type"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_normal"
-                android:text="@string/garden_gestion_type"/>
-        </LinearLayout>
+                android:layout_marginBottom="@dimen/layout_margin_top_low"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/marker_garden"
+                    android:layout_marginEnd="@dimen/layout_margin_right_med"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/layout_margin_bottom_low_low"
-            android:orientation="horizontal">
-            <View
-                android:layout_width="1dp"
-                android:layout_height="@dimen/layout_height_app_low_2" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tv_garden_name"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_normal"/>
+
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/tv_garden_use"
+                android:id="@+id/tv_garden_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height_app_low_2"
+                android:textSize="@dimen/text_size_normal"
+                android:text="@string/garden_type"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_bottom_low_low"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/layout_height_app_low_2" />
+                <TextView
+                    android:id="@+id/tv_garden_gestion_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_normal"
+                    android:text="@string/garden_gestion_type"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/layout_margin_bottom_low_low"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/layout_height_app_low_2" />
+                <TextView
+                    android:id="@+id/tv_garden_use"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_normal"
+                    android:text="@string/garden_use"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_garden_label"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/layout_height_app_low_2"
                 android:textSize="@dimen/text_size_normal"
-                android:text="@string/garden_use"/>
+                android:text="@string/garden_label"/>
+
         </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/tv_garden_label"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_height_app_low_2"
-            android:textSize="@dimen/text_size_normal"
-            android:text="@string/garden_label"/>
-
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/ll_focus"

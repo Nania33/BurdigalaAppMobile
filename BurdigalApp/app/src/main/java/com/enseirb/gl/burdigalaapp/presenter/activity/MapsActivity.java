@@ -59,7 +59,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private Button btnShowList;
-    private LatLng userPosition = null;
+    private LatLng userLocation = null;
 
     private List<PointListFragment> listFragment = new ArrayList<>();
     private int currentListFragment = 0;
@@ -188,13 +188,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         handleDataRetrieving();
     }
 
+    private void initializeUserLocation(){
+        userLocation = getLastBestLocation();
+    }
+
     private void initializeMap(){
         Log.d(TAG, "initializeMap");
         float zoom = 13f;
-        LatLng zoomLocation = getLastBestLocation();
 
-        mMap.addMarker(new MarkerOptions().position(zoomLocation));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(zoomLocation));
+        initializeUserLocation();
+
+        mMap.addMarker(new MarkerOptions().position(userLocation));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom));
 
         initializeOnMarkerClickListener();
@@ -213,7 +218,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void displayPointsOnMap(Service service) {
         Log.d(TAG, "displayPointsOnMap");
-        List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, new LatLng(bordeauxCenterLat, bordeauxCenterLong)));
+        List<Model> points = serviceManager.pointsToDisplatOnMap(service, new NearestPointsFilter(20, userLocation));
         for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
             Marker marker = mMap.addMarker(new MarkerOptions().position(point)
@@ -297,7 +302,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public LatLng getLastBestLocation() {
+    private LatLng getLastBestLocation() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location locationGPS = null;
         Location locationNet = null;
@@ -311,23 +316,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // if found, return the GPS location because it is more precise
         if (locationGPS != null) {
-            userPosition = new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
-            return userPosition;
+            return new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
         }
 
         else if(locationNet != null) {
-            userPosition = new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
-            return userPosition;
+            return new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
         }
 
         // hard coded values at the center of Bordeaux if we can't get the location of the user.
-        userPosition = null;
         return new LatLng(bordeauxCenterLat, bordeauxCenterLong);
 
-    }
-
-    public LatLng getUserPosition(){
-        return userPosition;
     }
 
 
@@ -466,6 +464,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (depth == 0 && btnShowList != null)
             btnShowList.setVisibility(View.VISIBLE);
     }
+
 
     private boolean isDisplayedOnMap(Model point){
         for (Marker marker : mapMarkers){
