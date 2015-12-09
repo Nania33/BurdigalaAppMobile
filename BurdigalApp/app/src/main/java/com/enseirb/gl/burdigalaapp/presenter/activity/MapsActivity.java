@@ -21,6 +21,7 @@ import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
+import com.enseirb.gl.burdigalaapp.parser.FileStocker;
 import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueData;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.CycleParkDetailFragment;
@@ -91,6 +92,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initializeServiceManager();
 
+        FileStocker fileStocker = new FileStocker(this);
+        fileStocker.writeToFile("coucou", "Garden");
         if (findViewById(R.id.fragment_container_map) != null && findViewById(R.id.fragment_container) != null) {
             initializeTablet();
         } else {

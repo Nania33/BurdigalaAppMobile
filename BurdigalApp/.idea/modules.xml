@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BurdigalApp.iml" filepath="$PROJECT_DIR$/BurdigalApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/BurdigalApp/BurdigalApp.iml" filepath="$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/BurdigalApp/BurdigalApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/BurdigalApp/app/app.iml" filepath="$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/BurdigalApp/app/app.iml" />
     </modules>
   </component>
 </project>

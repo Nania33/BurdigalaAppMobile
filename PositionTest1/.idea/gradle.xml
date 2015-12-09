@@ -9,8 +9,8 @@
         <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/BurdigalApp" />
-            <option value="$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/BurdigalApp/app" />
+            <option value="$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/PositionTest1" />
+            <option value="$PROJECT_DIR$/../../../../../../malt/i/alraffin/3A/AndroidProject/BurdigalaAppMobile/PositionTest1/app" />
           </set>
         </option>
       </GradleProjectSettings>
