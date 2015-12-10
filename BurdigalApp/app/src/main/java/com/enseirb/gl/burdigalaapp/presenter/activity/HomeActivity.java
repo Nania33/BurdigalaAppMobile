@@ -11,7 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -38,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
 
     private HomeActivityPreferences homeActivityPreferences;
+    private boolean firstTimeRun = true;
 
     private AbsListView mListView;
     private ListAdapter mAdapter;
@@ -48,6 +51,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private EditText edNbPoints;
 
+    private List<Integer> toInitialize;
+
     private ArrayList<Service> mItemsToDisplay;
     private List<Map<String, String>> mListOfChoices;
 
@@ -56,17 +61,22 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        initializeListOfChoices();
+        toInitialize = new ArrayList<>();
+
         initializeHomeActivityPreferences();
+
+        initializeListOfChoices();
         initializeBtnStart();
         initializeBtnNbPoints();
         initializeEdNbPoints();
         radioGroup = (RadioGroup) findViewById(R.id.rg_user_filter);
+
+        loadHomeActivityPreferences(mItemsToDisplay);
+
         initializeListView();
 
         checkConnectivity();
 
-        loadHomeActivityPreferences(mItemsToDisplay);
     }
 
     private void initializeEdNbPoints() {
@@ -93,23 +103,21 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initializeListView() {
-        mAdapter = new SimpleAdapter(this, mListOfChoices , R.layout.item_list_home_activity,
+        mAdapter = new SelectMultipleItemsAdapter(toInitialize, this, mListOfChoices , R.layout.item_list_home_activity,
                 new String[] {Service.KEY_NAME}, new int[]{R.id.tv_item_name});
 
         mListView = (AbsListView) findViewById(android.R.id.list);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "itemClicked");
+                Log.d(TAG, "onItemClick");
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.chk_bx_home_choice);
                 Service item = mItemsToDisplay.get(position);
                 if (item.isSelected()) {
-                    Log.d(TAG,"itemUnselected");
                     item.unselect();
                     checkBox.setChecked(false);
                     view.setBackgroundResource(android.R.color.background_light);
                 } else {
-                    Log.d(TAG,"itemSelected");
                     item.select();
                     checkBox.setChecked(true);
                     view.setBackgroundResource(item.getBackgroundColor());
@@ -151,9 +159,12 @@ public class HomeActivity extends AppCompatActivity {
         Map<String,String> preferences = homeActivityPreferences.getSelectedServices();
         for(Map.Entry<String,String> preference : preferences.entrySet()){
             Log.d(TAG,"[loadHomeActivityPreferences] - selected - " + preference.getValue());
-            for(Service item : items){
+
+            for (int i=0; i < items.size() ; i++) {
+                Service item = items.get(i);
                 if(preference.getValue().equals(item.getName())){
-                    setItemSelected(item);
+                    item.select();
+                    toInitialize.add(i);
                 }
                 else{
                     item.unselect();
@@ -161,26 +172,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         radioGroup.check(homeActivityPreferences.getRadioButtonId());
-    }
-
-    private void setItemSelected(final Service item){
-        for (int position = 0; position < mListOfChoices.size(); position++){
-            if (mItemsToDisplay.get(position).getType().equals(item.getType())){
-                final int finalPosition = position;
-                final int color = item.getBackgroundColor();
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        View itemView = mListView.getChildAt(finalPosition);
-                        CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.chk_bx_home_choice);
-                        checkBox.setChecked(true);
-                        itemView.setBackgroundResource(color);
-                        item.select();
-                    }
-                });
-
-            }
-        }
     }
 
     private void saveHomeActivityPreferences(ArrayList<Service> items) {
@@ -265,5 +256,33 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         d.show();
+    }
+
+    public class SelectMultipleItemsAdapter extends SimpleAdapter {
+        private LayoutInflater mInflater;
+        private List<Integer> needSelection;
+
+        public SelectMultipleItemsAdapter(List<Integer> toSelect, Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
+            super(context, data, resource, from, to);
+            mInflater = LayoutInflater.from(context);
+            this.needSelection = new ArrayList<>(toSelect);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d(TAG, "getView");
+            if (convertView == null){
+                convertView = mInflater.inflate(R.layout.item_list_home_activity, null);
+                CheckBox cb = (CheckBox) convertView.findViewById(R.id.chk_bx_home_choice);
+
+                for (Integer pos : needSelection)
+                    if (pos == position){
+                        Log.d(TAG, "initialize");
+                        convertView.setBackgroundResource(mItemsToDisplay.get(position).getBackgroundColor());
+                        cb.setChecked(true);
+                    }
+            }
+            return super.getView(position, convertView, parent);
+        }
     }
 }

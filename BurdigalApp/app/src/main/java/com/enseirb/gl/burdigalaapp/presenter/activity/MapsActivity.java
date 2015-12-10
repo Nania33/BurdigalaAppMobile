@@ -88,13 +88,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initializeFragments();
 
-        initializeServiceManager();
 
         if (findViewById(R.id.fragment_container_map) != null && findViewById(R.id.fragment_container) != null) {
             initializeTablet();
         } else {
             initializePhone();
         }
+
+        initializeServiceManager();
+
     }
 
     
@@ -133,7 +135,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 depth++;
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.hide(mapFragment);
+                if (findViewById(R.id.fragment_container_map) == null)
+                    ft.hide(mapFragment);
+                else
+                    ft.hide(listFragment.get(currentListFragment));
                 btnShowList.setVisibility(View.GONE);
                 ft.show(MapsActivity.this.listFragment.get(currentListFragment));
                 ft.commit();
@@ -402,8 +407,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onButtonReturnClick() {
         if (depth == 2){
             replaceDetailFragmentWith(listFragment.get(currentListFragment));
-        } else if (depth == 1){
+        } else if (depth == 1 && findViewById(R.id.fragment_container_map) == null){
             replaceDetailFragmentWith(mapFragment);
+        } else if (depth == 1 && findViewById(R.id.fragment_container_map) != null) {
+            replaceDetailFragmentWith(listFragment.get(currentListFragment));
         }
         depth--;
         if (depth == 0 && btnShowList != null)
@@ -421,9 +428,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point.getLatLng()));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15.f));
-        if (depth == 1) {
+        if (depth == 1)
             onButtonReturnClick();
-        } else if (depth == 2) {
+        else if (depth == 2) {
             depth--;
             onButtonReturnClick();
         }
@@ -473,8 +480,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void displayDetailFragment(Service service, int itemPosition) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        if (depth == 0)
+        if (depth == 0 && findViewById(R.id.fragment_container_map) == null)
             ft.hide(mapFragment);
+        else if (depth == 0 && findViewById(R.id.fragment_container_map) != null)
+            ft.hide(listFragment.get(currentListFragment));
         else if (depth == 1)
             ft.hide(listFragment.get(currentListFragment));
 
@@ -490,6 +499,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ft.commit();
         depth++;
     }
+
+
 
     private void replaceDetailFragmentWith(Fragment fragment){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
