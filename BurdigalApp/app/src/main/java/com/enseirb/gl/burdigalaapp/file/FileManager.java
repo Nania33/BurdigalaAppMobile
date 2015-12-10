@@ -32,7 +32,7 @@ public class FileManager {
         context = ctx;
     }
 
-    public boolean fileUpdateNeeded(Service service){
+    public boolean fileUpdateNeeded(Service service) {
         String fileName = service.getFilename();
         File file = new File(context.getCacheDir(), fileName);
 
@@ -41,15 +41,15 @@ public class FileManager {
             return true;
         } else {
             Date fileDate = getDateFromFile(fileName);
-            Log.d(TAG, "file exists with date " + simpleDateFormat.format(fileDate));
-            if (fileDate==null || isTooOld(fileDate)) {
+            Log.d(TAG, "file exists with date " + simpleDateFormat.format(fileDate) + " and name " + fileName);
+            if (fileDate == null || isTooOld(fileDate)) {
                 return true;
             }
         }
         return false;
     }
 
-    /*public void writeToFile(String data, Service service) {
+    public void writeToFile(String data, Service service) {
         String fileName = service.getType().toString();
         Log.d(TAG, fileName);
 
@@ -66,11 +66,51 @@ public class FileManager {
         } else {
             Log.d(TAG, "file exists");
             Date fileDate = getDateFromFile(fileName);
-            if (fileDate==null || isTooOld(fileDate)) {
+            if (fileDate == null || isTooOld(fileDate)) {
                 writeDataToFile(data, fileName);
             }
         }
-    }*/
+    }
+
+    private void writeDataToFile(String data, String fileName) {
+        try {
+            String dateString = simpleDateFormat.format(new Date());
+            String toWrite = dateString + "\n" + data;
+
+            FileOutputStream outputStreamWriter = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStreamWriter.write(toWrite.getBytes());
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String readFromFile(String fileName) {
+        String data = "";
+        FileInputStream ins;
+        try {
+            ins = context.openFileInput(fileName);
+            if (ins != null) {
+                StringBuilder stringBuilder = new StringBuilder();
+                String receiveString = "";
+                InputStreamReader inputStreamReader = new InputStreamReader(ins);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                bufferedReader.readLine(); // read the date
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+                ins.close();
+                data = stringBuilder.toString();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 
     private Date getDateFromFile(String fileName) {
         StringBuilder result = new StringBuilder();

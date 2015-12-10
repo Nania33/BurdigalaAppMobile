@@ -13,6 +13,7 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +46,9 @@ public class AsyncTaskFileCyclePark extends AsyncTask<String, Void, Void> {
     }
 
     private List<CycleParkDTO> startCycleParkFromFileTask(String filename){
+        FileManager fileManager = new FileManager(context);
         Log.d(TAG, "[startGetWeatherTask] start get cycleParks");
-        FileIO fileIO = new FileIO(context);
-        String dataToParse = fileIO.readFromFile(filename);
+        String dataToParse = fileManager.readFromFile(filename);
         List<CycleParkDTO> dtoList = KmlCycleParkParser.parse(dataToParse);
         Log.d(TAG, "[startGetWeatherTask] end get cycleParks");
         return dtoList;

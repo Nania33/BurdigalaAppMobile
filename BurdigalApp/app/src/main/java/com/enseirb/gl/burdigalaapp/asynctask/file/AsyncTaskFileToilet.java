@@ -45,9 +45,9 @@ public class AsyncTaskFileToilet extends AsyncTask<String, Void, Void> {
     }
 
     private List<ToiletDTO> startToiletFromFileTask(String filename){
+        FileManager fileManager = new FileManager(context);
         Log.d(TAG, "[startGetWeatherTask] start get toilets");
-        FileIO fileIO = new FileIO(context);
-        String dataToParse = fileIO.readFromFile(filename);
+        String dataToParse = fileManager.readFromFile(filename);
         List<ToiletDTO> dtoList = KmlToiletParser.parse(dataToParse);
         Log.d(TAG, "[startGetWeatherTask] end get toilets");
         return dtoList;

@@ -45,9 +45,9 @@ public class AsyncTaskFileParking extends AsyncTask<String, Void, Void> {
     }
 
     private List<ParkingDTO> startParkingFromFileTask(String filename){
+        FileManager fileManager = new FileManager(context);
         Log.d(TAG, "[startGetWeatherTask] start get parkings");
-        FileIO fileIO = new FileIO(context);
-        String dataToParse = fileIO.readFromFile(filename);
+        String dataToParse = fileManager.readFromFile(filename);
         List<ParkingDTO> dtoList = KmlParkingParser.parse(dataToParse);
         Log.d(TAG, "[startGetWeatherTask] end get parkings");
         return dtoList;
