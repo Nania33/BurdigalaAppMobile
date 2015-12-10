@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -260,12 +259,12 @@ public class HomeActivity extends AppCompatActivity {
 
     public class SelectMultipleItemsAdapter extends SimpleAdapter {
         private LayoutInflater mInflater;
-        private List<Integer> needSelection;
+        private List<Integer> needToBeSelected;
 
         public SelectMultipleItemsAdapter(List<Integer> toSelect, Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
             super(context, data, resource, from, to);
             mInflater = LayoutInflater.from(context);
-            this.needSelection = new ArrayList<>(toSelect);
+            this.needToBeSelected = new ArrayList<>(toSelect);
         }
 
         @Override
@@ -275,11 +274,14 @@ public class HomeActivity extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.item_list_home_activity, null);
                 CheckBox cb = (CheckBox) convertView.findViewById(R.id.chk_bx_home_choice);
 
-                for (Integer pos : needSelection)
+                for (Integer pos : needToBeSelected)
                     if (pos == position){
-                        Log.d(TAG, "initialize");
-                        convertView.setBackgroundResource(mItemsToDisplay.get(position).getBackgroundColor());
-                        cb.setChecked(true);
+                        Service item = mItemsToDisplay.get(position);
+                        if (item.isSelected()) {
+                            Log.d(TAG, "initialize");
+                            convertView.setBackgroundResource(item.getBackgroundColor());
+                            cb.setChecked(true);
+                        }
                     }
             }
             return super.getView(position, convertView, parent);

@@ -28,7 +28,6 @@ public class LinearFilter implements Filter{
         List<Garden> result = new ArrayList<>();
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
-            System.out.println("Application du Filtre : Ajout point : " + nbPoints);
             result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
@@ -41,7 +40,6 @@ public class LinearFilter implements Filter{
         List<CyclePark> result = new ArrayList<>();
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
-            System.out.println("Application du Filtre : Ajout point : " + nbPoints);
             result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
@@ -53,7 +51,6 @@ public class LinearFilter implements Filter{
         List<Parking> result = new ArrayList<>();
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
-            System.out.println("Application du Filtre : Ajout point : " + nbPoints);
             result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
@@ -65,7 +62,6 @@ public class LinearFilter implements Filter{
         List<Toilet> result = new ArrayList<>();
         int nbPointsRemaining = zero;
         while(nbPointsRemaining != nbPoints){
-            System.out.println("Application du Filtre : Ajout point : " + nbPoints);
             result.add(container.getModels().get(nbPointsRemaining));
             nbPointsRemaining++;
         }
