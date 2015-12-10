@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.filters.NearestPointsFilter;
 import com.enseirb.gl.burdigalaapp.filters.NoFilter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
@@ -158,7 +157,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeServiceManager(){
-        serviceManager = new ServiceManager(listOfServices, new ServiceManager.ServiceManagerListener() {
+        serviceManager = new ServiceManager(this, listOfServices, new ServiceManager.ServiceManagerListener() {
             @Override
             public void onError(Service service, String message) {
                 Log.d(TAG, "onError : " + message);

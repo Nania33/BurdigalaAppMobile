@@ -23,34 +23,16 @@ public class Service implements Parcelable {
     private boolean isSelected;
     private int color;
     private ServiceType type;
+    private String filename;
 
-    public Service(ServiceType type, String name, String description, int color) {
+    public Service(ServiceType type, String name, String description, int color, String filename) {
         this.type = type;
         this.name = name;
         this.description = description;
+        this.filename = filename;
         this.isSelected = false;
         this.color = color;
     }
-
-    protected Service(Parcel in) {
-        name = in.readString();
-        description = in.readString();
-        isSelected = in.readByte() != 0;
-        color = in.readInt();
-        type = ServiceType.toServiceType(in.readString());
-    }
-
-    public static final Creator<Service> CREATOR = new Creator<Service>() {
-        @Override
-        public Service createFromParcel(Parcel in) {
-            return new Service(in);
-        }
-
-        @Override
-        public Service[] newArray(int size) {
-            return new Service[size];
-        }
-    };
 
     public String getName() {
         return name;
@@ -101,6 +83,10 @@ public class Service implements Parcelable {
         return type;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
     public BitmapDescriptor getMarkerIcon(){
         switch (this.getType()){
             case TOILET:
@@ -116,6 +102,30 @@ public class Service implements Parcelable {
         }
     }
 
+    /*****************************
+     * Parcelable implementation *
+     *****************************/
+
+    protected Service(Parcel in) {
+        name = in.readString();
+        description = in.readString();
+        isSelected = in.readByte() != 0;
+        color = in.readInt();
+        type = ServiceType.toServiceType(in.readString());
+        filename = in.readString();
+    }
+
+    public static final Creator<Service> CREATOR = new Creator<Service>() {
+        @Override
+        public Service createFromParcel(Parcel in) {
+            return new Service(in);
+        }
+
+        @Override
+        public Service[] newArray(int size) {
+            return new Service[size];
+        }
+    };
 
     @Override
     public int describeContents() {
@@ -129,7 +139,12 @@ public class Service implements Parcelable {
         dest.writeByte((byte) (isSelected ? 1 : 0));
         dest.writeInt(color);
         dest.writeString(type.toString());
+        dest.writeString(filename);
     }
+
+    /*****************************
+     * Service as Key for Map    *
+     *****************************/
 
     @Override
     public boolean equals(Object o) {
@@ -153,4 +168,8 @@ public class Service implements Parcelable {
         result = 31 * result + type.hashCode();
         return result;
     }
+
+
+
+
 }
