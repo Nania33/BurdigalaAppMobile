@@ -6,17 +6,11 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <!--   <ImageView
-           android:id="@+id/img_service_icon"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:paddingRight="@dimen/activity_horizontal_margin"/>-->
-
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:textSize="@dimen/text_size_normal"
+        android:textSize="@dimen/item_list_text_size"
         android:gravity="center"
         android:id="@+id/tv_item_name" />
 

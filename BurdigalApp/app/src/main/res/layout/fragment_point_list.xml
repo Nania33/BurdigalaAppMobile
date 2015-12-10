@@ -18,8 +18,8 @@
 
         <ImageButton
             android:id="@+id/btn_previous"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/list_img_button_size"
+            android:layout_height="@dimen/list_img_button_size"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_action_prev"
             android:scaleType="fitCenter"/>
@@ -27,18 +27,18 @@
         <TextView
             android:id="@+id/service_name"
             android:layout_width="0dp"
-            android:layout_height="@dimen/detail_fragment_title_height"
+            android:layout_height="@dimen/list_fragment_name_layout_height"
             android:layout_weight="1"
-            android:paddingLeft="@dimen/layout_margin_right_low"
-            android:paddingRight="@dimen/layout_margin_right_low"
+            android:paddingLeft="@dimen/list_fragment_service_name_horizontal_padding"
+            android:paddingRight="@dimen/list_fragment_service_name_horizontal_padding"
             android:textSize="@dimen/list_fragment_name_height"
             android:textColor="@android:color/black"
             android:gravity="center_horizontal"/>
 
         <ImageButton
             android:id="@+id/btn_next"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/list_img_button_size"
+            android:layout_height="@dimen/list_img_button_size"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_acton_next"/>
@@ -53,7 +53,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/black"/>
+        android:background="@color/btn_top_line_color"/>
 
     <Button
         android:layout_width="match_parent"

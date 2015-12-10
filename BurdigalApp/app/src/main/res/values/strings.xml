@@ -37,4 +37,10 @@
     <string name="locate_on_map">Localiser sur la carte</string>
     <string name="in_bdx_center">Dans Bordeaux</string>
     <string name="around_position">A proximité</string>
+    <string name="dialog_cancel">Annuler</string>
+    <string name="dialog_valider">Valider</string>
+    <string name="dialog_nb_points_title">Nombre de points </string>
+    <string name="points_by_service">points par service</string>
+    <string name="btn_modify">Modifier</string>
+    <string name="display">Afficher</string>
 </resources>

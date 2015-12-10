@@ -6,14 +6,9 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
-import com.enseirb.gl.burdigalaapp.file.FileIO;
 import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.parser.KmlCycleParkParser;
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
-import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

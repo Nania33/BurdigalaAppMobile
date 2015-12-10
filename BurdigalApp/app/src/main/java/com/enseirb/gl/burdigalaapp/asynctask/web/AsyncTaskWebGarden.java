@@ -9,16 +9,13 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
-import com.enseirb.gl.burdigalaapp.file.FileIO;
+import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.parser.KmlGardenParser;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
 import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
 import com.enseirb.gl.burdigalaapp.web.http.response.WebResponse;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AsyncTaskWebGarden extends AsyncTask<String, Void, Void> {
@@ -51,8 +48,8 @@ public class AsyncTaskWebGarden extends AsyncTask<String, Void, Void> {
         Log.d(TAG, "[startGetWeatherTask] start get gardens");
         HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.PARCJARDIN);
         WebResponse response = request.executeRequest();
-        FileIO fileIO = new FileIO(context);
-        fileIO.writeDataToFile(response.getData(), filename);
+        FileManager fileManager = new FileManager(context);
+        fileManager.writeDataToFile(response.getData(), filename);
         List<GardenDTO> dtoList = KmlGardenParser.parse(response.getData());
         Log.d(TAG, "[startGetWeatherTask] end get gardens");
         return dtoList;

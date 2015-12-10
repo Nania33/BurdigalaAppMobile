@@ -6,12 +6,8 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.IToiletDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ToiletDTO;
-import com.enseirb.gl.burdigalaapp.file.FileIO;
 import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.parser.KmlToiletParser;
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
-import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
 
 import java.util.ArrayList;
 import java.util.List;

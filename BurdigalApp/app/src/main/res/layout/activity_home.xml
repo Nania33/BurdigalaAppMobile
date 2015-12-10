@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/selection_question"
-        android:textSize="@dimen/text_size_low"
+        android:textSize="@dimen/activity_home_title_size"
         android:textColor="@android:color/black"
         android:gravity="center" />
 
@@ -47,7 +47,7 @@
             android:id="@+id/rg_user_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/layout_margin_bottom_med"
+            android:layout_marginBottom="@dimen/activity_home_margin_bottom"
             android:orientation="vertical">
 
             <RadioButton
@@ -63,15 +63,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:layout_marginBottom="@dimen/layout_margin_bottom_low_low"
+                android:layout_marginBottom="@dimen/layout_margin_5"
                 android:text="@string/around_position"/>
 
         </RadioGroup>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_height_app_low_2"
-            android:layout_marginBottom="@dimen/layout_margin_bottom_low_low"
+            android:layout_height="@dimen/activity_home_layout_height"
+            android:layout_marginBottom="@dimen/layout_margin_5"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical">
 
@@ -81,8 +81,8 @@
                 android:gravity="center_vertical"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:layout_marginEnd="@dimen/layout_margin_right_low"
-                android:text="Afficher "/>
+                android:layout_marginEnd="@dimen/text_space_character"
+                android:text="@string/display"/>
 
             <EditText
                 android:id="@+id/ed_nb_points"
@@ -90,9 +90,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:layout_marginEnd="@dimen/layout_margin_right_low"
-                android:inputType="number"
-                android:text="8"/>
+                android:layout_marginEnd="@dimen/text_space_character"
+                android:inputType="number" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -100,7 +99,7 @@
                 android:gravity="center_vertical"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:text=" points par service"/>
+                android:text="@string/points_by_service"/>
 
             <View
                 android:layout_width="0dp"
@@ -112,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Modifier"/>
+                android:text="@string/btn_modify"/>
 
         </LinearLayout>
 

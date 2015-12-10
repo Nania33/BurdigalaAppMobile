@@ -6,10 +6,8 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
-import com.enseirb.gl.burdigalaapp.file.FileIO;
 import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.parser.KmlCycleParkParser;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
 import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
 import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
 import com.enseirb.gl.burdigalaapp.web.http.response.WebResponse;
@@ -47,8 +45,8 @@ public class AsyncTaskWebCyclePark extends AsyncTask<String, Void, Void> {
         Log.d(TAG, "[startGetWeatherTask] start get cycleParks");
         HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.SIGSTAVELO);
         WebResponse response = request.executeRequest();
-        FileIO fileIO = new FileIO(context);
-        fileIO.writeDataToFile(response.getData(), filename);
+        FileManager fileManager = new FileManager(context);
+        fileManager.writeDataToFile(response.getData(), filename);
         List<CycleParkDTO> dtoList = KmlCycleParkParser.parse(response.getData());
         Log.d(TAG, "[startGetWeatherTask] end get cycleParks");
         return dtoList;

@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="zero">0dp</dimen>
-    <dimen name="layout_height_app_low">30dp</dimen>
-    <dimen name="layout_height_app_low_2">40dp</dimen>
-    <dimen name="layout_height_app_med">60dp</dimen>
-    <dimen name="layout_height_app_med_1">300dp</dimen>
-    <dimen name="layout_height_app_high">325dp</dimen>
-    <dimen name="layout_margin_left_low">5dp</dimen>
-    <dimen name="layout_margin_left_med">20dp</dimen>
-    <dimen name="layout_margin_top_low_low">2dp</dimen>
-    <dimen name="layout_margin_right_low">5dp</dimen>
-    <dimen name="layout_margin_right_med">10dp</dimen>
-    <dimen name="layout_margin_top_low">20dp</dimen>
-    <dimen name="layout_margin_top_low_1">25dp</dimen>
-    <dimen name="layout_margin_top_med">35dp</dimen>
-    <dimen name="layout_margin_top_high">180dp</dimen>
-    <dimen name="layout_margin_bottom_med">25dp</dimen>
-    <dimen name="layout_margin_bottom_low_low">5dp</dimen>
-    <dimen name="text_size_low">20sp</dimen>
+    <dimen name="layout_margin_5">5dp</dimen>
+    <dimen name="text_space_character">3dp</dimen>
 
-    <dimen name="text_size_big">40sp</dimen>
-    <dimen name="padding_left_low">4dp</dimen>
-    <dimen name="padding_left_med">20dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Activity Home text size !-->
+    <dimen name="activity_home_title_size">22sp</dimen>
+    <dimen name="activity_home_margin_bottom">25dp</dimen>
+    <dimen name="activity_home_layout_height">40dp</dimen>
+
     <!-- Detail fragments dimens !-->
-    <dimen name="text_size_detail_title">28sp</dimen>
-    <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="detail_fragment_text_size_low">20sp</dimen>
+    <dimen name="detail_fragment_text_size_title">28sp</dimen>
+    <dimen name="detail_fragment_text_size_normal">18sp</dimen>
+    <dimen name="detail_fragment_title_layout_height">40dp</dimen>
+    <dimen name="detail_fragment_image_view_margin_bottom">20dp</dimen>
+    <dimen name="detail_fragment_text_view_height">40dp</dimen>
+    <dimen name="detail_fragment_layout_margin_right">10dp</dimen>
 
-    <dimen name="detail_fragment_title_height">40dp</dimen>
-
+    <!-- List fragment dimens !-->
+    <dimen name="list_fragment_name_layout_height">40dp</dimen>
     <dimen name="list_fragment_name_height">26sp</dimen>
+    <dimen name="list_img_button_size">32dp</dimen>
+    <dimen name="list_fragment_service_name_horizontal_padding">5dp</dimen>
+
+    <dimen name="item_list_text_size">18dp</dimen>
+
 </resources>

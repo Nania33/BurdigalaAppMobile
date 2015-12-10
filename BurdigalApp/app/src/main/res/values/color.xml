@@ -4,27 +4,6 @@
     <item name="garden_color" type="color">#FF0b8a46</item>
     <item name="cycle_park_color" type="color">#FFff6600</item>
     <item name="toilet_color" type="color">#FF0099CC</item>
-
-    <item name="purple" type="color">#FFAA66CC</item>
-    <item name="red" type="color">#FFFF4444</item>
-    <item name="darkpurple" type="color">#FF9933CC</item>
-    <item name="darkgreen" type="color">#FF669900</item>
-    <item name="darkorange" type="color">#FFFF8800</item>
-    <item name="darkred" type="color">#FFCC0000</item>
-    <item name="black" type="color">#000000</item>
-    <item name="grey" type="color">#d3d3d3</item>
-    <item name="white" type="color">#FFFFFF</item>
-
-    <integer-array name="androidcolors">
-        <item>@color/parking_color</item>
-        <item>@color/purple</item>
-        <item>@color/garden_color</item>
-        <item>@color/cycle_park_color</item>
-        <item>@color/red</item>
-        <item>@color/toilet_color</item>
-        <item>@color/darkpurple</item>
-        <item>@color/darkgreen</item>
-        <item>@color/darkorange</item>
-        <item>@color/darkred</item>
-    </integer-array>
+    <item name="btn_top_line_color" type="color">#000000</item>
+    <item name="btn_on_click_background" type="color">#d3d3d3</item>
 </resources>

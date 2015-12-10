@@ -1,12 +1,15 @@
 package com.enseirb.gl.burdigalaapp.presenter.manager;
 
 import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownServiceException;
 import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
+import com.enseirb.gl.burdigalaapp.model.container.ContainerFactory;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.IModelContainer;
@@ -32,6 +35,9 @@ import java.util.Map;
 public class ServiceManager {
     private static final String TAG = "ServiceManager";
 
+    private static final double bordeauxCenterLat = 44.836758;
+    private static final double bordeauxCenterLong = -0.578746;
+
     private Map<Service, IModelContainer> myServices;
     private ServiceManagerListener mListener;
     private FileManager fileManager;
@@ -44,7 +50,7 @@ public class ServiceManager {
         myServices = new HashMap<>();
         for (Service service : services) {
             try {
-                myServices.put(service, makeContainer(service.getType()));
+                myServices.put(service, ContainerFactory.makeContainer(service.getType()));
                 Log.d(TAG, "New service : "+service);
             } catch (UnknownDataException e) {
                 e.printStackTrace();
@@ -82,7 +88,7 @@ public class ServiceManager {
     }
 
 
-    public List<Model> pointsToDisplatOnMap(Service service, Filter filter){
+    public List<Model> pointsToDisplayOnMap(Service service, Filter filter){
         return getContainer(service).applyFilter(new ConcreteBusinessVisitor(), filter).getModels();
     }
 
@@ -90,25 +96,35 @@ public class ServiceManager {
         return getContainer(service).applyFilter(new ConcreteBusinessVisitor(), filter).getModels();
     }
 
+    public LatLng getLastBestLocation() {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        Location locationGPS = null;
+        Location locationNet = null;
 
-    public IModelContainer getContainer(Service service){
-        return myServices.get(service);
+        try {
+            locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        // if found, return the GPS location because it is more precise
+        if (locationGPS != null) {
+            return new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
+        }
+
+        else if(locationNet != null) {
+            return new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
+        }
+
+        // hard coded values at the center of Bordeaux if we can't get the location of the user.
+        return new LatLng(bordeauxCenterLat, bordeauxCenterLong);
+
     }
 
 
-    private static IModelContainer makeContainer(ServiceType type) throws UnknownDataException {
-        switch (type) {
-            case TOILET:
-                return new ToiletContainer();
-            case CYCLEPARK:
-                return new CycleParkContainer();
-            case GARDEN:
-                return new GardenContainer();
-            case PARKING:
-                return new ParkingContainer();
-            default:
-                throw new UnknownDataException("Type " + type + " inconnu");
-        }
+    public IModelContainer getContainer(Service service){
+        return myServices.get(service);
     }
 
     public Service getService(ServiceType serviceType) throws UnknownServiceException {

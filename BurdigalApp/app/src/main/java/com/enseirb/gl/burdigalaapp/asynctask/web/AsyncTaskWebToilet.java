@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.IToiletDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ToiletDTO;
-import com.enseirb.gl.burdigalaapp.file.FileIO;
+import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.parser.KmlToiletParser;
 import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
 import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
@@ -48,8 +48,8 @@ public class AsyncTaskWebToilet extends AsyncTask<String, Void, Void> {
         Log.d(TAG, "[startGetToiletTask] start");
         HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.SIGSANITAIRE);
         WebResponse response = request.executeRequest();
-        FileIO fileIO = new FileIO(context);
-        fileIO.writeDataToFile(response.getData(), filename);
+        FileManager fileManager = new FileManager(context);
+        fileManager.writeDataToFile(response.getData(), filename);
         List<ToiletDTO> dtoList = KmlToiletParser.parse(response.getData());
         Log.d(TAG, "[startGetToiletTask] end");
         return dtoList;

@@ -3,8 +3,6 @@ package com.enseirb.gl.burdigalaapp.presenter.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +20,7 @@ import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
-import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueData;
+import com.enseirb.gl.burdigalaapp.presenter.BlockingQueueTask;
 import com.enseirb.gl.burdigalaapp.presenter.conf.Conf;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.PointListFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.CycleParkDetailFragment;
@@ -60,9 +58,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String DETAIL_FRAGMENT_TAG = "detail";
     private static final String TAG = "MapsActivity";
 
-    private static final double bordeauxCenterLat = 44.836758;
-    private static final double bordeauxCenterLong = -0.578746;
-
     private Filter mapFilter;
 
     private GoogleMap mMap;
@@ -78,7 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private ServiceManager serviceManager;
 
-    private BlockingQueue<BlockingQueueData> queue = new LinkedBlockingQueue<>();
+    private BlockingQueue<BlockingQueueTask> queue = new LinkedBlockingQueue<>();
 
     private ArrayList<Marker> mapMarkers = new ArrayList<>();
 
@@ -162,7 +157,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onError(Service service, String message) {
                 Log.d(TAG, "onError : " + message);
                 try {
-                    queue.put(BlockingQueueData.recordFailure(service, message));
+                    queue.put(BlockingQueueTask.recordFailure(service, message));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -173,7 +168,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.d(TAG, "onDataReceivedThread : " + Thread.currentThread().getId());
                 try {
                     Log.d(TAG, "OnSuccess : putting "+service+" in queue (Thread" + Thread.currentThread().getId());
-                    queue.put(BlockingQueueData.recordSucces(service));
+                    queue.put(BlockingQueueTask.recordSucces(service));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -212,7 +207,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeUserLocation(){
-        userLocation = getLastBestLocation();
+        userLocation = serviceManager.getLastBestLocation();
     }
 
     private void initializeMap(){
@@ -249,7 +244,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void displayPointsOnMap(Service service) {
         Log.d(TAG, "displayPointsOnMap");
-        List<Model> points = serviceManager.pointsToDisplatOnMap(service, getMapFilter());
+        List<Model> points = serviceManager.pointsToDisplayOnMap(service, getMapFilter());
         for (Model openDataPoint : points) {
             LatLng point = openDataPoint.getLatLng();
             Marker marker = mMap.addMarker(new MarkerOptions().position(point)
@@ -278,10 +273,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void run() {
                 Log.d(TAG, "Démarrage du thread "+Thread.currentThread().getId());
-                BlockingQueueData data;
+                BlockingQueueTask data;
                 try {
                     while ((data = queue.poll(5, TimeUnit.MINUTES)) != null){
-                        final BlockingQueueData finalData = data;
+                        final BlockingQueueTask finalData = data;
                         final Service service = finalData.getService();
                         if (data.isSucces()) {
                             final PointListFragment fragment = findListFragment(service);
@@ -333,31 +328,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    private LatLng getLastBestLocation() {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location locationGPS = null;
-        Location locationNet = null;
 
-        try {
-            locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-
-        // if found, return the GPS location because it is more precise
-        if (locationGPS != null) {
-            return new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
-        }
-
-        else if(locationNet != null) {
-            return new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
-        }
-
-        // hard coded values at the center of Bordeaux if we can't get the location of the user.
-        return new LatLng(bordeauxCenterLat, bordeauxCenterLong);
-
-    }
 
 
     /*******************************

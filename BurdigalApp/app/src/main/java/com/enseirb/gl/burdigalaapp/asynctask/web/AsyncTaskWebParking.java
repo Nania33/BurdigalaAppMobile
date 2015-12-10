@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ParkingDTO;
-import com.enseirb.gl.burdigalaapp.file.FileIO;
+import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.parser.KmlParkingParser;
 import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
 import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
@@ -44,8 +44,8 @@ public class AsyncTaskWebParking extends AsyncTask<String, Void, Void> {
         Log.d(TAG, "[startGetWeatherTask] start get parkings");
         HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.SIGPARKPUB);
         WebResponse response = request.executeRequest();
-        FileIO fileIO = new FileIO(context);
-        fileIO.writeDataToFile(response.getData(), filename);
+        FileManager fileManager = new FileManager(context);
+        fileManager.writeDataToFile(response.getData(), filename);
         List<ParkingDTO> dtoList = KmlParkingParser.parse(response.getData());
         Log.d(TAG, "[startGetWeatherTask] end get parkings");
         return dtoList;

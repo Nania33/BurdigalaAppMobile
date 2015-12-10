@@ -49,47 +49,11 @@ public class FileManager {
         return false;
     }
 
-    public void writeToFile(String data, Service service) {
-        String fileName = service.getType().toString();
-        Log.d(TAG, fileName);
-
-        File file = new File(context.getCacheDir(), fileName);
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d(TAG, "file does not exist");
-                writeDataToFile(data, fileName);
-            }
-        } else {
-            Log.d(TAG, "file exists");
-            Date fileDate = getDateFromFile(fileName);
-            if (fileDate == null || isTooOld(fileDate)) {
-                writeDataToFile(data, fileName);
-            }
-        }
-    }
-
-    private void writeDataToFile(String data, String fileName) {
-        try {
-            String dateString = simpleDateFormat.format(new Date());
-            String toWrite = dateString + "\n" + data;
-
-            FileOutputStream outputStreamWriter = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            outputStreamWriter.write(toWrite.getBytes());
-            outputStreamWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String readFromFile(String fileName) {
+    public String readFromFile(String filename) {
         String data = "";
-        FileInputStream ins;
+        FileInputStream ins = null;
         try {
-            ins = context.openFileInput(fileName);
+            ins = context.openFileInput(filename);
             if (ins != null) {
                 StringBuilder stringBuilder = new StringBuilder();
                 String receiveString = "";
@@ -100,16 +64,52 @@ public class FileManager {
                 while ( (receiveString = bufferedReader.readLine()) != null ) {
                     stringBuilder.append(receiveString);
                 }
-                ins.close();
                 data = stringBuilder.toString();
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (ins != null)
+                    ins.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return data;
+    }
+
+    public void writeDataToFile(String data, String fileName) {
+        File file = new File(context.getCacheDir(), fileName);
+
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d(TAG, "file does not exist, new file created");
+            }
+        }
+
+        FileOutputStream outputStreamWriter = null;
+        try {
+            String dateString = simpleDateFormat.format(new Date());
+            String toWrite = dateString + "\n" + data;
+            outputStreamWriter = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStreamWriter.write(toWrite.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (outputStreamWriter != null)
+                    outputStreamWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d(TAG, "data wroted successfully");
     }
 
     private Date getDateFromFile(String fileName) {
