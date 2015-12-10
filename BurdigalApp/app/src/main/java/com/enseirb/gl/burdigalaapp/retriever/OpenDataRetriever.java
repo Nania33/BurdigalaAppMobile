@@ -1,8 +1,5 @@
 package com.enseirb.gl.burdigalaapp.retriever;
 
-import android.util.Log;
-
-import com.enseirb.gl.burdigalaapp.asynctask.AsyncTaskGetToilet;
 import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
 import com.enseirb.gl.burdigalaapp.dao.listener.IGardenDAOListener;
 import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;

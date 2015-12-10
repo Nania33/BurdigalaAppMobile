@@ -1,9 +1,11 @@
 package com.enseirb.gl.burdigalaapp.presenter.manager;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownServiceException;
+import com.enseirb.gl.burdigalaapp.file.FileManager;
 import com.enseirb.gl.burdigalaapp.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
@@ -15,6 +17,7 @@ import com.enseirb.gl.burdigalaapp.presenter.service.Service;
 import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
 import com.enseirb.gl.burdigalaapp.presenter.visitor.ConcreteBusinessVisitor;
 import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
+import com.enseirb.gl.burdigalaapp.retriever.FileRetriever;
 import com.enseirb.gl.burdigalaapp.retriever.WebRetriever;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -31,8 +34,12 @@ public class ServiceManager {
 
     private Map<Service, IModelContainer> myServices;
     private ServiceManagerListener mListener;
+    private FileManager fileManager;
+    private Context context;
 
-    public ServiceManager(ArrayList<Service> services, ServiceManagerListener listener){
+    public ServiceManager(Context context, ArrayList<Service> services, ServiceManagerListener listener){
+        this.context = context;
+        this.fileManager = new FileManager(context);
         mListener = listener;
         myServices = new HashMap<>();
         for (Service service : services) {
@@ -49,7 +56,7 @@ public class ServiceManager {
         for (final Service service : myServices.keySet()) {
             if (service.isSelected()) {
                 IModelContainer container = myServices.get(service);
-                container.retrievePlaces(new ConcreteBusinessVisitor(), filter, new WebRetriever(), new IPresenterListener() {
+                IPresenterListener listener = new IPresenterListener() {
                     @Override
                     public void onDataRetreived() {
                         mListener.onDataRetrieved(service);
@@ -59,8 +66,17 @@ public class ServiceManager {
                     public void onError(String message) {
                         mListener.onError(service, message);
                     }
-                });
-                Log.d(TAG, "RetrieveData for service : " + service);
+                };
+
+                if (fileManager.fileUpdateNeeded(service)) {
+                    container.retrievePlaces(new ConcreteBusinessVisitor(), filter,
+                            new WebRetriever(context, service), listener);
+                    Log.d(TAG, "RetrieveData for service : " + service);
+                } else {
+                    container.retrievePlaces(new ConcreteBusinessVisitor(), filter,
+                            new FileRetriever(context, service), listener);
+                    Log.d(TAG, "RetrieveData from files for service : " + service);
+                }
             }
         }
     }

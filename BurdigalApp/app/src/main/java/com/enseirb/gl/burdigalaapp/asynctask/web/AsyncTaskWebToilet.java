@@ -1,13 +1,15 @@
-package com.enseirb.gl.burdigalaapp.asynctask;
+package com.enseirb.gl.burdigalaapp.asynctask.web;
 
 /**
  * Created by rchabot on 17/11/15.
  */
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.IToiletDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.ToiletDTO;
+import com.enseirb.gl.burdigalaapp.file.FileIO;
 import com.enseirb.gl.burdigalaapp.parser.KmlToiletParser;
 import com.enseirb.gl.burdigalaapp.web.http.request.HttpGetServiceRequest;
 import com.enseirb.gl.burdigalaapp.web.http.request.TypeOfService;
@@ -16,12 +18,14 @@ import com.enseirb.gl.burdigalaapp.web.http.response.WebResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AsyncTaskGetToilet extends AsyncTask<String, Void, Void> {
+public class AsyncTaskWebToilet extends AsyncTask<String, Void, Void> {
     private static final String TAG = "ASYNC_GET_TOILET";
 
     private IToiletDAOListener listener;
+    private Context context;
 
-    public AsyncTaskGetToilet(final IToiletDAOListener listener){
+    public AsyncTaskWebToilet(Context context, final IToiletDAOListener listener){
+        this.context = context;
         this.listener = listener;
     }
 
@@ -31,7 +35,7 @@ public class AsyncTaskGetToilet extends AsyncTask<String, Void, Void> {
         List<ToiletDTO> toiletDTO = new ArrayList<>();
 
         try {
-            toiletDTO.addAll(startGetToiletTask());
+            toiletDTO.addAll(startGetToiletTask(params[0]));
             listener.onSuccess(toiletDTO);
         } catch (Exception e){
             listener.onError(e.getMessage());
@@ -40,10 +44,12 @@ public class AsyncTaskGetToilet extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    private List<ToiletDTO> startGetToiletTask(){
+    private List<ToiletDTO> startGetToiletTask(String filename){
         Log.d(TAG, "[startGetToiletTask] start");
         HttpGetServiceRequest request = new HttpGetServiceRequest(TypeOfService.SIGSANITAIRE);
         WebResponse response = request.executeRequest();
+        FileIO fileIO = new FileIO(context);
+        fileIO.writeDataToFile(response.getData(), filename);
         List<ToiletDTO> dtoList = KmlToiletParser.parse(response.getData());
         Log.d(TAG, "[startGetToiletTask] end");
         return dtoList;
