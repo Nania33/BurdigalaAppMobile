@@ -1,12 +1,10 @@
 package com.enseirb.gl.burdigalaapp.presenter.conf;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
-import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.filters.LinearFilter;
-import com.enseirb.gl.burdigalaapp.filters.NearestPointsFilter;
+import com.enseirb.gl.burdigalaapp.business.filters.Filter;
+import com.enseirb.gl.burdigalaapp.business.filters.LinearFilter;
+import com.enseirb.gl.burdigalaapp.business.filters.NearestPointsFilter;
 import com.google.android.gms.maps.model.LatLng;
 
 /**

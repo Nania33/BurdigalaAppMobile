@@ -1,7 +1,7 @@
 package com.enseirb.gl.burdigalaapp.dao;
 
 import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
-import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
+import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 /**
  * Created by rchabot on 05/12/15.

@@ -1,8 +1,7 @@
 package com.enseirb.gl.burdigalaapp.model.container;
 
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
-import com.enseirb.gl.burdigalaapp.model.data.Garden;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
+import com.enseirb.gl.burdigalaapp.model.service.ServiceType;
 
 /**
  * Created by rchabot on 02/12/15.

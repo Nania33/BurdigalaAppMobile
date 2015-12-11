@@ -25,11 +25,11 @@ import android.widget.SimpleAdapter;
 
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
-import com.enseirb.gl.burdigalaapp.preferences.HomeActivityPreferences;
+import com.enseirb.gl.burdigalaapp.presenter.preferences.HomeActivityPreferences;
 import com.enseirb.gl.burdigalaapp.presenter.conf.Conf;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceFactory;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.model.service.ServiceFactory;
+import com.enseirb.gl.burdigalaapp.model.service.ServiceType;
+import com.enseirb.gl.burdigalaapp.model.service.Service;
 
 import java.util.ArrayList;
 import java.util.List;

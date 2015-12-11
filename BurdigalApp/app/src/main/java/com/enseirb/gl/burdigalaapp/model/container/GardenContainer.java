@@ -1,10 +1,10 @@
 package com.enseirb.gl.burdigalaapp.model.container;
 
-import com.enseirb.gl.burdigalaapp.filters.Filter;
+import com.enseirb.gl.burdigalaapp.business.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.presenter.visitor.BusinessVisitor;
 import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
-import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
+import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 import java.util.ArrayList;
 import java.util.List;

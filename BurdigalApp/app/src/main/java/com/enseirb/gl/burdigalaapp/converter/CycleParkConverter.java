@@ -9,7 +9,7 @@ import com.enseirb.gl.burdigalaapp.dao.listener.ICycleParkDAOListener;
 import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
-import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
+import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 import java.util.ArrayList;
 import java.util.List;

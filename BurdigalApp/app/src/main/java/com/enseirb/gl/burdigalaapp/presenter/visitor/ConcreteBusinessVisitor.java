@@ -10,7 +10,7 @@ import com.enseirb.gl.burdigalaapp.business.listener.ICycleParkBusinessListener;
 import com.enseirb.gl.burdigalaapp.business.listener.IGardenBusinessListener;
 import com.enseirb.gl.burdigalaapp.business.listener.IParkingBusinessListener;
 import com.enseirb.gl.burdigalaapp.business.listener.IToiletBusinessListener;
-import com.enseirb.gl.burdigalaapp.filters.Filter;
+import com.enseirb.gl.burdigalaapp.business.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
@@ -20,7 +20,7 @@ import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
-import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
+import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.enseirb.gl.burdigalaapp.presenter;
 
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.model.service.Service;
 
 /**
  * Created by rchabot on 05/12/15.

@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.enseirb.gl.burdigalaapp.R;
-import com.enseirb.gl.burdigalaapp.filters.Filter;
-import com.enseirb.gl.burdigalaapp.filters.NoFilter;
+import com.enseirb.gl.burdigalaapp.business.filters.Filter;
+import com.enseirb.gl.burdigalaapp.business.filters.NoFilter;
 import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.model.data.Model;
@@ -28,8 +28,8 @@ import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.GardenDetailFragmen
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ParkingDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.ToiletDetailFragment;
 import com.enseirb.gl.burdigalaapp.presenter.manager.ServiceManager;
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
-import com.enseirb.gl.burdigalaapp.presenter.service.ServiceType;
+import com.enseirb.gl.burdigalaapp.model.service.Service;
+import com.enseirb.gl.burdigalaapp.model.service.ServiceType;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

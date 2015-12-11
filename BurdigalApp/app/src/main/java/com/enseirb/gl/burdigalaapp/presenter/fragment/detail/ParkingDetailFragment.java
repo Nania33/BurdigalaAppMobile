@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.model.data.Parking;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.listener.InteractionListener;
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.model.service.Service;
 
 /**
  * A simple {@link Fragment} subclass.

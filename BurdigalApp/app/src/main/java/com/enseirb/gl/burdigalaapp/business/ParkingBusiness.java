@@ -6,9 +6,9 @@ import com.enseirb.gl.burdigalaapp.business.listener.IParkingBusinessListener;
 import com.enseirb.gl.burdigalaapp.converter.ParkingConverter;
 import com.enseirb.gl.burdigalaapp.converter.IParkingConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IParkingConverterListener;
-import com.enseirb.gl.burdigalaapp.filters.Filter;
+import com.enseirb.gl.burdigalaapp.business.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
-import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
+import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 /**
  * Created by rchabot on 05/12/15.

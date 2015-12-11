@@ -2,7 +2,7 @@ package com.enseirb.gl.burdigalaapp.business;
 
 import com.enseirb.gl.burdigalaapp.business.listener.IParkingBusinessListener;
 import com.enseirb.gl.burdigalaapp.model.container.ParkingContainer;
-import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
+import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 /**
  * Created by Nania on 17/11/2015.

@@ -6,9 +6,9 @@ import com.enseirb.gl.burdigalaapp.business.listener.IToiletBusinessListener;
 import com.enseirb.gl.burdigalaapp.converter.ToiletConverter;
 import com.enseirb.gl.burdigalaapp.converter.IToiletConverter;
 import com.enseirb.gl.burdigalaapp.converter.listener.IToiletConverterListener;
-import com.enseirb.gl.burdigalaapp.filters.Filter;
+import com.enseirb.gl.burdigalaapp.business.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
-import com.enseirb.gl.burdigalaapp.retriever.OpenDataRetriever;
+import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 /**
  * Created by rchabot on 03/12/15.

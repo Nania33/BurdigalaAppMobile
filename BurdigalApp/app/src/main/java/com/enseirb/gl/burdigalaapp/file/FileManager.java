@@ -3,7 +3,7 @@ package com.enseirb.gl.burdigalaapp.file;
 import android.content.Context;
 import android.util.Log;
 
-import com.enseirb.gl.burdigalaapp.presenter.service.Service;
+import com.enseirb.gl.burdigalaapp.model.service.Service;
 
 import java.io.BufferedReader;
 import java.io.File;
