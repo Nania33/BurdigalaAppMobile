@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
         initializeEdNbPoints();
         radioGroup = (RadioGroup) findViewById(R.id.rg_user_filter);
 
-        loadHomeActivityPreferences(mItemsToDisplay);
+        loadHomeActivityPreferences();
 
         initializeListView();
 
@@ -109,7 +109,6 @@ public class HomeActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemClick");
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.chk_bx_home_choice);
                 Service item = mItemsToDisplay.get(position);
                 if (item.isSelected()) {
@@ -150,7 +149,7 @@ public class HomeActivity extends AppCompatActivity {
         homeActivityPreferences = new HomeActivityPreferences(this);
     }
 
-    private void loadHomeActivityPreferences(ArrayList<Service> items) {
+    private void loadHomeActivityPreferences() {
         homeActivityPreferences.loadPreferences();
 
         edNbPoints.setText(String.valueOf(homeActivityPreferences.getNbPoints()));
@@ -159,14 +158,11 @@ public class HomeActivity extends AppCompatActivity {
         for(Map.Entry<String,String> preference : preferences.entrySet()){
             Log.d(TAG,"[loadHomeActivityPreferences] - selected - " + preference.getValue());
 
-            for (int i=0; i < items.size() ; i++) {
-                Service item = items.get(i);
+            for (int i=0; i < mItemsToDisplay.size() ; i++) {
+                Service item = mItemsToDisplay.get(i);
                 if(preference.getValue().equals(item.getName())){
                     item.select();
                     toInitialize.add(i);
-                }
-                else{
-                    item.unselect();
                 }
             }
         }
@@ -269,7 +265,6 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Log.d(TAG, "getView");
             if (convertView == null){
                 convertView = mInflater.inflate(R.layout.item_list_home_activity, null);
                 CheckBox cb = (CheckBox) convertView.findViewById(R.id.chk_bx_home_choice);
