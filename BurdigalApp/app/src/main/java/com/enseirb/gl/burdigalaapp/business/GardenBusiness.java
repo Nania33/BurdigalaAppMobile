@@ -18,10 +18,6 @@ public class GardenBusiness implements IGardenBusiness {
     private IGardenConverter gardenConverter;
     private Filter filter;
 
-    public GardenBusiness() {
-        this.gardenConverter = new GardenConverter();
-    }
-
     public GardenBusiness(Filter filter) {
         this.gardenConverter = new GardenConverter();
         this.filter = filter;
