@@ -26,11 +26,11 @@ public class LinearFilter implements Filter{
     @Override
     public GardenContainer filterModels(GardenContainer container) {
         List<Garden> result = new ArrayList<>();
-        int nbPointsRemaining = zero;
-        while(nbPointsRemaining != nbPoints){
-            result.add(container.getModels().get(nbPointsRemaining));
-            nbPointsRemaining++;
+        if(nbPoints > container.getModels().size()){
+            nbPoints = container.getModels().size();
         }
+        for (int i = 0; i < nbPoints; i++)
+            result.add(container.getModels().get(i));
         return new GardenContainer(result);
 
     }
@@ -38,33 +38,33 @@ public class LinearFilter implements Filter{
     @Override
     public CycleParkContainer filterModels(CycleParkContainer container) {
         List<CyclePark> result = new ArrayList<>();
-        int nbPointsRemaining = zero;
-        while(nbPointsRemaining != nbPoints){
-            result.add(container.getModels().get(nbPointsRemaining));
-            nbPointsRemaining++;
+        if(nbPoints > container.getModels().size()){
+            nbPoints = container.getModels().size();
         }
+        for (int i = 0; i < nbPoints; i++)
+            result.add(container.getModels().get(i));
         return new CycleParkContainer(result);
     }
 
     @Override
     public ParkingContainer filterModels(ParkingContainer container) {
         List<Parking> result = new ArrayList<>();
-        int nbPointsRemaining = zero;
-        while(nbPointsRemaining != nbPoints){
-            result.add(container.getModels().get(nbPointsRemaining));
-            nbPointsRemaining++;
+        if(nbPoints > container.getModels().size()){
+            nbPoints = container.getModels().size();
         }
+        for (int i = 0; i < nbPoints; i++)
+            result.add(container.getModels().get(i));
         return new ParkingContainer(result);
     }
 
     @Override
     public ToiletContainer filterModels(ToiletContainer container) {
         List<Toilet> result = new ArrayList<>();
-        int nbPointsRemaining = zero;
-        while(nbPointsRemaining != nbPoints){
-            result.add(container.getModels().get(nbPointsRemaining));
-            nbPointsRemaining++;
+        if(nbPoints > container.getModels().size()){
+            nbPoints = container.getModels().size();
         }
+        for (int i = 0; i < nbPoints; i++)
+            result.add(container.getModels().get(i));
         return new ToiletContainer(result);
     }
 
