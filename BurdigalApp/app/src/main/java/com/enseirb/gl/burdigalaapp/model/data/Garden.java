@@ -2,9 +2,6 @@ package com.enseirb.gl.burdigalaapp.model.data;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by rchabot on 17/11/15.
- */
 public class Garden implements Model {
     private String name;
     private String parcType;

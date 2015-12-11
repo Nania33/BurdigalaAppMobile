@@ -2,7 +2,6 @@ package com.enseirb.gl.burdigalaapp.dao.parser;
 
 import com.enseirb.gl.burdigalaapp.dto.CycleParkDTO;
 import com.enseirb.gl.burdigalaapp.dto.PointS;
-import com.enseirb.gl.burdigalaapp.model.data.CyclePark;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,23 +12,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by alraffin on 24/11/15.
- */
-public class KmlCycleParkParser {
+public class KmlCycleParkParser implements ICycleParkParser {
 
-    public static ArrayList<CycleParkDTO> parse(String allFile) {
+    public ArrayList<CycleParkDTO> parse(String allFile) {
         String CDATA = null;
         Document doc = CommonParser.createDocument(allFile);
-        ArrayList<CyclePark> parkings = null;
+        ArrayList<CycleParkDTO> cycleParks = null;
 
-
-        ArrayList<CycleParkDTO> twoWheelVehicules = null;
         if (doc != null) {
             NodeList nameNodeList = doc.getElementsByTagName("name");
             NodeList pointNodeList = doc.getElementsByTagName("Point");
 
-            twoWheelVehicules = new ArrayList<CycleParkDTO>();
+            cycleParks = new ArrayList<>();
             Map parcDescription = new HashMap();
 
 
@@ -48,9 +42,9 @@ public class KmlCycleParkParser {
 
                 String type = parcDescription.get("Type de fixation").toString();
                 String spotNumber = parcDescription.get("Nombre").toString();
-                twoWheelVehicules.add(new CycleParkDTO(type, spotNumber, new PointS(x, y)));
+                cycleParks.add(new CycleParkDTO(type, spotNumber, new PointS(x, y)));
             }
         }
-        return twoWheelVehicules;
+        return cycleParks;
     }
 }

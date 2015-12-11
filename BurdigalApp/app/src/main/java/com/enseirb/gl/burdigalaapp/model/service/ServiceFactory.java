@@ -3,9 +3,6 @@ package com.enseirb.gl.burdigalaapp.model.service;
 import com.enseirb.gl.burdigalaapp.R;
 import com.enseirb.gl.burdigalaapp.exceptions.UnknownDataException;
 
-/**
- * Created by rchabot on 02/12/15.
- */
 public class ServiceFactory {
     public static Service makeChoice(ServiceType type) throws UnknownDataException {
         switch (type){
@@ -22,7 +19,6 @@ public class ServiceFactory {
         }
     }
 
-    //TODO mettre string dans fichier R.string
     public static Service makeCycleParkChoice(){
         return new Service(ServiceType.CYCLEPARK, "Parking deux roues", "Parking pour vélo et mobilette",
                 R.color.cycle_park_color, "cycleParkFile");

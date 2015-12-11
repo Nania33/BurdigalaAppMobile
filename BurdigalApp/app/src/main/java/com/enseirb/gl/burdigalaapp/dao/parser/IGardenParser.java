@@ -1,7 +1,9 @@
 package com.enseirb.gl.burdigalaapp.dao.parser;
 
-/**
- * Created by rchabot on 17/11/15.
- */
-public interface IGardenParser {
+import com.enseirb.gl.burdigalaapp.dto.GardenDTO;
+
+import java.util.ArrayList;
+
+public interface IGardenParser extends IModelParser {
+    public ArrayList<GardenDTO> parse(String allFile);
 }

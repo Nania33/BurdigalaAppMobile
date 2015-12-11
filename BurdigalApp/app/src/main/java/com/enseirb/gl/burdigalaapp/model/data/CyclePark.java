@@ -2,9 +2,6 @@ package com.enseirb.gl.burdigalaapp.model.data;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by Nania on 17/11/2015.
- */
 public class CyclePark implements Model{
     private LatLng point;
     private String fixationType;

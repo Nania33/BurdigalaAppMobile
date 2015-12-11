@@ -8,9 +8,6 @@ import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.presenter.listener.IPresenterListener;
 import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
-/**
- * Created by rchabot on 02/12/15.
- */
 public interface BusinessVisitor {
     void callToBusiness(GardenContainer container, IPresenterListener listener, Filter filter, OpenDataRetriever retriever);
     void callToBusiness(CycleParkContainer container, IPresenterListener listener, Filter filter, OpenDataRetriever retriever);

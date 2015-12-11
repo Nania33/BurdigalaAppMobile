@@ -2,7 +2,6 @@ package com.enseirb.gl.burdigalaapp.presenter.fragment.detail;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +15,6 @@ import com.enseirb.gl.burdigalaapp.model.data.Garden;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.listener.InteractionListener;
 import com.enseirb.gl.burdigalaapp.model.service.Service;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GardenDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GardenDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class GardenDetailFragment extends android.support.v4.app.Fragment {
     private Button btnReturn;
 

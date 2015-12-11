@@ -1,15 +1,12 @@
 package com.enseirb.gl.burdigalaapp.dto;
 
-/**
- * Created by rchabot on 17/11/15.
- */
-public class GardenDTO {
+public class GardenDTO implements DataDTO {
     private String name;
     private String parcType;
     private String use;
     private String gestionType;
     private String label;
-    private PointS point; // Utilisation d'un LatLng ?
+    private PointS point;
 
     public GardenDTO(String name, String type, String use, String gestionType, String label, PointS point){
         this.name = name;

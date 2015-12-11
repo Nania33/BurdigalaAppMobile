@@ -10,9 +10,6 @@ import com.enseirb.gl.burdigalaapp.business.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.CycleParkContainer;
 import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
-/**
- * Created by rchabot on 05/12/15.
- */
 public class CycleParkBusiness implements ICycleParkBusiness {
     private static final String TAG = "CycleParkBusiness";
     private ICycleParkConverter cycleParkConverter;
@@ -30,7 +27,6 @@ public class CycleParkBusiness implements ICycleParkBusiness {
             @Override
             public void onSuccess(final CycleParkContainer cyclePark) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");
-                // TODO appliquer le filtre
                 CycleParkContainer p = filter.filterModels(cyclePark);
                 listener.onSuccess(p.getModels());
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - end");

@@ -10,9 +10,6 @@ import com.enseirb.gl.burdigalaapp.business.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.GardenContainer;
 import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
-/**
- * Created by rchabot on 23/11/15.
- */
 public class GardenBusiness implements IGardenBusiness {
     private static final String TAG = "GardenBusiness";
     private IGardenConverter gardenConverter;

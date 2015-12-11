@@ -7,9 +7,6 @@ import com.enseirb.gl.burdigalaapp.business.filters.LinearFilter;
 import com.enseirb.gl.burdigalaapp.business.filters.NearestPointsFilter;
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by rchabot on 09/12/15.
- */
 public class Conf {
     private static final String TAG = "Conf";
 

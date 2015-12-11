@@ -2,9 +2,6 @@ package com.enseirb.gl.burdigalaapp.dto;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by alraffin on 23/11/15.
- */
 public class PointS {
     private String x;
     private String y;

@@ -10,9 +10,6 @@ import com.enseirb.gl.burdigalaapp.business.filters.Filter;
 import com.enseirb.gl.burdigalaapp.model.container.ToiletContainer;
 import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
-/**
- * Created by rchabot on 03/12/15.
- */
 public class ToiletBusiness implements IToiletBusiness {
     private static final String TAG = "ToiletBusiness";
     private IToiletConverter gardenConverter;

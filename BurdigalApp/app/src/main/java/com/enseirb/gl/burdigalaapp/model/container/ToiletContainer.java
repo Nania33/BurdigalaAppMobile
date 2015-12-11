@@ -9,9 +9,6 @@ import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 11/30/2015.
- */
 public class ToiletContainer implements IModelContainer<Toilet> {
     private List<Toilet> toilets;
 

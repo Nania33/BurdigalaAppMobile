@@ -1,10 +1,6 @@
 package com.enseirb.gl.burdigalaapp.dto;
 
-/**
- * Created by Nania on 17/11/2015.
- */
-
-public class ParkingDTO{
+public class ParkingDTO implements DataDTO {
     private String name;
     private PointS point;
     private String parkingSpotNumber;

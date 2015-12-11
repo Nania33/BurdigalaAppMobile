@@ -1,8 +1,5 @@
 package com.enseirb.gl.burdigalaapp.dao.asynctask.web;
 
-/**
- * Created by rchabot on 17/11/15.
- */
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -50,7 +47,7 @@ public class AsyncTaskWebToilet extends AsyncTask<String, Void, Void> {
         WebResponse response = request.executeRequest();
         FileManager fileManager = new FileManager(context);
         fileManager.writeDataToFile(response.getData(), filename);
-        List<ToiletDTO> dtoList = KmlToiletParser.parse(response.getData());
+        List<ToiletDTO> dtoList = new KmlToiletParser().parse(response.getData());
         Log.d(TAG, "[startGetToiletTask] end");
         return dtoList;
     }

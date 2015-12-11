@@ -39,7 +39,6 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
 
     private HomeActivityPreferences homeActivityPreferences;
-    private boolean firstTimeRun = true;
 
     private AbsListView mListView;
     private ListAdapter mAdapter;

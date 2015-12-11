@@ -12,11 +12,8 @@ import com.enseirb.gl.burdigalaapp.dao.parser.KmlCycleParkParser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rchabot on 09/12/15.
- */
 public class AsyncTaskFileCyclePark extends AsyncTask<String, Void, Void> {
-    private static final String TAG = "ASYNC_FILE_GARDEN";
+    private static final String TAG = "ASYNC_FILE_CYCLE_PARK";
 
     private ICycleParkDAOListener listener;
     private Context context;
@@ -44,7 +41,7 @@ public class AsyncTaskFileCyclePark extends AsyncTask<String, Void, Void> {
         FileManager fileManager = new FileManager(context);
         Log.d(TAG, "[startGetWeatherTask] start get cycleParks");
         String dataToParse = fileManager.readFromFile(filename);
-        List<CycleParkDTO> dtoList = KmlCycleParkParser.parse(dataToParse);
+        List<CycleParkDTO> dtoList = new KmlCycleParkParser().parse(dataToParse);
         Log.d(TAG, "[startGetWeatherTask] end get cycleParks");
         return dtoList;
     }

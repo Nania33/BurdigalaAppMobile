@@ -25,9 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by rchabot on 02/12/15.
- */
 public class ServiceManager {
     private static final String TAG = "ServiceManager";
 
@@ -60,7 +57,7 @@ public class ServiceManager {
                 IModelContainer container = myServices.get(service);
                 IPresenterListener listener = new IPresenterListener() {
                     @Override
-                    public void onDataRetreived() {
+                    public void onDataRetrieved() {
                         mListener.onDataRetrieved(service);
                     }
 
@@ -103,7 +100,6 @@ public class ServiceManager {
             e.printStackTrace();
         }
 
-        // if found, return the GPS location because it is more precise
         if (locationGPS != null) {
             return new LatLng(locationGPS.getLatitude(), locationGPS.getLongitude());
         }
@@ -112,7 +108,6 @@ public class ServiceManager {
             return new LatLng(locationNet.getLatitude(), locationNet.getLongitude());
         }
 
-        // hard coded values at the center of Bordeaux if we can't get the location of the user.
         return new LatLng(bordeauxCenterLat, bordeauxCenterLong);
 
     }

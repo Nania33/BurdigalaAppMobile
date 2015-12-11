@@ -2,9 +2,6 @@ package com.enseirb.gl.burdigalaapp.model.data;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by Nania on 17/11/2015.
- */
 public class Parking implements Model{
     private String name;
     private LatLng point;

@@ -12,9 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * Created by rchabot on 17/11/15.
- */
 public class HttpGetServiceRequest implements HttpRequest {
     private static final String TAG = "HTTP_GET_REQUEST";
 

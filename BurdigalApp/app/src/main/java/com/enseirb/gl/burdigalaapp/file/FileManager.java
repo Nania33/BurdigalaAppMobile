@@ -16,10 +16,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/*
-* Created by Alex on 12/6/2015.
-*/
-
 public class FileManager {
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
@@ -37,7 +33,7 @@ public class FileManager {
         File file = new File(context.getCacheDir(), fileName);
 
         if (!file.exists()) {
-            Log.d(TAG, "file does not exists");
+            Log.d(TAG, "file does not exist");
             return true;
         } else {
             Date fileDate = getDateFromFile(fileName);
@@ -109,7 +105,7 @@ public class FileManager {
                 e.printStackTrace();
             }
         }
-        Log.d(TAG, "data wroted successfully");
+        Log.d(TAG, "data wrote successfully");
     }
 
     private Date getDateFromFile(String fileName) {

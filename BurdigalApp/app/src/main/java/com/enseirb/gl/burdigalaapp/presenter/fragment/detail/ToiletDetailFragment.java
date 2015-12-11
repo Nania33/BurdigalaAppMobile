@@ -2,7 +2,6 @@ package com.enseirb.gl.burdigalaapp.presenter.fragment.detail;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +15,6 @@ import com.enseirb.gl.burdigalaapp.model.data.Toilet;
 import com.enseirb.gl.burdigalaapp.presenter.fragment.detail.listener.InteractionListener;
 import com.enseirb.gl.burdigalaapp.model.service.Service;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ToiletDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ToiletDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ToiletDetailFragment extends android.support.v4.app.Fragment {
     private Button btnReturn;
 
@@ -41,7 +32,7 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
     private LinearLayout titleLayout;
 
     public static ToiletDetailFragment newInstance(Service service, int position) {
-        Log.d("DetailToilet", "Les toilettes sont initialisés");
+        Log.d("DetailToilet", "Les toilettes sont initialisées");
         ToiletDetailFragment fragment = new ToiletDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(SERVICE, service);

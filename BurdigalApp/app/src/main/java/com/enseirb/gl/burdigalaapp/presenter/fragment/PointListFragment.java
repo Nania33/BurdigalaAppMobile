@@ -74,11 +74,9 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_point, container, false);
 
-        // Set the adapter
         mListView = (ListView) view.findViewById(android.R.id.list);
         mListView.setAdapter(mAdapter);
 
-        // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
         btnReturnToMap = (Button) view.findViewById(R.id.btn_return_to_map);

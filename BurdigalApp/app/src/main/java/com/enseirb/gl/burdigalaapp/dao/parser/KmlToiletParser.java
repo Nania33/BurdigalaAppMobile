@@ -11,11 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by alraffin on 23/11/15.
- */
-public class KmlToiletParser {
-    public static ArrayList<ToiletDTO> parse(String allFile) {
+public class KmlToiletParser implements IToiletParser {
+    public ArrayList<ToiletDTO> parse(String allFile) {
         String CDATA = null;
         Document doc = CommonParser.createDocument(allFile);
         ArrayList<ToiletDTO> toilets = null;

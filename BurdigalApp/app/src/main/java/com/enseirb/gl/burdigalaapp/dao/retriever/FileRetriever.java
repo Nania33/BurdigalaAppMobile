@@ -13,9 +13,6 @@ import com.enseirb.gl.burdigalaapp.dao.listener.IParkingDAOListener;
 import com.enseirb.gl.burdigalaapp.dao.listener.IToiletDAOListener;
 import com.enseirb.gl.burdigalaapp.model.service.Service;
 
-/**
- * Created by rchabot on 07/12/15.
- */
 public class FileRetriever implements OpenDataRetriever {
     private static final String TAG = "FileRetriever";
     
@@ -26,7 +23,6 @@ public class FileRetriever implements OpenDataRetriever {
         this.context = context;
         this.service = service;
     }
-
 
     @Override
     public void retrieveToiletPlaces(IToiletDAOListener listener) {

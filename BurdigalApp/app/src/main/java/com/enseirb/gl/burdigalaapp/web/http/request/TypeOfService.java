@@ -1,10 +1,5 @@
 package com.enseirb.gl.burdigalaapp.web.http.request;
 
-import java.util.NoSuchElementException;
-
-/**
- * Created by rchabot on 23/11/15.
- */
 public enum TypeOfService {
     SIGSANITAIRE, PARCJARDIN, SIGPARKPUB, SIGSTAVELO;
 

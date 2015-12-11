@@ -14,22 +14,19 @@ import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rchabot on 03/12/15.
- */
 public class ToiletConverter implements IToiletConverter {
     public static final String TAG = "ToiletConverter";
 
-    private IToiletDAO gardenDAO;
+    private IToiletDAO toiletDAO;
 
     public ToiletConverter() {
-        this.gardenDAO = new OpenDataToiletDAO();
+        this.toiletDAO = new OpenDataToiletDAO();
     }
 
     @Override
     public void retrieveToiletPlaces(OpenDataRetriever retriever, final IToiletConverterListener listener) {
         Log.d(TAG, "[retrievePlaces()] - start");
-        gardenDAO.retrieveToiletPlaces(retriever, new IToiletDAOListener() {
+        toiletDAO.retrieveToiletPlaces(retriever, new IToiletDAOListener() {
             @Override
             public void onSuccess(List<ToiletDTO> gardenDTO) {
                 Log.d(TAG, "[retrievePlaces()] - onSuccess - start");

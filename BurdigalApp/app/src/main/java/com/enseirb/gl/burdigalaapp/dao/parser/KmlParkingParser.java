@@ -11,11 +11,8 @@ import java.util.Map;
 import com.enseirb.gl.burdigalaapp.dto.ParkingDTO;
 import com.enseirb.gl.burdigalaapp.dto.PointS;
 
-/**
- * Created by alraffin on 23/11/15.
- */
 public class KmlParkingParser implements IParkingParser{
-    public static ArrayList<ParkingDTO> parse(String allFile) {
+    public ArrayList<ParkingDTO> parse(String allFile) {
         String CDATA = null;
         Document doc = CommonParser.createDocument(allFile);
         ArrayList<ParkingDTO> parkings = null;
@@ -44,7 +41,6 @@ public class KmlParkingParser implements IParkingParser{
                 String type = parkingDescription.get("type de parking").toString();
 
                 parkings.add(new ParkingDTO(name, numberOfSpots, type, new PointS(x, y)));
-                //return parkings;
             }
         }
         return parkings;

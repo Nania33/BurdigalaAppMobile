@@ -1,7 +1,9 @@
 package com.enseirb.gl.burdigalaapp.dao.parser;
 
-/**
- * Created by Nania on 17/11/2015.
- */
-public interface IToiletParser {
+import com.enseirb.gl.burdigalaapp.dto.ToiletDTO;
+
+import java.util.ArrayList;
+
+public interface IToiletParser extends IModelParser{
+    public ArrayList<ToiletDTO> parse(String allFile);
 }

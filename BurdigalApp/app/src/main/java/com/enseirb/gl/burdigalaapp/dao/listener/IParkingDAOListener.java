@@ -4,11 +4,7 @@ import com.enseirb.gl.burdigalaapp.dto.ParkingDTO;
 
 import java.util.List;
 
-/**
- * Created by Nania on 17/11/2015.
- */
-public interface IParkingDAOListener {
+public interface IParkingDAOListener extends IDataDAOListener<ParkingDTO>{
     void onSuccess(List<ParkingDTO> parkingDTOs);
-
     void onError(String message);
 }

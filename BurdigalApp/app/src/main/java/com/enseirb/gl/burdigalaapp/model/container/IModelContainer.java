@@ -8,9 +8,6 @@ import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 import java.util.List;
 
-/**
- * Created by Nania on 23/11/2015.
- */
 public interface IModelContainer<T extends Model> {
     List<T> getModels();
     void put(List<T> data);

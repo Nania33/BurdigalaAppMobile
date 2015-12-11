@@ -1,10 +1,6 @@
 package com.enseirb.gl.burdigalaapp.dto;
 
-/**
- * Created by Nania on 17/11/2015.
- */
-
-public class ToiletDTO{
+public class ToiletDTO implements DataDTO {
     private PointS point;
     private String address;
     private String neighbourhood;
@@ -21,7 +17,7 @@ public class ToiletDTO{
     public String toString(){
         return  point.toString() +
                 "address: " + address + "\n" +
-                "Neighbourood: " + neighbourhood + "\n" +
+                "Neighbourhood: " + neighbourhood + "\n" +
                 "Toilet Type: " + toiletType + "\n\n";
 
     }

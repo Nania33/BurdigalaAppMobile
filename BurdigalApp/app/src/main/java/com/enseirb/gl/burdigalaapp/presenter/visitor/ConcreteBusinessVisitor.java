@@ -24,21 +24,18 @@ import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 
 import java.util.List;
 
-/**
- * Created by rchabot on 02/12/15.
- */
 public class ConcreteBusinessVisitor implements BusinessVisitor {
     private static final String TAG = "ConcreteBusinessVisitor";
 
     @Override
-    public void callToBusiness(final GardenContainer container, final IPresenterListener listener, Filter filter, OpenDataRetriever retriever){
+    public void callToBusiness(final GardenContainer container, final IPresenterListener listener, Filter filter, OpenDataRetriever retriever) {
         GardenBusiness gardenBusiness = new GardenBusiness(filter);
         Log.d(TAG, "[retrievePlaces()] - start retrieve gardens");
         gardenBusiness.retrieveGardenPlaces(retriever, new IGardenBusinessListener() {
             @Override
             public void onSuccess(List<Garden> garden) {
                 container.put(garden);
-                listener.onDataRetreived();
+                listener.onDataRetrieved();
             }
 
             @Override
@@ -49,8 +46,6 @@ public class ConcreteBusinessVisitor implements BusinessVisitor {
         Log.d(TAG, "[retrievePlaces()] - end retrieve gardens");
     }
 
-
-
     @Override
     public void callToBusiness(final CycleParkContainer container, final IPresenterListener listener, Filter filter, OpenDataRetriever retriever) {
         CycleParkBusiness cycleParkBusiness = new CycleParkBusiness(filter);
@@ -59,7 +54,7 @@ public class ConcreteBusinessVisitor implements BusinessVisitor {
             @Override
             public void onSuccess(List<CyclePark> cyclePark) {
                 container.put(cyclePark);
-                listener.onDataRetreived();
+                listener.onDataRetrieved();
             }
 
             @Override
@@ -80,7 +75,7 @@ public class ConcreteBusinessVisitor implements BusinessVisitor {
             @Override
             public void onSuccess(List<Toilet> toilet) {
                 container.put(toilet);
-                listener.onDataRetreived();
+                listener.onDataRetrieved();
             }
 
             @Override
@@ -99,7 +94,7 @@ public class ConcreteBusinessVisitor implements BusinessVisitor {
             @Override
             public void onSuccess(List<Parking> parking) {
                 container.put(parking);
-                listener.onDataRetreived();
+                listener.onDataRetrieved();
             }
 
             @Override

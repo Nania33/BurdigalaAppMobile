@@ -1,4 +1,3 @@
-
 package com.enseirb.gl.burdigalaapp.presenter.activity;
 
 import android.content.Context;
@@ -283,7 +282,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     while ((data = queue.poll(5, TimeUnit.MINUTES)) != null){
                         final BlockingQueueTask finalData = data;
                         final Service service = finalData.getService();
-                        if (data.isSucces()) {
+                        if (data.isSuccess()) {
                             final PointListFragment fragment = findListFragment(service);
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -509,17 +508,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-    private void replaceDetailFragmentWith(Fragment fragment){
+    private void replaceDetailFragmentWith(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.remove(getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG));
         ft.show(fragment);
         ft.commit();
     }
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-    }*/
 }

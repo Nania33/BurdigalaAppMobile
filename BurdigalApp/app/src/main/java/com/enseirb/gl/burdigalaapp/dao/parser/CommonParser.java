@@ -16,9 +16,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-/**
- * Created by alraffin on 23/11/15.
- */
 public class CommonParser {
 
     public static String getCharacterDataFromElement(Element e) {

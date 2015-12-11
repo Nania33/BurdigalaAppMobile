@@ -2,9 +2,6 @@ package com.enseirb.gl.burdigalaapp.web.http.response;
 
 import android.util.Log;
 
-/**
- * Created by rchabot on 17/11/15.
- */
 public class WebResponse {
     public static final String NO_DATA = "NO_DATA";
     private static final String TAG = "WebResponse";

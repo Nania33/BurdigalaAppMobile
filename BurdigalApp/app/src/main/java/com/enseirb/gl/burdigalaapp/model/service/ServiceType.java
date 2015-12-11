@@ -1,8 +1,5 @@
 package com.enseirb.gl.burdigalaapp.model.service;
 
-/**
- * Created by Nania on 23/11/2015.
- */
 public enum ServiceType {
     TOILET, PARKING, GARDEN, CYCLEPARK;
 

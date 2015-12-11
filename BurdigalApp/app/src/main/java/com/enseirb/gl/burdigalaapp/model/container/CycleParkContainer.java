@@ -9,9 +9,6 @@ import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 11/30/2015.
- */
 public class CycleParkContainer implements IModelContainer<CyclePark> {
     private List<CyclePark> cycleParks;
 
@@ -46,5 +43,4 @@ public class CycleParkContainer implements IModelContainer<CyclePark> {
     public CycleParkContainer applyFilter(BusinessVisitor businessVisitor, Filter filter) {
         return businessVisitor.applyFilter(this, filter);
     }
-
 }

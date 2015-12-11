@@ -12,11 +12,8 @@ import com.enseirb.gl.burdigalaapp.dao.parser.KmlToiletParser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rchabot on 09/12/15.
- */
 public class AsyncTaskFileToilet extends AsyncTask<String, Void, Void> {
-    private static final String TAG = "ASYNC_FILE_GARDEN";
+    private static final String TAG = "ASYNC_FILE_TOILET";
 
     private IToiletDAOListener listener;
     private Context context;
@@ -44,7 +41,7 @@ public class AsyncTaskFileToilet extends AsyncTask<String, Void, Void> {
         FileManager fileManager = new FileManager(context);
         Log.d(TAG, "[startGetWeatherTask] start get toilets");
         String dataToParse = fileManager.readFromFile(filename);
-        List<ToiletDTO> dtoList = KmlToiletParser.parse(dataToParse);
+        List<ToiletDTO> dtoList = new KmlToiletParser().parse(dataToParse);
         Log.d(TAG, "[startGetWeatherTask] end get toilets");
         return dtoList;
     }

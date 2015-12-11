@@ -14,9 +14,6 @@ import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rchabot on 23/11/15.
- */
 public class GardenConverter implements IGardenConverter {
     public static final String TAG = "GardenConverter";
 
@@ -51,7 +48,6 @@ public class GardenConverter implements IGardenConverter {
                 gardenDTO.getLabel(), gardenDTO.getPoint().toLatLng());
     }
 
-    // return container when they are implemented
     public GardenContainer convertToContainer(List<GardenDTO> dtoList) {
         List<Garden> convertedList = new ArrayList<>();
         for (GardenDTO dto : dtoList){

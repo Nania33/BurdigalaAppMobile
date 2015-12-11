@@ -12,9 +12,6 @@ import com.enseirb.gl.burdigalaapp.dao.parser.KmlGardenParser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rchabot on 09/12/15.
- */
 public class AsyncTaskFileGarden extends AsyncTask<String, Void, Void> {
     private static final String TAG = "ASYNC_FILE_GARDEN";
 
@@ -44,7 +41,7 @@ public class AsyncTaskFileGarden extends AsyncTask<String, Void, Void> {
         FileManager fileManager = new FileManager(context);
         Log.d(TAG, "[startGetWeatherTask] start get gardens");
         String dataToParse = fileManager.readFromFile(filename);
-        List<GardenDTO> dtoList = KmlGardenParser.parse(dataToParse);
+        List<GardenDTO> dtoList = new KmlGardenParser().parse(dataToParse);
         Log.d(TAG, "[startGetWeatherTask] end get gardens");
         return dtoList;
     }

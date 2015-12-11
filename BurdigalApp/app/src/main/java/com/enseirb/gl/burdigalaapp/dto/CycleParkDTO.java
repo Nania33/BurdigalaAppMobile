@@ -1,9 +1,6 @@
 package com.enseirb.gl.burdigalaapp.dto;
 
-/**
- * Created by Nania on 17/11/2015.
- */
-public class CycleParkDTO {
+public class CycleParkDTO implements DataDTO {
     private PointS point;
     private String fixationType;
     private String parkingSpotNumber;

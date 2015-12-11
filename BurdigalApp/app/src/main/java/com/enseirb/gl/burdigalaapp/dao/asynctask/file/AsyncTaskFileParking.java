@@ -12,11 +12,8 @@ import com.enseirb.gl.burdigalaapp.dao.parser.KmlParkingParser;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rchabot on 09/12/15.
- */
 public class AsyncTaskFileParking extends AsyncTask<String, Void, Void> {
-    private static final String TAG = "ASYNC_FILE_GARDEN";
+    private static final String TAG = "ASYNC_FILE_PARKING";
 
     private IParkingDAOListener listener;
     private Context context;
@@ -44,7 +41,7 @@ public class AsyncTaskFileParking extends AsyncTask<String, Void, Void> {
         FileManager fileManager = new FileManager(context);
         Log.d(TAG, "[startGetWeatherTask] start get parkings");
         String dataToParse = fileManager.readFromFile(filename);
-        List<ParkingDTO> dtoList = KmlParkingParser.parse(dataToParse);
+        List<ParkingDTO> dtoList = new KmlParkingParser().parse(dataToParse);
         Log.d(TAG, "[startGetWeatherTask] end get parkings");
         return dtoList;
     }

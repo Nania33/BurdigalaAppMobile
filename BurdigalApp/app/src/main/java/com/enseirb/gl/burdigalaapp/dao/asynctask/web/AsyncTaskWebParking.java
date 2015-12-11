@@ -46,7 +46,7 @@ public class AsyncTaskWebParking extends AsyncTask<String, Void, Void> {
         WebResponse response = request.executeRequest();
         FileManager fileManager = new FileManager(context);
         fileManager.writeDataToFile(response.getData(), filename);
-        List<ParkingDTO> dtoList = KmlParkingParser.parse(response.getData());
+        List<ParkingDTO> dtoList = new KmlParkingParser().parse(response.getData());
         Log.d(TAG, "[startGetWeatherTask] end get parkings");
         return dtoList;
     }

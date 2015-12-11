@@ -10,9 +10,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by rchabot on 21/11/15.
- */
 public class Service implements Parcelable {
     public static final String KEY_NAME = "name";
     public static final String KEY_DESCRIPTION = "description";

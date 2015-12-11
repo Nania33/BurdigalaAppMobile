@@ -2,18 +2,15 @@ package com.enseirb.gl.burdigalaapp.presenter;
 
 import com.enseirb.gl.burdigalaapp.model.service.Service;
 
-/**
- * Created by rchabot on 05/12/15.
- */
 public class BlockingQueueTask {
     private Service service;
-    private boolean succes;
+    private boolean success;
     private String message;
 
 
     private BlockingQueueTask(Service service, boolean success, String message) {
         this.service = service;
-        this.succes = success;
+        this.success = success;
         this.message = message;
     }
 
@@ -29,8 +26,8 @@ public class BlockingQueueTask {
         return service;
     }
 
-    public boolean isSucces() {
-        return succes;
+    public boolean isSuccess() {
+        return success;
     }
 
     public String getMessage() {

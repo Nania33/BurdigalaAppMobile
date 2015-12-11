@@ -14,9 +14,6 @@ import com.enseirb.gl.burdigalaapp.dao.retriever.OpenDataRetriever;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rchabot on 05/12/15.
- */
 public class CycleParkConverter implements ICycleParkConverter{
     public static final String TAG = "CycleParkConverter";
 
