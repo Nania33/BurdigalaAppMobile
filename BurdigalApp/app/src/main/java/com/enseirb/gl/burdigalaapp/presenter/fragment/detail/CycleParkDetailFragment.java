@@ -31,7 +31,6 @@ public class CycleParkDetailFragment extends android.support.v4.app.Fragment {
     private LinearLayout titleLayout;
 
     public static CycleParkDetailFragment newInstance(Service service, int position) {
-        Log.d("DetailCyclePark", "Les cyclePark sont initialisés");
         CycleParkDetailFragment fragment = new CycleParkDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(SERVICE, service);

@@ -32,7 +32,6 @@ public class ToiletDetailFragment extends android.support.v4.app.Fragment {
     private LinearLayout titleLayout;
 
     public static ToiletDetailFragment newInstance(Service service, int position) {
-        Log.d("DetailToilet", "Les toilettes sont initialisées");
         ToiletDetailFragment fragment = new ToiletDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(SERVICE, service);

@@ -53,7 +53,7 @@ public class PointListFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate listFrgament : (init des données)" + service);
+        Log.d(TAG, "onCreate listFragment : (init des données)" + service);
 
 
         if (getArguments() != null) {

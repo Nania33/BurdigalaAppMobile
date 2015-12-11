@@ -32,7 +32,6 @@ public class ParkingDetailFragment extends android.support.v4.app.Fragment {
     private LinearLayout titleLayout;
 
     public static ParkingDetailFragment newInstance(Service service, int position) {
-        Log.d("DetailParking", "Les parking sont initialisés");
         ParkingDetailFragment fragment = new ParkingDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(SERVICE, service);

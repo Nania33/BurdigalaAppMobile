@@ -34,7 +34,6 @@ public class GardenDetailFragment extends android.support.v4.app.Fragment {
     private LinearLayout titleLayout;
 
     public static GardenDetailFragment newInstance(Service service, int position) {
-        Log.d("DetailGarden", "Les gardentes sont initialisés");
         GardenDetailFragment fragment = new GardenDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(SERVICE, service);
