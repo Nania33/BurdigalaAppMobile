@@ -87,7 +87,6 @@ public class ServiceManager {
         }
     }
 
-
     public List<Model> pointsToDisplayOnMap(Service service, Filter filter){
         return getContainer(service).applyFilter(new ConcreteBusinessVisitor(), filter).getModels();
     }

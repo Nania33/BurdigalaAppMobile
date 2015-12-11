@@ -214,7 +214,7 @@ public class HomeActivity extends AppCompatActivity {
                 filterType = Conf.LINEAR_FILTER;
                 break;
             default:
-                filterType = Conf.NEAREST_FILTER;
+                filterType = Conf.LINEAR_FILTER;
                 break;
         }
         Intent intent = MapsActivity.getIntent(this, items, filterType, nbPoints);
