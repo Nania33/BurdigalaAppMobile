@@ -15,7 +15,7 @@ public enum TypeOfService {
             case SIGSTAVELO:
                 return "sigstavelo";
             default:
-                return ""; // TODO throw exception
+                return "";
         }
     }
 }
