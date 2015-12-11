@@ -323,6 +323,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
             Service service = serviceManager.getService(ServiceType.toServiceType(serv));
             int itemPosition = serviceManager.getPointIndex(service, position);
+
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
+            if (fragment != null) {
+                replaceDetailFragmentWith(listFragment.get(currentListFragment));
+                depth--;
+            }
+
             if (btnShowList != null)
                 btnShowList.setVisibility(View.GONE);
             displayDetailFragment(service, itemPosition);
